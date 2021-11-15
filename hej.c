@@ -5,3 +5,4 @@ int main(void) {
     printf("Hej ven :D\n");
     printf("Her var jeg lige");
 }
+// Finder han ud af det?
