@@ -5,4 +5,7 @@ int main(void) {
     printf("Hej ven :D\n");
     printf("Her var jeg lige");
     printf("Hej igen");
+    printf("Judas kys");
+    
+
 }
