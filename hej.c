@@ -6,6 +6,3 @@ int main(void) {
     printf("Her var jeg lige");
     printf("Hej igen");
 }
-
-
-
