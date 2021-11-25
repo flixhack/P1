@@ -49,7 +49,7 @@ int login(void){
 
 void readyState(int loginVar){
     char command;
-    while (loginVar != 0) {
+    while (loggedIn != 0) {
         printf("\nEnter command here: ");
         scanf(" %c", &command);
         findCommand(command);
