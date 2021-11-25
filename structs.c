@@ -20,5 +20,6 @@ struct assignment{
     date startDate;
     date endDate;
     char *subject;
+    int type;
 };
 typedef assignment assignment;
