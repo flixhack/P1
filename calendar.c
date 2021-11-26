@@ -6,13 +6,11 @@
 
 int main(int argc, char const *argv[]){
 
-    char word[2000];
-    char string[50];
-    char calendar[100] = {0};
+    char string[MAX_LINE_LENGTH];
+    char calendar[MAX_LINE_LENGTH] = {0};
     int readSwitch = 0;
     int bytes = 0;
     int locOne, locTwo;
-    char line[MAX_LINE_LENGTH];
     int lineCount = 1;
 
     //Opens the text file, and returns an error if it cannot be found
@@ -46,11 +44,11 @@ int main(int argc, char const *argv[]){
     if (readSwitch == 1) {
         rewind(in_file);
         bytes = locOne;
-        while (fscanf(in_file, "%s", line) == 1) {
+        while (fscanf(in_file, "%s", string) == 1) {
             if (lineCount > bytes && lineCount < locTwo) {
-                printf("[%i] %s", lineCount, line);
+                printf("[%i] %s", lineCount, string);
                 bytes++;
-                if (line[strlen(line) - 1] != '\n') {
+                if (string[strlen(string) - 1] != '\n') {
                     printf("\n");
                 }
             }
