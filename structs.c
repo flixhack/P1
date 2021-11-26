@@ -5,6 +5,7 @@ struct date{
         day,
         month,
         year;
+    double hoursFree;
 };
 typedef date date;
 
