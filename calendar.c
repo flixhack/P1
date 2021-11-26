@@ -1,47 +1,61 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#define MAX_LINE_LENGTH 100
 
-void accessCalendar (){
-    int c;
-    FILE *file;
-    file = fopen("calendar.txt", "r");
-    if (file) {
-        while ((c = getc(file)) != EOF)
-            putchar(c);
-        fclose(file);
+
+int main(int argc, char const *argv[]){
+
+    char word[2000];
+    char string[50];
+    char calendar[100] = {0};
+    int readSwitch = 0;
+    int bytes = 0;
+    int locOne, locTwo;
+    char line[MAX_LINE_LENGTH];
+    int lineCount = 1;
+
+    //Opens the text file, and returns an error if it cannot be found
+    FILE *in_file = fopen("calendar.txt", "r");
+    if (in_file == NULL){
+        printf("Error: file missing\n");
+        exit(EXIT_FAILURE);
     }
-}
 
-//shamelessly stolen from https://stackoverflow.com/questions/29429384/search-string-in-a-file-in-c
 
-void accessDate (){
-        int num =0;
-        char word[2000];
-        char string[50];
-        char calendar[100] = {0};
-
-        while(calendar[0]!= '0')
-        {
-                FILE *in_file = fopen("calendar.txt", "r");
-                if (in_file == NULL)
-                {
-                        printf("Error file missing\n");
-                        exit(-1);
-                }
-
-                printf("please enter a word(enter 0 to end)\n");
-                scanf("%s", calendar);
-                while ( fscanf(in_file,"%s", string) == 1)
-                {
-                        //Add a for loop till strstr(string, student) does-not returns null. 
-                        if(strstr(string, calendar)!=0) {//if match found
-                                num++;
-                        }
-                }
-                printf("we found the word %s in the file %d times\n", calendar ,num );
-                num = 0;
-                fclose(in_file);
+    printf("please enter the date you wish to search for: ");
+    scanf("%s", calendar);
+    //Terrible variable naming ahead. "calendar" is the string entered by the user to be searched for, "string" is the string from the text file
+    while ( fscanf(in_file,"%s", string) == 1){
+        ++bytes;
+     
+        //Checks if the current string is the string you are looking for. Assigns pain, and the variables that indicate where the section you are looking for begins and ends
+        if(strstr(calendar, string)!=0) {
+            if (readSwitch == 0) {
+                readSwitch = 1;
+                locOne = bytes;
+            }
+            else if (readSwitch == 1) {
+                locTwo = bytes;
+            }
         }
-        return 0;
+    }
+    /*Rewind returns to the start of the file in order for it to be read again
+      fscanf reads the file. Also used earlier.
+      If statement uses the location variables assigned earlier (locOne and locTwo) to only print the necesarry text */
+    if (readSwitch == 1) {
+        rewind(in_file);
+        bytes = locOne;
+        while (fscanf(in_file, "%s", line) == 1) {
+            if (lineCount > bytes && lineCount < locTwo) {
+                printf("[%i] %s", lineCount, line);
+                bytes++;
+                if (line[strlen(line) - 1] != '\n') {
+                    printf("\n");
+                }
+            }
+        lineCount++;
+        }
+    }
+    fclose(in_file);
 }
