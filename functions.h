@@ -1,7 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+void readyState(int),
+     findCommand(char),
+     assignments(),
+     schedule(),
+     logOut();
 
+int login();
+
+int loggedIn = 0;
 
 void printSchedule (int userID, int loginID){
 
@@ -64,6 +72,13 @@ void findCommand(char command){
     }
 }
 
+void assignments(/* arguments */) {
+  /* code */
+}
+
+void schedule(/* arguments */) {
+  /* code */
+}
 
 void logOut(){
   loggedIn = 0;

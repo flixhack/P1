@@ -3,15 +3,15 @@
 #include <time.h>
 #include "functions.h"
 // #include "calendar.h"
-int loggedIn = 0; //needs to go
+// int loggedIn = 0; //needs to go
 
-void readyState(int),
-     findCommand(char),
-     assignments(),
-     schedule(),
-     logOut();
-
-int login();
+// void readyState(int),
+//      findCommand(char),
+//      assignments(),
+//      schedule(),
+//      logOut();
+//
+// int login();
 
 
 int main(void){
@@ -22,4 +22,3 @@ int main(void){
     }
     return(0);
 }
-
