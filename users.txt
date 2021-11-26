@@ -1,0 +1,8 @@
+//userID usernamer password permsID/loginID
+
+1 elev1 elev1 elev
+2 elev2 elev2 elev
+3 elev3 elev3 elev
+4 lærer1 lærer1 lærer
+5 lærer2 lærer2 lærer
+6 admin admin admin
