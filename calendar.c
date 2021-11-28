@@ -14,8 +14,8 @@ int main(int argc, char const *argv[]){
     int lineCount = 1;
 
     //Opens the text file, and returns an error if it cannot be found
-    FILE *in_file = fopen("calendar.txt", "r");
-    if (in_file == NULL){
+    FILE *readFile = fopen("calendar.txt", "r");
+    if (readFile == NULL){
         printf("Error: file missing\n");
         exit(EXIT_FAILURE);
     }
@@ -24,10 +24,10 @@ int main(int argc, char const *argv[]){
     printf("please enter the date you wish to search for: ");
     scanf("%s", calendar);
     //Terrible variable naming ahead. "calendar" is the string entered by the user to be searched for, "string" is the string from the text file
-    while ( fscanf(in_file,"%s", string) == 1){
+    while ( fscanf(readFile,"%s", string) == 1){
         ++bytes;
      
-        //Checks if the current string is the string you are looking for. Assigns pain, and the variables that indicate where the section you are looking for begins and ends
+        //Checks if the current string is the string you are looking for. Assigns readSwitch, and the variables that indicate where the section you are looking for begins and ends
         if(strstr(calendar, string)!=0) {
             if (readSwitch == 0) {
                 readSwitch = 1;
@@ -42,9 +42,9 @@ int main(int argc, char const *argv[]){
       fscanf reads the file. Also used earlier.
       If statement uses the location variables assigned earlier (locOne and locTwo) to only print the necesarry text */
     if (readSwitch == 1) {
-        rewind(in_file);
+        rewind(readFile);
         bytes = locOne;
-        while (fscanf(in_file, "%s", string) == 1) {
+        while (fscanf(readFile, "%s", string) == 1) {
             if (lineCount > bytes && lineCount < locTwo) {
                 printf("[%i] %s", lineCount, string);
                 bytes++;
@@ -55,5 +55,5 @@ int main(int argc, char const *argv[]){
         lineCount++;
         }
     }
-    fclose(in_file);
+    fclose(readFile);
 }
