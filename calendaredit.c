@@ -29,7 +29,6 @@ int main() {
     char editDate[MAX_LINE_LENGTH];
     char editMonth[2];
     char editYear[4];
-    char penis[2] = {'\n', '\0'};
     char mode;
 
     //Give warning if unable to read calendar.txt
@@ -63,6 +62,7 @@ int main() {
         if (mode == 'D') {
             printf("Enter the line you want to delete: ");
             scanf("%i", &line);
+            modeLoop = 0;
         }
         else if (mode == 'A' || mode == 'R') {
             printf("Enter the line you want to add by, or replace: ");
@@ -71,7 +71,8 @@ int main() {
             printf("Enter the new line: ");
             scanf("%s", &newLine);
 
-            strcat(newLine, penis);
+            strcat(newLine, "\n");
+            modeLoop = 0;
         }
         else{
             printf("You entered an invalid character. Please try again.\n");
