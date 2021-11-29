@@ -30,7 +30,7 @@ int main() {
     char editMonth[2];
     char editYear[4];
     char penis[2] = {'\n', '\0'};
-    char mode = 'E';
+    char mode;
 
     //Give warning if unable to read calendar.txt
     if (readFile == NULL) {
@@ -53,21 +53,29 @@ int main() {
 
     printf("Month = %i\n", date1.month);
 
-    printf("What mode do you want to use? A/D/R: ");
-    scanf("%c", &mode);
+    //This is all for testing purposes. Final version would be done with input variables
+    int modeLoop = 1;
+    while(modeLoop == 1) {
 
-    if (mode == 'D') {
-        printf("Enter the line you want to delete: ");
-        scanf("%i", &line);
-    }
-    else if (mode == 'A' || mode == 'R') {
-        printf("Enter the line you want to edit: ");
-        scanf("%i", &line);
+        printf("What mode do you want to use? A/D/R: ");
+        scanf(" %c", &mode);
 
-        printf("Enter the new line: ");
-        scanf("%s", &newLine);
+        if (mode == 'D') {
+            printf("Enter the line you want to delete: ");
+            scanf("%i", &line);
+        }
+        else if (mode == 'A' || mode == 'R') {
+            printf("Enter the line you want to add by, or replace: ");
+            scanf("%i", &line);
 
-        strcat(newLine, penis);
+            printf("Enter the new line: ");
+            scanf("%s", &newLine);
+
+            strcat(newLine, penis);
+        }
+        else{
+            printf("You entered an invalid character. Please try again.\n");
+        }
     }
 
     //Reads through each line of the db, copies content to the temp file, and makes the requested change once it's location is found
