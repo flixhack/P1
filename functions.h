@@ -17,28 +17,33 @@ void printSchedule (int userID, int loginID){
 
 int readTime(void){
     int n1 = 0;
-    int n2 = 2;
+    int n2 = 0;
     char col;
     scanf(" %i", &n1);
     scanf("%c", &col);
-    if (col != ":"){
+    if (col != ':'){
+        return 0;
+    }
+    else if (n1 > 24 || n1 < 0){
         return 0;
     }
     else {
         scanf("%i", &n2);
     }
-    if (n1 > 24 || n1 < 0){
-        return 0;
-    }
     if (n2 > 60 || n2 < 0){
         return 0;
     }
-    // God fucking help me
-    /* if (n2 < 10 && (n2 != 09 || n2 != 08 || n2 != 07 || n2 != 06 || n2 != 05 || n2 != 04 || n2 != 03 || n2 != 02 || n2 != 01 || n2 != 00){
-        return 0;
-    } */
-    
+    else if (n1 == 0 && n2 == 0){
+      return 2400;  // since 0 is the error value, a time  of 00:00  will instead be read as 24:00.
+    }
+    else {
+        return n2 + n1 * 100;
+    }
 }
+
+// char printTime(int){
+    
+// }  //modtag en stored int og print den som tekst. eks: int == 945 bliver til 9:45
 
 const char * recieveString(){
     int i = 0;
