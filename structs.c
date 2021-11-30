@@ -1,4 +1,5 @@
 
+enum assOrMod {assignment, module}; typedef enum assOrMod assOrMod;
 
 struct date{
     int week,
@@ -24,3 +25,12 @@ struct assignment{
     int type;
 };
 typedef assignment assignment;
+
+struct bloc{
+   assOrMod assOrMod;
+   union 
+   {
+      assignment assignment;
+      module module;
+   };
+}; typedef bloc bloc;
