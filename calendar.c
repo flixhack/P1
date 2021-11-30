@@ -12,6 +12,7 @@ int main(int argc, char const *argv[]){
     int bytes = 0;
     int locOne, locTwo;
     int lineCount = 1;
+    char longBoi[100][100];
 
     //Opens the text file, and returns an error if it cannot be found
     FILE *readFile = fopen("calendar.txt", "r");
@@ -38,15 +39,16 @@ int main(int argc, char const *argv[]){
             }
         }
     }
-    /*Rewind returns to the start of the file in order for it to be read again
-      fscanf reads the file. Also used earlier.
-      If statement uses the location variables assigned earlier (locOne and locTwo) to only print the necesarry text */
+    //If statement uses the location variables assigned earlier (locOne and locTwo) to only print the necesarry text
     if (readSwitch == 1) {
         rewind(readFile);
         bytes = locOne;
+        int j = 0;
         while (fscanf(readFile, "%s", string) == 1) {
             if (lineCount > bytes && lineCount < locTwo) {
                 printf("[%i] %s", lineCount, string);
+                strcpy(longBoi[j], string);
+                j++;
                 bytes++;
                 if (string[strlen(string) - 1] != '\n') {
                     printf("\n");
@@ -54,6 +56,10 @@ int main(int argc, char const *argv[]){
             }
         lineCount++;
         }
+    }
+    int k;
+    for (k = 0; k < 100; k++) {
+        printf("%c", longBoi[1][k]);
     }
     fclose(readFile);
 }
