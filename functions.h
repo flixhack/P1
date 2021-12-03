@@ -74,8 +74,6 @@ char* receiveString() {
             free(string);
             exit(EXIT_FAILURE);
         }
-
-
 // printf(" string1s: %s", string);
         sizeCounter++;
         currentChar++;
