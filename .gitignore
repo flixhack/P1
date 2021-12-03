@@ -4,3 +4,4 @@ a.exe
 launch.json
 settings.json
 c_cpp_properties.json
+.vscode/settings.json
