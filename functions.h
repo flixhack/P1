@@ -41,9 +41,44 @@ int readTime(void){
     }
 }
 
-// char printTime(int){
-    
-// }  //modtag en stored int og print den som tekst. eks: int == 945 bliver til 9:45
+void printTime(char *string, int time){ //must recieve a array of size 5
+    char timeCode[4];
+    if (time > 999){
+        sprintf(timeCode, "%i", time);
+        string[0] = timeCode[0];
+        string[1] = timeCode[1];
+        string[2] = ':';
+        string[3] = timeCode[2];
+        string[4] = timeCode[3];
+    }
+    else if (time < 1000 && time > 99){
+        sprintf(timeCode, "%i", time);
+        string[0] = '0';
+        string[1] = timeCode[0];
+        string[2] = ':';
+        string[3] = timeCode[1];
+        string[4] = timeCode[2];
+    }
+    else if (time < 100 && time > 9){
+        sprintf(timeCode, "%i", time);
+        string[0] = '0';
+        string[1] = '0';
+        string[2] = ':';
+        string[3] = timeCode[0];
+        string[4] = timeCode[1];
+    }
+    else if (time < 10){
+        sprintf(timeCode, "%i", time);
+        string[0] = '0';
+        string[1] = '0';
+        string[2] = ':';
+        string[3] = '0';
+        string[4] = timeCode[0];
+    }
+    for (int i = 0; i < 5; i++){
+        printf("%c", string[i]);
+    }
+}  //Recieve a stored int and print it as a time stamp. Example: int == 945 becomes 9:45
 
 char* receiveString() {
     
