@@ -45,20 +45,49 @@ int readTime(void){
     
 // }  //modtag en stored int og print den som tekst. eks: int == 945 bliver til 9:45
 
-const char * recieveString(){
-    int i = 0;
+char* receiveString() {
+    
+// stolen: https://stackoverflow.com/questions/8164000/how-to-dynamically-allocate-memory-space-for-a-string-and-get-that-string-from-u
 
-
-
-    char string[] = (char*)malloc(i * sizeof(char));
-    free(string[]);
-
-    while (scanf(" %c",&string[i])){
-        i++;
+    printf("Enter string: ");
+    
+    char *string = NULL;
+    int currentChar = 0, sizeCounter = 1, c;
+    string = (char *)malloc(sizeof(char));
+   
+    //error checking
+    if (string == NULL) { //hvis der ikke er blevet indtastet noget er string == NULL
+        printf("Error allocating memory\n");
+        exit(EXIT_FAILURE);
     }
 
+    while((c = getc(stdin)) && c != '\n')
+    {
+        string[currentChar] = c;  
+        string = realloc(string,sizeCounter * sizeof(char));
+      
+// printf(" string2: %s", string);
 
-    return string[];
+        //error checking
+        if (string == NULL) {
+            printf("Error allocating memory\n");
+            free(string);
+            exit(EXIT_FAILURE);
+        }
+
+
+// printf(" string1s: %s", string);
+        sizeCounter++;
+        currentChar++;
+    }
+    string[currentChar] = '\0';
+
+    printf(" string: %s", string);
+
+    return string;
+
+    /* det vil være muligt at have en char* i main for at 
+    opbevare værdien for return af receiveString og derefter free() efter når den ikke bruges */
 }
 
 void writeLog (int currentDate, int affectedDate){
