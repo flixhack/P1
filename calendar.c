@@ -3,7 +3,6 @@
 #include <stdio.h>
 #define MAX_LINE_LENGTH 100
 
-
 int main(int argc, char const *argv[]){
 
     char string[MAX_LINE_LENGTH];
@@ -13,6 +12,7 @@ int main(int argc, char const *argv[]){
     int locOne, locTwo;
     int lineCount = 1;
     char longBoi[100][100];
+    char timeRead[5];
 
     //Opens the text file, and returns an error if it cannot be found
     FILE *readFile = fopen("calendar.txt", "r");
@@ -20,7 +20,6 @@ int main(int argc, char const *argv[]){
         printf("Error: file missing\n");
         exit(EXIT_FAILURE);
     }
-
 
     printf("please enter the date you wish to search for: ");
     scanf("%s", calendar);
@@ -39,6 +38,7 @@ int main(int argc, char const *argv[]){
             }
         }
     }
+
     //If statement uses the location variables assigned earlier (locOne and locTwo) to only print the necesarry text
     if (readSwitch == 1) {
         rewind(readFile);
@@ -57,9 +57,51 @@ int main(int argc, char const *argv[]){
         lineCount++;
         }
     }
-    int k;
-    for (k = 0; k < 100; k++) {
-        printf("%c", longBoi[1][k]);
+
+    int giveUp;
+    char giveDown[20];
+
+    printf("Enter the line contents you wish to search for: ");
+    scanf("%s", giveDown);
+
+    for (giveUp = 0; giveUp < MAX_LINE_LENGTH; giveUp++) {
+        printf("\nlongBoi: %s", longBoi[giveUp]);
+        if (longBoi[giveUp] == giveDown) {
+            printf("\nNeat: [%i]\n", giveUp);
+        }
+        else {
+            printf("\n:(\n");
+        }
     }
+
+    int k;
+    int x;
+    int parseSwitch;
+    char entryTime[5][MAX_LINE_LENGTH];
+    char entryType[5][MAX_LINE_LENGTH];
+    char entrySubject[5][MAX_LINE_LENGTH];
+    int elementsInDate;
+
+    elementsInDate = locTwo - locOne - 1;
+
+    for (x = 0; x < elementsInDate; x++) {
+        parseSwitch = 1;
+        for (k = 0; k < 20; k++) {
+
+            if (longBoi[x][k] == '_') {
+                parseSwitch++;
+            }
+            else if (longBoi[x][k] != '_' && parseSwitch == 1) {
+                entryTime[x][k] = longBoi[x][k];
+            }        
+            else if (longBoi[x][k] != '_' && parseSwitch == 2) {
+                entryType[x][k - 5] = longBoi[x][k];
+            }
+            else if (longBoi[x][k] != '_' && parseSwitch == 3) {
+                entrySubject[x][k - 9] = longBoi[x][k];
+            }
+        }
+    }
+
     fclose(readFile);
 }
