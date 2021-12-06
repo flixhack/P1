@@ -1,23 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "structs.h"
+#include "functions.h"
 #define MAX_LINE_LENGTH 100
 
-//Defining structures, since they aren't included in any header file yet.
-typedef struct date {
-    int week,
-        day,
-        month,
-        year;
-    double hoursFree;
-} date;
-
-typedef struct module {
-    date date1;
-    int startTime;
-    int duration;
-    char subject[100];
-} module;
 
 int main() {
 
@@ -44,7 +31,7 @@ int main() {
     date1.month = 2;
     date1.year = 2012;
 
-    module module1;
+    element module1;
     module1.startTime = 1130;
     module1.duration = 60;
 
