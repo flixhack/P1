@@ -61,6 +61,7 @@ int main(int argc, char const *argv[]){
     int giveUp;
     char giveDown[20];
 
+    /*
     printf("Enter the line contents you wish to search for: ");
     scanf("%s", giveDown);
 
@@ -73,6 +74,7 @@ int main(int argc, char const *argv[]){
             printf("\n:(\n");
         }
     }
+    */
 
     int k;
     int x;
