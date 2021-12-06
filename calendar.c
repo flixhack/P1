@@ -63,6 +63,9 @@ int main(int argc, char const *argv[]){
     int giveUp;
     char giveDown[20];
 
+    rewind(readFile);
+
+
     /*
     printf("Enter the line contents you wish to search for: ");
     scanf("%s", giveDown);
@@ -84,6 +87,7 @@ int main(int argc, char const *argv[]){
     char entryTime[5][MAX_LINE_LENGTH];
     char entryType[5][MAX_LINE_LENGTH];
     char entrySubject[5][MAX_LINE_LENGTH];
+    char entryDuration[5][MAX_LINE_LENGTH];
     int elementsInDate;
 
     elementsInDate = locTwo - locOne - 1;
@@ -99,9 +103,12 @@ int main(int argc, char const *argv[]){
                 entryTime[x][k] = longBoi[x][k];
             }        
             else if (longBoi[x][k] != '_' && parseSwitch == 2) {
-                entryType[x][k - 5] = longBoi[x][k];
+                entryDuration[x][k] = longBoi[x][k];
             }
             else if (longBoi[x][k] != '_' && parseSwitch == 3) {
+                entryType[x][k - 5] = longBoi[x][k];
+            }
+            else if (longBoi[x][k] != '_' && parseSwitch == 4) {
                 entrySubject[x][k - 9] = longBoi[x][k];
             }
         }
@@ -109,4 +116,26 @@ int main(int argc, char const *argv[]){
     }
 
     fclose(readFile);
+    int outputType;
+
+    if (entryType[1] == "mod") {
+            outputType = 1;
+    }
+    else if (entryType[1] == "ass") {
+            outputType = 2;
+    }
+    else if (entryType[1] == "hom") {
+            outputType = 3;
+    }
+    else if (entryType[1] == "tes") {
+            outputType = 4;
+    }
+
+    element peepee;
+
+    peepee.time = readTime(entryTime);
+
+    peepee.subject = entrySubject;
+    peepee.type = outputType;
+
 }
