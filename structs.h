@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <string.h>
-
 typedef struct date{
     int week,
         day,
