@@ -4,6 +4,8 @@
 #include "functions.h"
 #define MAX_LINE_LENGTH 100
 
+int countChars(char [], int);
+int stringToInt(char []);
 int main(int argc, char const *argv[]){
 
     char string[MAX_LINE_LENGTH];
@@ -29,7 +31,7 @@ int main(int argc, char const *argv[]){
         ++bytes;
      
         //Checks if the current string is the string you are looking for. Assigns readSwitch, and the variables that indicate where the section you are looking for begins and ends
-        if(strstr(calendar, string)!=0) {
+        if(strstr(calendar, string) != 0) {
             if (readSwitch == 0) {
                 readSwitch = 1;
                 locOne = bytes;
@@ -61,8 +63,23 @@ int main(int argc, char const *argv[]){
 
     int giveUp;
     char giveDown[20];
+    bytes = 0;
+    char testInput[MAX_LINE_LENGTH];
+    readSwitch = 0;
+    int lineLoc;
+
+    printf("\nDo the thing: ");
+    scanf("%s", testInput);
 
     rewind(readFile);
+    while (fscanf(readFile, "%s", string) == 1) {
+        ++bytes;
+        if (strstr(testInput, string) != 0) {
+            lineLoc = bytes;
+        }
+    }
+
+   printf("\nlineLoc: %i\n", lineLoc);
 
 
     /*
@@ -81,19 +98,18 @@ int main(int argc, char const *argv[]){
     */
 
     int k;
-    int x;
+    int x = lineLoc - 2;
     int parseSwitch;
     char entryTime[5][MAX_LINE_LENGTH];
-    char entryType[5][MAX_LINE_LENGTH];
+    char entryType[5][4];
     char entrySubject[5][MAX_LINE_LENGTH];
     char entryDuration[5][MAX_LINE_LENGTH];
     int elementsInDate;
 
     elementsInDate = locTwo - locOne - 1;
 
-    for (x = 0; x < elementsInDate; x++) {
-        parseSwitch = 1;
-        for (k = 0; k < 20; k++) {
+    parseSwitch = 1;
+        for (k = 0; k < MAX_LINE_LENGTH; k++) {
 
             if (longBoi[x][k] == '_') {
                 parseSwitch++;
@@ -102,41 +118,63 @@ int main(int argc, char const *argv[]){
                 entryTime[x][k] = longBoi[x][k];
             }        
             else if (longBoi[x][k] != '_' && parseSwitch == 2) {
-                entryDuration[x][k] = longBoi[x][k];
+                entryDuration[x][k - countChars(longBoi[x], 1)] = longBoi[x][k];
             }
             else if (longBoi[x][k] != '_' && parseSwitch == 3) {
-                entryType[x][k - 6] = longBoi[x][k];
+                entryType[x][k - countChars(longBoi[x], 2)] = longBoi[x][k];
             }
             else if (longBoi[x][k] != '_' && parseSwitch == 4) {
-                entrySubject[x][k - 10] = longBoi[x][k];
+                entrySubject[x][k - countChars(longBoi[x], 3)] = longBoi[x][k];
             }
         }
 
-    }
+    printf("\nentryType: %s\n", entryType[1]);
 
     fclose(readFile);
-    int outputType;
+    int outputType = 0;
 
-    if (entryType[1] == "mod") {
+    if (entryType[x][0] == 'm') {
             outputType = 1;
     }
-    else if (entryType[1] == "ass") {
+    else if (entryType[x][0] == 'a') {
             outputType = 2;
     }
-    else if (entryType[1] == "hom") {
+    else if (entryType[x][0] == 'h') {
             outputType = 3;
     }
-    else if (entryType[1] == "tes") {
+    else if (entryType[x][0] == 't') {
             outputType = 4;
     }
 
     element peepee;
 
-    peepee.time = readTime(entryTime[1]);
-
-    peepee.subject = entrySubject[1];
+    peepee.time = readTime(entryTime[x]);
+    peepee.duration = stringToInt(entryDuration[x]);
+    peepee.subject = entrySubject[x];
     peepee.type = outputType;
 
-    printf("Time: %i Subject: %s, Type: %i", peepee.time, peepee.subject, peepee.type);
+    printf("Time: %i, Duration: %i, Subject: %s, Type: %i\n", peepee.time, peepee.duration, peepee.subject, peepee.type);
 
+}
+
+int countChars(char string[], int underscores){
+    int underscoreCount = 0;
+    int chars = 0;
+    int i = 0;
+    for (i = 0; underscoreCount != underscores && i < MAX_LINE_LENGTH; i++){
+        chars++;
+        if (string[i] == '_'){
+            underscoreCount++;
+        }
+    }
+    return chars;
+}
+int stringToInt(char string[]){
+    int i = 0;
+    int res = 0;
+    for (i = 0; string[i]; i++){    //if the char on string[i] is NULL, it returns false, thus ending the loop
+        res = res * 10;
+        res = res + (string[i] - '0');
+    }
+    return res;
 }
