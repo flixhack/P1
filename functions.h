@@ -1,17 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "structs.h"
 void readyState(int),
      findCommand(char),
      assignments(),
      schedule(),
      logOut();
 
+void calcWorkLoad();
+
 int login();
 
 int loggedIn = 0;
 
 void printSchedule (int userID, int loginID){
+
+}
+
+void calcWorkLoad(){
 
 }
 
