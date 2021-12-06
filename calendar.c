@@ -1,7 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "structs.h"
 #include "functions.h"
 #define MAX_LINE_LENGTH 100
 
@@ -106,10 +105,10 @@ int main(int argc, char const *argv[]){
                 entryDuration[x][k] = longBoi[x][k];
             }
             else if (longBoi[x][k] != '_' && parseSwitch == 3) {
-                entryType[x][k - 5] = longBoi[x][k];
+                entryType[x][k - 6] = longBoi[x][k];
             }
             else if (longBoi[x][k] != '_' && parseSwitch == 4) {
-                entrySubject[x][k - 9] = longBoi[x][k];
+                entrySubject[x][k - 10] = longBoi[x][k];
             }
         }
 
@@ -133,9 +132,11 @@ int main(int argc, char const *argv[]){
 
     element peepee;
 
-    peepee.time = readTime(entryTime);
+    peepee.time = readTime(entryTime[1]);
 
-    peepee.subject = entrySubject;
+    peepee.subject = entrySubject[1];
     peepee.type = outputType;
+
+    printf("Time: %i Subject: %s, Type: %i", peepee.time, peepee.subject, peepee.type);
 
 }
