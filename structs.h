@@ -1,5 +1,3 @@
-
-
 struct date{
     int week,
         day,

@@ -1,15 +1,15 @@
 1/2/2012
-1130_mod_math
-1230_mod_danish
-2000_ass_mathOne
+1130_90_mod_math
+1230_90_mod_danish
+2000_120_ass_mathOne
 1/2/2012
 
 3/2/2012
-1230_mod_english
+1230_90_mod_english
 3/2/2012
 
 4/2/2012
-1130_mod_physics
-1230_mod_biology
-1930_ass_physics
+1130_90_mod_physics
+1230_90_mod_biology
+1930_90_ass_physics
 4/2/2012
