@@ -33,6 +33,13 @@ int readTime(char input[]){
     return n1;
 }
 
+int promptTime(void){
+    char input[5];
+    scanf("%s", input);
+    int time = readTime(input);
+    return time;
+}
+
 void printTime(char *string, int time){ //must recieve a array of size 5
     char timeCode[4];
     if (time > 999){
