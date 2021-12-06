@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <string.h>
-
 typedef struct date{
     int week,
         day,
@@ -8,7 +5,6 @@ typedef struct date{
         year;
     double hoursFree;
 } date;
-
 
 typedef struct element{
     date date;
