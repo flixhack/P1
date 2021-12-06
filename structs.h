@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <string.h>
 struct date{
     int week,
         day,
@@ -7,7 +5,7 @@ struct date{
         year;
     double hoursFree;
 };
-typedef date date;
+typedef struct date date;
 
 struct element{
     date date;
@@ -16,4 +14,4 @@ struct element{
     char *subject; 
     int type; //1: Module, 2: Assignment, 3: Homework, 4: Test
 };
-typedef element element;
+typedef struct element element;
