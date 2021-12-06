@@ -101,7 +101,9 @@ int main(int argc, char const *argv[]){
                 entrySubject[x][k - 9] = longBoi[x][k];
             }
         }
+
     }
 
     fclose(readFile);
 }
+
