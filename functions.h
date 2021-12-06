@@ -22,30 +22,15 @@ void calcWorkLoad(){
 
 }
 
-int readTime(void){
+int readTime(char input[]){
     int n1 = 0;
-    int n2 = 0;
-    char col;
-    scanf(" %i", &n1);
-    scanf("%c", &col);
-    if (col != ':'){
-        return 0;
-    }
-    else if (n1 > 24 || n1 < 0){
-        return 0;
+    if (input[1] == ':'){
+      n1 = ((input[0] - '0') * 100) + ((input[2] - '0') * 10) + (input[3] - '0');
     }
     else {
-        scanf("%i", &n2);
+      n1 = ((input[0] - '0') * 1000) + ((input[1] - '0')*100) + ((input[3] - '0') * 10) + (input[4] - '0');
     }
-    if (n2 > 60 || n2 < 0){
-        return 0;
-    }
-    else if (n1 == 0 && n2 == 0){
-      return 2400;  // since 0 is the error value, a time  of 00:00  will instead be read as 24:00.
-    }
-    else {
-        return n2 + n1 * 100;
-    }
+    return n1;
 }
 
 void printTime(char *string, int time){ //must recieve a array of size 5
