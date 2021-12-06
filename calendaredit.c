@@ -32,7 +32,7 @@ int main() {
     date1.year = 2012;
 
     element module1;
-    module1.startTime = 1130;
+    module1.time = 1130;
     module1.duration = 60;
 
     strcpy(module1.subject, "chemistry");
