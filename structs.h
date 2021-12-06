@@ -6,7 +6,6 @@ typedef struct date{
     double hoursFree;
 } date;
 
-
 typedef struct element{
     date date;
     int time;   //determines start- or end-time. 1930 = 19:30
