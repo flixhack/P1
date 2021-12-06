@@ -1,7 +1,14 @@
 program
 a.exe
 .gitignore
+launch.json
+settings.json
+c_cpp_properties.json
+.vscode/settings.json
+.vscode
+.vscode/c_cpp_properties.json
 replace.tmp
 launch.json
 settings.json
 c_cpp_properties.json
+

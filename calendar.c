@@ -1,6 +1,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "structs.h"
+#include "functions.h"
 #define MAX_LINE_LENGTH 100
 
 int main(int argc, char const *argv[]){
@@ -103,7 +105,9 @@ int main(int argc, char const *argv[]){
                 entrySubject[x][k - 9] = longBoi[x][k];
             }
         }
+
     }
 
     fclose(readFile);
 }
+
