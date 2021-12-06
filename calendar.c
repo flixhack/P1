@@ -4,18 +4,34 @@
 #include "functions.h"
 #define MAX_LINE_LENGTH 100
 
+void something(char *, int *, int *, char *);
+void test(int *, int *);
+void another(char *, int *, int *, char [][100]);
+void theThing(char *, int *);
+
 int countChars(char [], int);
 int stringToInt(char []);
 int main(int argc, char const *argv[]){
 
     char string[MAX_LINE_LENGTH];
-    char calendar[MAX_LINE_LENGTH] = {0};
-    int readSwitch = 0;
+    int readSwitch;
     int bytes = 0;
-    int locOne, locTwo;
+    int locOne, locTwo, lineLoc;
     int lineCount = 1;
     char longBoi[100][100];
     char timeRead[5];
+    char searchTerm[MAX_LINE_LENGTH];
+
+    printf("Enter the search term: ");
+    scanf("%s", searchTerm);
+
+    something(string, &locOne, &locTwo, searchTerm);
+
+    test(&locOne, &locTwo);
+
+    another(string, &locOne, &locTwo, longBoi);
+
+    theThing(string, &lineLoc);
 
     //Opens the text file, and returns an error if it cannot be found
     FILE *readFile = fopen("calendar.txt", "r");
@@ -24,78 +40,7 @@ int main(int argc, char const *argv[]){
         exit(EXIT_FAILURE);
     }
 
-    printf("please enter the date you wish to search for: ");
-    scanf("%s", calendar);
-    //Terrible variable naming ahead. "calendar" is the string entered by the user to be searched for, "string" is the string from the text file
-    while ( fscanf(readFile,"%s", string) == 1){
-        ++bytes;
-     
-        //Checks if the current string is the string you are looking for. Assigns readSwitch, and the variables that indicate where the section you are looking for begins and ends
-        if(strstr(calendar, string) != 0) {
-            if (readSwitch == 0) {
-                readSwitch = 1;
-                locOne = bytes;
-            }
-            else if (readSwitch == 1) {
-                locTwo = bytes;
-            }
-        }
-    }
-
-    //If statement uses the location variables assigned earlier (locOne and locTwo) to only print the necesarry text
-    if (readSwitch == 1) {
-        rewind(readFile);
-        bytes = locOne;
-        int j = 0;
-        while (fscanf(readFile, "%s", string) == 1) {
-            if (lineCount > bytes && lineCount < locTwo) {
-                printf("[%i] %s", lineCount, string);
-                strcpy(longBoi[j], string);
-                j++;
-                bytes++;
-                if (string[strlen(string) - 1] != '\n') {
-                    printf("\n");
-                }
-            }
-        lineCount++;
-        }
-    }
-
-    int giveUp;
-    char giveDown[20];
-    bytes = 0;
-    char testInput[MAX_LINE_LENGTH];
-    readSwitch = 0;
-    int lineLoc;
-
-    printf("\nDo the thing: ");
-    scanf("%s", testInput);
-
-    rewind(readFile);
-    while (fscanf(readFile, "%s", string) == 1) {
-        ++bytes;
-        if (strstr(testInput, string) != 0) {
-            lineLoc = bytes;
-        }
-    }
-
    printf("\nlineLoc: %i\n", lineLoc);
-
-
-    /*
-    printf("Enter the line contents you wish to search for: ");
-    scanf("%s", giveDown);
-
-    for (giveUp = 0; giveUp < MAX_LINE_LENGTH; giveUp++) {
-        printf("\nlongBoi: %s", longBoi[giveUp]);
-        if (longBoi[giveUp] == giveDown) {
-            printf("\nNeat: [%i]\n", giveUp);
-        }
-        else {
-            printf("\n:(\n");
-        }
-    }
-    */
 
     int k;
     int x = lineLoc - 2;
@@ -104,9 +49,6 @@ int main(int argc, char const *argv[]){
     char entryType[5][4];
     char entrySubject[5][MAX_LINE_LENGTH];
     char entryDuration[5][MAX_LINE_LENGTH];
-    int elementsInDate;
-
-    elementsInDate = locTwo - locOne - 1;
 
     parseSwitch = 1;
         for (k = 0; k < MAX_LINE_LENGTH; k++) {
@@ -128,9 +70,8 @@ int main(int argc, char const *argv[]){
             }
         }
 
-    printf("\nentryType: %s\n", entryType[1]);
-
     fclose(readFile);
+
     int outputType = 0;
 
     if (entryType[x][0] == 'm') {
@@ -155,6 +96,91 @@ int main(int argc, char const *argv[]){
 
     printf("Time: %i, Duration: %i, Subject: %s, Type: %i\n", peepee.time, peepee.duration, peepee.subject, peepee.type);
 
+}
+
+/*this function finds a start and a stop point in a certain section of a database. locOne being start, locTwo being end
+  The start and end is determined by a certain string in the db that indicates the start, and once repeated indicates the end*/
+void something(char string[], int *locOne, int *locTwo, char searchTerm[]) { 
+    int bytes = 0, readSwitch = 0;
+
+    //Opens the text file, and returns an error if it cannot be found    
+    FILE *readFile = fopen("calendar.txt", "r");
+    if (readFile == NULL){
+        printf("Database file not found. Contact an administrator\n");
+        exit(EXIT_FAILURE);
+    }
+
+    //Terrible variable naming ahead. "calendar" is the string entered by the user to be searched for, "string" is the string from the text file
+    while ( fscanf(readFile,"%s", string) == 1){
+        ++bytes;
+     
+        //Checks if the current string is the string you are looking for. Assigns readSwitch, and the variables that indicate where the section you are looking for begins and ends
+        if(strstr(searchTerm, string) != 0) {
+            if (readSwitch == 0) {
+                readSwitch = 1;
+                *locOne = bytes;
+            }
+            else if (readSwitch == 1) {
+                *locTwo = bytes;
+            }
+        }
+    }
+    fclose(readFile);   
+}
+
+void test(int *locOne, int *locTwo) {
+    printf("test locOne: %i, locTwo: %i\n", *locOne, *locTwo);
+}
+
+void another(char string[], int *locOne, int *locTwo, char longBoi[][100]) {
+    //If statement uses the location variables assigned earlier (locOne and locTwo) to only print the necesarry text
+    int lineCount = 1, bytes;
+    
+    FILE *readFile = fopen("calendar.txt", "r");
+    if (readFile == NULL){
+        printf("Database file not found. Contact an administrator\n");
+        exit(EXIT_FAILURE);
+    }    
+    
+    bytes = *locOne;
+    int i = 0;
+    while (fscanf(readFile, "%s", string) == 1) {
+        if (lineCount > bytes && lineCount < *locTwo) {
+            printf("[%i] %s", lineCount, string);
+            strcpy(longBoi[i], string);
+            i++;
+            bytes++;
+            if (string[strlen(string) - 1] != '\n') {
+                printf("\n");
+            }
+        }
+    lineCount++;
+    }
+    fclose(readFile);
+}
+
+void theThing (char string[], int *lineLoc) {
+    
+    FILE *readFile = fopen("calendar.txt", "r");
+    if (readFile == NULL){
+        printf("Database file not found. Contact an administrator\n");
+        exit(EXIT_FAILURE);
+    }    
+    
+    int bytes = 0, readSwitch = 0;
+    char testInput[MAX_LINE_LENGTH];
+
+    printf("\nDo the thing: ");
+    scanf("%s", testInput);
+
+    rewind(readFile);
+    while (fscanf(readFile, "%s", string) == 1) {
+        ++bytes;
+        if (strstr(testInput, string) != 0) {
+            *lineLoc = bytes;
+        }
+    }
+    fclose(readFile);
 }
 
 int countChars(char string[], int underscores){
