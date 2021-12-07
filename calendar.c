@@ -4,6 +4,8 @@
 #include "functions.h"
 #define MAX_LINE_LENGTH 100
 
+int determineLeapYear(int);
+
 void something(char *, int *, int *, char *);
 void test(int *, int *);
 void another(char *, int *, int *, char [][100]);
@@ -203,4 +205,46 @@ int stringToInt(char string[]){
         res = res + (string[i] - '0');
     }
     return res;
+}
+
+
+//________________________________________
+int determineLeapYear(int year){
+    if (year% 4 == 0 && year%100 != 0 || year%400 == 0){
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
+
+
+int daysBetweenDates(date startDate, date endDate){
+    int countFullMonths(date, date);
+    int daysInMonth(int, int);
+    int days = 0;
+    date counter = startDate;
+    if (endDate.year - startDate.year != 0){
+
+    }
+
+
+
+    int daysInMonth(month, year){
+        if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12){
+            return 31;
+        }
+        else if (month == 4 || month == 6 || month == 9 || month == 11){
+           return 30;
+        }
+        else if (month == 2){
+           if (determineLeapYear(year) == 1){
+                return 29;
+            }
+            else {
+               return 28;
+           }
+        }
+    }
 }
