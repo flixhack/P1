@@ -210,7 +210,7 @@ int stringToInt(char string[]){
 
 //________________________________________
 int determineLeapYear(int year){
-    if (year% 4 == 0 && year%100 != 0 || year%400 == 0){
+    if ((year% 4 == 0 && year%100 != 0) || year%400 == 0){
         return 1;
     }
     else {
@@ -219,32 +219,68 @@ int determineLeapYear(int year){
 }
 
 
+int daysInMonth(int month, int year){
+    int days = 0;
+    if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12){
+        days = 31;
+    }
+    else if (month == 4 || month == 6 || month == 9 || month == 11){
+       days = 30;
+    }
+    else if (month == 2){
+        if (determineLeapYear(year) == 1){
+            days = 29;
+        }
+        else {
+           days = 28;
+       }
+    }
+    return days;
+}
 
-int daysBetweenDates(date startDate, date endDate){
-    int countFullMonths(date, date);
-    int daysInMonth(int, int);
+int remainingDaysInYear(date givenDate){ // count remaining days in the current year
+    int days = 0;
+    date counter = givenDate;
+    days += daysInMonth(counter.month, counter.year) - counter.day + 1; //counts remaining days in current month. +1 to account for current day
+    counter.month++;
+    while (counter.month <= 12){
+        days += daysInMonth(counter.month, counter.year);
+        counter.month++;
+    }
+    return days;
+}
+int daysBetweenDates(date startDate, date endDate){ //counts days between two dates, including the start and end date
     int days = 0;
     date counter = startDate;
-    if (endDate.year - startDate.year != 0){
-
+    if (endDate.year - counter.year != 0){ 
+        days += remainingDaysInYear(counter);
+        counter.day = 1;
+        counter.month = 1;
+        counter.year += 1;
     }
-
-
-
-    int daysInMonth(month, year){
-        if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12){
-            return 31;
-        }
-        else if (month == 4 || month == 6 || month == 9 || month == 11){
-           return 30;
-        }
-        else if (month == 2){
-           if (determineLeapYear(year) == 1){
-                return 29;
+    if (counter.year < endDate.year){ //if someone is crazy enough to set an element to more than a year in the future
+        while (counter.year < endDate.year){
+            if (determineLeapYear(counter.year) == 1){
+                days += 366;
             }
             else {
-               return 28;
-           }
+                days += 365;
+            }
+            counter.year++;
         }
     }
+    if (counter.month < endDate.month){
+        days += daysInMonth(counter.month, counter.year) - counter.day + 1; //first we count the remaining days in the current month
+        counter.day = 1;
+        counter.month++;
+        while (counter.month < endDate.month){ //counts the full months until we are at the endDate month
+            days += daysInMonth(counter.month, counter.year);
+            counter.month++;
+        }
+    }
+    while (counter.day <= endDate.day){
+        counter.day++;
+        days++;
+    }
+    return days;
 }
