@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include "structs.h"
+enum role {student = 1, teacher, administrator}; typedef enum role role;
+
 void readyState(int),
      findCommand(char),
      assignments(),
@@ -162,15 +164,21 @@ int login(void){
 void readyState(int loginVar){
     char command;
     while (loggedIn != 0) {
-        printf("\nEnter command here: ");
+        printf("\nEnter command here (press h for help): ");
         scanf(" %c", &command);
         findCommand(command);
-
     }
 }
 
 void findCommand(char command){
     switch (command){
+    case 'h':
+    case 'H':
+    printf("List of Commands:\n");
+    printf("A = Assignments\n");
+    printf("S = Schedule\n");
+    printf("L = Log Out:\n");
+    break;
     case 'a':
     case 'A':
       assignments();
