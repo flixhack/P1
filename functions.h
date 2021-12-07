@@ -173,17 +173,18 @@ void findCommand(char command){
     switch (command){
     case 'a':
     case 'A':
-        assignments();
-        break;
+      assignments();
+      break;
     case 's':
     case 'S':
-        schedule();
-        break;
+      schedule();
+      break;
     case 'l':
     case 'L':
-        logOut();
+      logOut();
      default:
-        break;
+      printf("Command not Found\n");  
+      break;
     }
 }
 
