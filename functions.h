@@ -109,7 +109,7 @@ void assignmentEditor(int userID, int LoginID){
     {
     case 'c':
     case 'C':
-      
+            
       break;
     case 'e':
     case 'E':
@@ -194,3 +194,4 @@ void logOut(){
   loggedIn = 0;
 
 }
+
