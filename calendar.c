@@ -4,10 +4,10 @@
 #include "functions.h"
 #define MAX_LINE_LENGTH 100
 
-void something(char *, int *, int *, char *);
-void test(int *, int *);
-void another(char *, int *, int *, char [][100]);
-void theThing(char *, int *);
+void findSection(char *, int *, int *, char *);
+void readSection(char *, int *, int *, char [][100]);
+void findLine(char *, int *, char *, int *);
+void thing(char [][100], int *, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][4], char [][MAX_LINE_LENGTH]);
 
 int countChars(char [], int);
 int stringToInt(char []);
@@ -21,17 +21,25 @@ int main(int argc, char const *argv[]){
     char longBoi[100][100];
     char timeRead[5];
     char searchTerm[MAX_LINE_LENGTH];
+    char testInput[MAX_LINE_LENGTH];
+    char entryTime[5][MAX_LINE_LENGTH];
+    char entryType[5][4];
+    char entrySubject[5][MAX_LINE_LENGTH];
+    char entryDuration[5][MAX_LINE_LENGTH];
 
     printf("Enter the search term: ");
     scanf("%s", searchTerm);
 
-    something(string, &locOne, &locTwo, searchTerm);
+    findSection(string, &locOne, &locTwo, searchTerm);
 
-    test(&locOne, &locTwo);
+    readSection(string, &locOne, &locTwo, longBoi);
 
-    another(string, &locOne, &locTwo, longBoi);
+    printf("Write the entry you want to split: ");
+    scanf("%s", testInput);
 
-    theThing(string, &lineLoc);
+    findLine(string, &lineLoc, testInput, &locOne);
+
+    thing(longBoi, &lineLoc, entryTime, entryDuration, entryType, entrySubject);
 
     //Opens the text file, and returns an error if it cannot be found
     FILE *readFile = fopen("calendar.txt", "r");
@@ -42,56 +50,28 @@ int main(int argc, char const *argv[]){
 
    printf("\nlineLoc: %i\n", lineLoc);
 
-    int k;
-    int x = lineLoc - 2;
-    int parseSwitch;
-    char entryTime[5][MAX_LINE_LENGTH];
-    char entryType[5][4];
-    char entrySubject[5][MAX_LINE_LENGTH];
-    char entryDuration[5][MAX_LINE_LENGTH];
-
-    parseSwitch = 1;
-        for (k = 0; k < MAX_LINE_LENGTH; k++) {
-
-            if (longBoi[x][k] == '_') {
-                parseSwitch++;
-            }
-            else if (longBoi[x][k] != '_' && parseSwitch == 1) {
-                entryTime[x][k] = longBoi[x][k];
-            }        
-            else if (longBoi[x][k] != '_' && parseSwitch == 2) {
-                entryDuration[x][k - countChars(longBoi[x], 1)] = longBoi[x][k];
-            }
-            else if (longBoi[x][k] != '_' && parseSwitch == 3) {
-                entryType[x][k - countChars(longBoi[x], 2)] = longBoi[x][k];
-            }
-            else if (longBoi[x][k] != '_' && parseSwitch == 4) {
-                entrySubject[x][k - countChars(longBoi[x], 3)] = longBoi[x][k];
-            }
-        }
-
     fclose(readFile);
 
     int outputType = 0;
 
-    if (entryType[x][0] == 'm') {
+    if (entryType[lineLoc][0] == 'm') {
             outputType = 1;
     }
-    else if (entryType[x][0] == 'a') {
+    else if (entryType[lineLoc][0] == 'a') {
             outputType = 2;
     }
-    else if (entryType[x][0] == 'h') {
+    else if (entryType[lineLoc][0] == 'h') {
             outputType = 3;
     }
-    else if (entryType[x][0] == 't') {
+    else if (entryType[lineLoc][0] == 't') {
             outputType = 4;
     }
 
     element peepee;
 
-    peepee.time = readTime(entryTime[x]);
-    peepee.duration = stringToInt(entryDuration[x]);
-    peepee.subject = entrySubject[x];
+    peepee.time = readTime(entryTime[lineLoc]);
+    peepee.duration = stringToInt(entryDuration[lineLoc]);
+    peepee.subject = entrySubject[lineLoc];
     peepee.type = outputType;
 
     printf("Time: %i, Duration: %i, Subject: %s, Type: %i\n", peepee.time, peepee.duration, peepee.subject, peepee.type);
@@ -100,7 +80,7 @@ int main(int argc, char const *argv[]){
 
 /*this function finds a start and a stop point in a certain section of a database. locOne being start, locTwo being end
   The start and end is determined by a certain string in the db that indicates the start, and once repeated indicates the end*/
-void something(char string[], int *locOne, int *locTwo, char searchTerm[]) { 
+void findSection(char string[], int *locOne, int *locTwo, char searchTerm[]) { 
     int bytes = 0, readSwitch = 0;
 
     //Opens the text file, and returns an error if it cannot be found    
@@ -112,7 +92,6 @@ void something(char string[], int *locOne, int *locTwo, char searchTerm[]) {
 
     //Terrible variable naming ahead. "calendar" is the string entered by the user to be searched for, "string" is the string from the text file
     while ( fscanf(readFile,"%s", string) == 1){
-        ++bytes;
      
         //Checks if the current string is the string you are looking for. Assigns readSwitch, and the variables that indicate where the section you are looking for begins and ends
         if(strstr(searchTerm, string) != 0) {
@@ -124,17 +103,14 @@ void something(char string[], int *locOne, int *locTwo, char searchTerm[]) {
                 *locTwo = bytes;
             }
         }
+        ++bytes;
     }
     fclose(readFile);   
 }
 
-void test(int *locOne, int *locTwo) {
-    printf("test locOne: %i, locTwo: %i\n", *locOne, *locTwo);
-}
-
-void another(char string[], int *locOne, int *locTwo, char longBoi[][100]) {
-    //If statement uses the location variables assigned earlier (locOne and locTwo) to only print the necesarry text
-    int lineCount = 1, bytes;
+void readSection(char string[], int *locOne, int *locTwo, char longBoi[][100]) {
+    //If statement uses the location variables assigned earlier (locOne and locTwo) to only store the necesarry text
+    int lineCount = 0, bytes = 0;
     
     FILE *readFile = fopen("calendar.txt", "r");
     if (readFile == NULL){
@@ -148,39 +124,67 @@ void another(char string[], int *locOne, int *locTwo, char longBoi[][100]) {
         if (lineCount > bytes && lineCount < *locTwo) {
             printf("[%i] %s", lineCount, string);
             strcpy(longBoi[i], string);
+            printf("readSection, string: %s, bytes: %i", string, bytes);
             i++;
             bytes++;
             if (string[strlen(string) - 1] != '\n') {
                 printf("\n");
             }
         }
-    lineCount++;
+        lineCount++;
     }
     fclose(readFile);
 }
 
-void theThing (char string[], int *lineLoc) {
-    
+void findLine (char string[], int *lineLoc, char testInput[], int *locOne) {
+    int bytes = 0, readSwitch = 0; 
+
     FILE *readFile = fopen("calendar.txt", "r");
     if (readFile == NULL){
         printf("Database file not found. Contact an administrator\n");
         exit(EXIT_FAILURE);
     }    
-    
-    int bytes = 0, readSwitch = 0;
-    char testInput[MAX_LINE_LENGTH];
 
-    printf("\nDo the thing: ");
-    scanf("%s", testInput);
-
-    rewind(readFile);
     while (fscanf(readFile, "%s", string) == 1) {
-        ++bytes;
+        printf("findLine, string: %s, bytes: %i\n", string, bytes);    
         if (strstr(testInput, string) != 0) {
-            *lineLoc = bytes;
+            *lineLoc = bytes - *locOne;
+        }
+        bytes++;    
+    }
+
+    fclose(readFile);
+}
+
+void thing (char longBoi[][100], int *lineLoc, char entryTime[][MAX_LINE_LENGTH], char entryDuration[][MAX_LINE_LENGTH], char entryType[][4], char entrySubject[][MAX_LINE_LENGTH]) {
+    int parseSwitch = 1, k;
+
+    *lineLoc = *lineLoc - 1;
+    int peepeepoopoo;
+    printf("Longboi: ");
+    for (peepeepoopoo = 0; peepeepoopoo < 25; peepeepoopoo++) {
+        printf("%c", longBoi[0][peepeepoopoo]);
+    }
+
+    for (k = 0; k < MAX_LINE_LENGTH; k++) {
+        printf("%c", longBoi[*lineLoc][k]);
+        if (longBoi[*lineLoc][k] == '_') {
+            parseSwitch++;
+        }
+        else if (longBoi[*lineLoc][k] != '_' && parseSwitch == 1) {
+            entryTime[*lineLoc][k] = longBoi[*lineLoc][k];
+        }        
+        else if (longBoi[*lineLoc][k] != '_' && parseSwitch == 2) {
+            entryDuration[*lineLoc][k - countChars(longBoi[*lineLoc], 1)] = longBoi[*lineLoc][k];
+        }
+        else if (longBoi[*lineLoc][k] != '_' && parseSwitch == 3) {
+            entryType[*lineLoc][k - countChars(longBoi[*lineLoc], 2)] = longBoi[*lineLoc][k];
+        }
+        else if (longBoi[*lineLoc][k] != '_' && parseSwitch == 4) {
+            entrySubject[*lineLoc][k - countChars(longBoi[*lineLoc], 3)] = longBoi[*lineLoc][k];
         }
     }
-    fclose(readFile);
+    printf("\nthing: time: %s duration: %s type: %s subject: %s, lineLoc: %i\n", entryTime[*lineLoc], entryDuration[*lineLoc], entryType[*lineLoc], entrySubject[*lineLoc], *lineLoc);    
 }
 
 int countChars(char string[], int underscores){
