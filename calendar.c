@@ -4,10 +4,15 @@
 #include "functions.h"
 #define MAX_LINE_LENGTH 100
 
+
 void findSection(char *, int *, int *, char *);
 void readSection(char *, int *, int *, char [][100]);
 void findLine(char *, int *, char *, int *);
 void thing(char [][100], int *, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][4], char [][MAX_LINE_LENGTH]);
+
+double hoursPerDay = 9; //Denne skal kunne ændres af administrator senere
+
+
 int determineLeapYear(int);
 
 void something(char *, int *, int *, char *);
@@ -291,4 +296,32 @@ int daysBetweenDates(date startDate, date endDate){ //counts days between two da
         days++;
     }
     return days;
+}
+
+double calcWorkLoad(element newElement){
+    double result = 0;
+    int days = 0;
+    switch (newElement.type){
+        case 1: ;//Module
+            result = newElement.duration / 60;
+            break;
+        case 2: ;//Assignment
+            int daysBetween = daysBetweenDates(newElement.startDate, newElement.endDate);
+            date calendar[daysBetween];
+            int i = 0;
+            for (i = 0; i <= daysBetween; i++;){
+                
+            }
+            break;
+        case 3: ;//Homework
+
+            break;
+        case 4: ;//Test
+
+            break;
+        default: ;
+            break;
+    }
+    printf("Calculated workload: %lf\n", result); //TESTING PURPOSES. REMEMBER TO REMOVE!
+    return result;
 }
