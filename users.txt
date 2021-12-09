@@ -1,9 +1,11 @@
-//userID username password permsID/loginID
-
-1;elev1_elev4;elev;
-
-2 elev2 elev2 elev
-3 elev3 elev3 elev
-4 lærer1 lærer1 lærer
-5 lærer2 lærer2 lærer
-6 admin admin admin
+USERS
+1;elev1_elev4;elev
+2;elev2_elev2;elev
+3;elev3_elev3;elev
+4;lærer1_lærer1;lærer
+5;lærer2_lærer2;lærer
+6;admin_admin;admin
+elev1_elev1
+elev2_elev2
+admin_admin
+USERS

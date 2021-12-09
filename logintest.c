@@ -1,57 +1,44 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
+#include "dbManager.h"
+
+int lineLoc = 0;
+char testInput[MAX_LINE_LENGTH];
 
 
 int main() {
-  int loginlength = 13;
-  char loginAndPwFromDB[20];
-  // char userName[loginlength];
-  // char pw[loginlength];
-  // char pw[20];
-  char loginAndPwToTest[20];
+  char password[20];
+  char string[100];
+  char databaseSelect[100] = "users.txt";
+  char search[100] = "USERS";
+  char tempDB[100][100];
 
-  char * line = NULL;
-  size_t len = 0;
-  ssize_t read;
+  printf("\nIndtast username: ");
+  scanf("%s", &testInput);
+  printf("\nIndtast password: ");
+  scanf("%s", &password);
 
-  printf("\nIndtast login og password: ");
+  strcat(testInput, "_");
+  strcat(testInput, password);
 
-  // scanf("%s[ ]", &loginAndPwToTest );
+  printf("\n%s", testInput);
 
-  fgets(loginAndPwToTest , 20, stdin );
-  // %10[0-9a-zA-Z ]
-  // scanf("\n%s", &pw );
-  // strcat(loginAndPwToTest, "F");
 
-  printf("%s\n", loginAndPwToTest);
-  // for (int i = 0; i < 14; i++) {
-  //   printf("%c\n", loginAndPwToTest[i] );
+
+  findSection(string, &locOne, &locTwo, search, databaseSelect);
+
+  readSection(string, &locOne, &locTwo, tempDB, databaseSelect);
+  // for (int i = 0; i < 10; i++) {
+  //   printf("%s, i er = %i", tempDB[i], i);
   // }
 
-  FILE *in_file = fopen("users.txt", "r");
-  if (in_file == NULL) {
-          printf("Error file missing\n");
-          exit(-1);
-  }
+  findLine(string, &lineLoc, testInput, &locOne, databaseSelect);
+  printf("%i", lineLoc);
 
 
-//   while ((read = getline(&line, &len, in_file)) != -1) {
-//     // printf("Retrieved line of length %zu:\n", read);
-//     printf("%s", line);
-// }
 
-  while ( fscanf(in_file,"%s", loginAndPwFromDB) == 1) {
-          //Add a for loop till strstr(string, student) does-not returns null.
-      // for (int i = 0; i < 21; i++) {
-      //   printf("%c\n", loginAndPwFromDB[i] );
-      // }
-    if(strstr(loginAndPwToTest, loginAndPwFromDB) != 0) {//if match found
-      printf("\n%sUser Found");
-      }
 
-    }
-  fclose(in_file);
 
 
   return 0;
