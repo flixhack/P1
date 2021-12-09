@@ -18,7 +18,7 @@ databaseSelect is which text file the function accesses*/
 void databaseEdit(char *mode, int *lineNum, char newLine[], char databaseSelect[]) {
 
     char buffer[MAX_LINE_LENGTH];
-    int count = 0, i;  
+    int count = 0;
     FILE *readFile = fopen(databaseSelect, "r");
     FILE *writeTemp = fopen("replace.tmp", "w");
 
@@ -119,7 +119,7 @@ void readSection(char string[], int *locOne, int *locTwo, char tempDB[][100], ch
 
 /*This function can find a certain line of text from a string given from testInput, and saves the location to lineLoc*/
 void findLine (char string[], int *lineLoc, char testInput[], int *locOne, char databaseSelect[]) {
-    int bytes = 0, readSwitch = 0; 
+    int bytes = 0;
 
     FILE *readFile = fopen(databaseSelect, "r");
     if (readFile == NULL){
@@ -134,6 +134,8 @@ void findLine (char string[], int *lineLoc, char testInput[], int *locOne, char 
         bytes++;    
     }
 
+    *lineLoc = *lineLoc - 1;
+
     fclose(readFile);
 }
 
@@ -141,7 +143,7 @@ void findLine (char string[], int *lineLoc, char testInput[], int *locOne, char 
 void calendarSplit (char tempDB[][100], int *lineLoc, char entryTime[][MAX_LINE_LENGTH], char entryDuration[][MAX_LINE_LENGTH], char entryType[][4], char entrySubject[][MAX_LINE_LENGTH]) {
     int parseSwitch = 1, k;
 
-    *lineLoc = *lineLoc - 1;
+    *lineLoc;
 
     for (k = 0; k < MAX_LINE_LENGTH; k++) {
         if (tempDB[*lineLoc][k] == '_') {
