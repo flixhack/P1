@@ -9,6 +9,8 @@ void readSection(char *, int *, int *, char [][100], char *);
 void findLine(char *, int *, char *, int *, char *);
 void calendarSplit(char [][100], int *, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][4], char [][MAX_LINE_LENGTH]);
 
+int locOne = 0, locTwo = 0;
+
 /*This function edits a given database file. Made can be set to 'D' to delete a given line, 'C' to create a new line
 and 'R' to replace the text written on a given line.
 lineNum is which line in the file to edit, newLine is the new text for use in C and R mode
@@ -71,7 +73,6 @@ void findSection(char string[], int *locOne, int *locTwo, char searchTerm[], cha
 
     //Terrible variable naming ahead. "calendar" is the string entered by the user to be searched for, "string" is the string from the text file
     while ( fscanf(readFile,"%s", string) == 1){
-        ++bytes;
      
         //Checks if the current string is the string you are looking for. Assigns readSwitch, and the variables that indicate where the section you are looking for begins and ends
         if(strstr(searchTerm, string) != 0) {
@@ -83,6 +84,7 @@ void findSection(char string[], int *locOne, int *locTwo, char searchTerm[], cha
                 *locTwo = bytes;
             }
         }
+        bytes++;
     }
     fclose(readFile);   
 }
@@ -103,6 +105,7 @@ void readSection(char string[], int *locOne, int *locTwo, char tempDB[][100], ch
     while (fscanf(readFile, "%s", string) == 1) {
         if (lineCount > bytes && lineCount < *locTwo) {
             strcpy(tempDB[i], string);
+            printf("readSection, string: %s, bytes: %i", string, bytes);
             i++;
             bytes++;
             if (string[strlen(string) - 1] != '\n') {

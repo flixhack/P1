@@ -22,7 +22,7 @@ int main(int argc, char const *argv[]){
     char string[MAX_LINE_LENGTH];
     int readSwitch;
     int bytes = 0;
-    int locOne, locTwo, lineLoc;
+    int locOne = 0, locTwo = 0, lineLoc;
     int lineCount = 1;
     char longBoi[100][100];
     char timeRead[5];
