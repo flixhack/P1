@@ -152,25 +152,25 @@ void calendarSplit (char tempDB[][100], int *lineLoc, char entryTime[][MAX_LINE_
             entryTime[*lineLoc][k] = tempDB[*lineLoc][k];
         }        
         else if (tempDB[*lineLoc][k] != '_' && parseSwitch == 2) {
-            entryDuration[*lineLoc][k - countChars(tempDB[*lineLoc], 1)] = tempDB[*lineLoc][k];
+            entryDuration[*lineLoc][k - countChars(tempDB[*lineLoc], 1, '_')] = tempDB[*lineLoc][k];
         }
         else if (tempDB[*lineLoc][k] != '_' && parseSwitch == 3) {
-            entryType[*lineLoc][k - countChars(tempDB[*lineLoc], 2)] = tempDB[*lineLoc][k];
+            entryType[*lineLoc][k - countChars(tempDB[*lineLoc], 2, '_')] = tempDB[*lineLoc][k];
         }
         else if (tempDB[*lineLoc][k] != '_' && parseSwitch == 4) {
-            entrySubject[*lineLoc][k - countChars(tempDB[*lineLoc], 3)] = tempDB[*lineLoc][k];
+            entrySubject[*lineLoc][k - countChars(tempDB[*lineLoc], 3, '_')] = tempDB[*lineLoc][k];
         }
     }    
 }
 
-int countChars(char string[], int underscores){
-    int underscoreCount = 0;
+int countChars(char string[], int underscores, char charToCount){
+    int charCount = 0;
     int chars = 0;
     int i = 0;
-    for (i = 0; underscoreCount != underscores && i < MAX_LINE_LENGTH; i++){
+    for (i = 0; charCount != underscores && i < MAX_LINE_LENGTH; i++){
         chars++;
-        if (string[i] == '_'){
-            underscoreCount++;
+        if (string[i] == charToCount){
+            charCount++;
         }
     }
     return chars;
