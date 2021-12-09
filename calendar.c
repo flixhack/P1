@@ -284,3 +284,28 @@ int daysBetweenDates(date startDate, date endDate){ //counts days between two da
     }
     return days;
 }
+
+double calcWorkLoad(element newElement){
+    double result = 0;
+    int days = 0;
+    switch (newElement.type){
+        case 1: ;//Module
+            result = newElement.duration / 60;
+            break;
+        case 2: ;//Assignment
+            int daysBetween = daysBetweenDates(newElement.startDate, newElement.endDate);
+            date calendar[daysBetween];
+            printf("Size of calendar: %d\n", (sizeof(calendar) / sizeof(calendar[0])));
+            break;
+        case 3: ;//Homework
+
+            break;
+        case 4: ;//Test
+
+            break;
+        default: ;
+            break;
+    }
+    printf("Calculated workload: %lf\n", result); //TESTING PURPOSES. REMEMBER TO REMOVE!
+    return result;
+}
