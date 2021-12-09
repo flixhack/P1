@@ -4,6 +4,8 @@
 #include "functions.h"
 #define MAX_LINE_LENGTH 100
 
+double hoursPerDay = 9; //Denne skal kunne ændres af administrator senere
+
 int determineLeapYear(int);
 
 void something(char *, int *, int *, char *);
@@ -295,7 +297,10 @@ double calcWorkLoad(element newElement){
         case 2: ;//Assignment
             int daysBetween = daysBetweenDates(newElement.startDate, newElement.endDate);
             date calendar[daysBetween];
-            printf("Size of calendar: %d\n", (sizeof(calendar) / sizeof(calendar[0])));
+            int i = 0;
+            for (i = 0; i <= daysBetween; i++;){
+                
+            }
             break;
         case 3: ;//Homework
 
