@@ -6,7 +6,7 @@
 void databaseEdit(char *, int *, char *, char *);
 void findSection(char *, int *, int *, char *, char *);
 void readSection(char *, int *, int *, char [][100], char *);
-void findLine(char *, int *, char *, int *);
+void findLine(char *, int *, char *, int *, char *);
 void calendarSplit(char [][100], int *, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][4], char [][MAX_LINE_LENGTH]);
 
 /*This function edits a given database file. Made can be set to 'D' to delete a given line, 'C' to create a new line
@@ -115,10 +115,10 @@ void readSection(char string[], int *locOne, int *locTwo, char tempDB[][100], ch
 }
 
 /*This function can find a certain line of text from a string given from testInput, and saves the location to lineLoc*/
-void findLine (char string[], int *lineLoc, char testInput[], int *locOne) {
+void findLine (char string[], int *lineLoc, char testInput[], int *locOne, char databaseSelect[]) {
     int bytes = 0, readSwitch = 0; 
 
-    FILE *readFile = fopen("calendar.txt", "r");
+    FILE *readFile = fopen(databaseSelect, "r");
     if (readFile == NULL){
         printf("Database file not found. Contact an administrator\n");
         exit(EXIT_FAILURE);
