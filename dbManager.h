@@ -61,7 +61,7 @@ void databaseEdit(char *mode, int *lineNum, char newLine[], char databaseSelect[
 
 /*This function can find a certain line of text from a string given from testInput, and saves the location to lineLoc
   locOne is set to 0, it will simply find the line that a certain string is on.
-  Otherwise you can use locOne as an offset, in you maybe want to only search for the string in a given section
+  Otherwise you can use locOne as an offset, in you maybe want to only search for the string in a given section. Remember this requires you to use locOne - 1
   This function can also be used to find sections, simply by running it once with the start and once with the end term.*/
 int findLineLoc (char testInput[], int locOne, char databaseSelect[]) {
     int bytes = 0, lineLoc = 0;
@@ -79,8 +79,6 @@ int findLineLoc (char testInput[], int locOne, char databaseSelect[]) {
         }
         bytes++;    
     }
-
-    lineLoc = lineLoc - 1;
 
     fclose(readFile);
     return lineLoc;
