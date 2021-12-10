@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "functions.h"
+#include "dbManager.h"
 #define MAX_LINE_LENGTH 100
 
 
@@ -298,25 +299,47 @@ int daysBetweenDates(date startDate, date endDate){ //counts days between two da
     return days;
 }
 
+void calcHoursFree(date calendar[], i){
+    
+}
+
 double calcWorkLoad(element newElement){
     double result = 0;
-    int days = 0;
+    date counter = newElement.startDate;
+    int run = 0;
+    int daysInCurrentMonth = 0;
     switch (newElement.type){
         case 1: ;//Module
             result = newElement.duration / 60;
             break;
-        case 2: ;//Assignment
+        case 2: //Assignment
+        case 3: //Homework
+        case 4: //Test
             int daysBetween = daysBetweenDates(newElement.startDate, newElement.endDate);
             date calendar[daysBetween];
             int i = 0;
-            for (i = 0; i <= daysBetween; i++;){
-                
+            run = 1;
+            while (run == 1){
+                daysInCurrentMonth = daysInMonth(counter.month, counter.year);
+                while (counter.day <= daysInCurrentMonth){
+                    calender[i].year = counter.year;
+                    calender[i].month = counter.month;
+                    calender[i].day = counter.day;
+                    i++;
+                    counter.day++;
+                }
+                counter.day = 1;
+                if (counter.month == 12){
+                    counter.month = 1;
+                    counter.year++;
+                }
+                else {
+                    counter.month++;
+                }
+                if (i == daysBetween){
+                    run = 0;
+                }
             }
-            break;
-        case 3: ;//Homework
-
-            break;
-        case 4: ;//Test
 
             break;
         default: ;
