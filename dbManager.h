@@ -41,7 +41,7 @@ void databaseEdit(char *mode, int *lineNum, char newLine[], char databaseSelect[
                 strcat(buffer, "\n");                
                 fputs(buffer, writeTemp);
             }
-            else if (*mode == 'R') {
+            else if (*mode == 'E') {
                 strcat(newLine, "\n");
                 fputs(newLine, writeTemp);
             }
