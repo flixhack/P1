@@ -4,10 +4,11 @@
 #define MAX_LINE_LENGTH 100
 
 void databaseEdit(char *, int *, char *, char *);
-void findSection(char *, int *, int *, char *, char *);
-void readSection(char *, int *, int *, char [][100], char *);
-void findLine(char *, int *, char *, int *, char *);
+void findSection(int *, int *, char *, char *);
+void readSection(int *, int *, char [][100], char *);
+int findLine(char *, int *, char *);
 void calendarSplit(char [][100], int *, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][4], char [][MAX_LINE_LENGTH]);
+int countChars(char *, int, char);
 
 int locOne = 0, locTwo = 0;
 
@@ -61,8 +62,9 @@ void databaseEdit(char *mode, int *lineNum, char newLine[], char databaseSelect[
 /*this function finds a start and a stop point in a certain section of a database. locOne being start, locTwo being end
   The start and end is determined by a certain string in the db that indicates the start, and once repeated indicates the end
   searchTerm indicates the term the function looks for to find locOne and locTwo*/
-void findSection(char string[], int *locOne, int *locTwo, char searchTerm[], char databaseSelect[]) { 
+void findSection(int *locOne, int *locTwo, char searchTerm[], char databaseSelect[]) { 
     int bytes = 0, readSwitch = 0;
+    char string[MAX_LINE_LENGTH];
 
     //Opens the text file, and returns an error if it cannot be found    
     FILE *readFile = fopen(databaseSelect, "r");
@@ -73,7 +75,7 @@ void findSection(char string[], int *locOne, int *locTwo, char searchTerm[], cha
 
     //Terrible variable naming ahead. "calendar" is the string entered by the user to be searched for, "string" is the string from the text file
     while ( fscanf(readFile,"%s", string) == 1){
-     
+    
         //Checks if the current string is the string you are looking for. Assigns readSwitch, and the variables that indicate where the section you are looking for begins and ends
         if(strstr(searchTerm, string) != 0) {
             if (readSwitch == 0) {
@@ -90,9 +92,10 @@ void findSection(char string[], int *locOne, int *locTwo, char searchTerm[], cha
 }
 
 /*This function can read the lines between locOne and locTwo and store them to the tempDB array*/
-void readSection(char string[], int *locOne, int *locTwo, char tempDB[][100], char databaseSelect[]) {
+void readSection(int *locOne, int *locTwo, char tempDB[][100], char databaseSelect[]) {
     //If statement uses the location variables assigned earlier (locOne and locTwo) to only store the necesarry text
     int lineCount = 0, bytes = 0;
+    char string[MAX_LINE_LENGTH];
     
     FILE *readFile = fopen(databaseSelect, "r");
     if (readFile == NULL){
@@ -117,8 +120,9 @@ void readSection(char string[], int *locOne, int *locTwo, char tempDB[][100], ch
 }
 
 /*This function can find a certain line of text from a string given from testInput, and saves the location to lineLoc*/
-void findLine (char string[], int *lineLoc, char testInput[], int *locOne, char databaseSelect[]) {
-    int bytes = 0;
+int findLine (char testInput[], int *locOne, char databaseSelect[]) {
+    int bytes = 0, lineLoc = 0;
+    char string[MAX_LINE_LENGTH];
 
     FILE *readFile = fopen(databaseSelect, "r");
     if (readFile == NULL){
@@ -128,14 +132,15 @@ void findLine (char string[], int *lineLoc, char testInput[], int *locOne, char 
 
     while (fscanf(readFile, "%s", string) == 1) {
         if (strstr(testInput, string) != 0) {
-            *lineLoc = bytes - *locOne;
+            lineLoc = bytes - *locOne;
         }
         bytes++;    
     }
 
-    *lineLoc = *lineLoc - 1;
+    lineLoc = lineLoc - 1;
 
     fclose(readFile);
+    return lineLoc;
 }
 
 /*This function is specifically for use with the calendar database, and splits the output from its functions into time, duration, type and subject*/
