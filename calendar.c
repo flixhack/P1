@@ -81,14 +81,39 @@ int daysBetweenDates(date startDate, date endDate){ //counts days between two da
     return days;
 }
 
-void calcHoursFree(date calendar[], i){
+void populateCalendar(date calendar[], date startDate){
+    int i = 0;
+    date counter = startDate;
+    int run = 1;
+    while (run == 1){
+    int daysInCurrentMonth = daysInMonth(counter.month, counter.year);
+        while (counter.day <= daysInCurrentMonth){
+            calender[i].year = counter.year;
+            calender[i].month = counter.month;
+            calender[i].day = counter.day;
+            i++;
+            counter.day++;
+        }
+    counter.day = 1;
+    if (counter.month == 12){
+        counter.month = 1;
+        counter.year++;
+    }
+    else {
+        counter.month++;
+    }
+    if (i == (sizeof calendar[]) / (sizeof calendar[0])){
+        run = 0;
+    }
+}
+
+void calcHoursFree(date calendar[]){
 
 }
 
 double calcWorkLoad(element newElement){
     double result = 0;
     date counter = newElement.startDate;
-    int run = 0;
     int daysInCurrentMonth = 0;
     switch (newElement.type){
         case 1: ;//Module
@@ -97,32 +122,10 @@ double calcWorkLoad(element newElement){
         case 2: //Assignment
         case 3: //Homework
         case 4: //Test
-            int daysBetween = daysBetweenDates(newElement.startDate, newElement.endDate);
+            int daysBetween = 0;
+            daysBetween = daysBetweenDates(newElement.startDate, newElement.endDate);
             date calendar[daysBetween];
-            int i = 0;
-            run = 1;
-            while (run == 1){
-                daysInCurrentMonth = daysInMonth(counter.month, counter.year);
-                while (counter.day <= daysInCurrentMonth){
-                    calender[i].year = counter.year;
-                    calender[i].month = counter.month;
-                    calender[i].day = counter.day;
-                    i++;
-                    counter.day++;
-                }
-                counter.day = 1;
-                if (counter.month == 12){
-                    counter.month = 1;
-                    counter.year++;
-                }
-                else {
-                    counter.month++;
-                }
-                if (i == daysBetween){
-                    run = 0;
-                }
-            }
-
+            populateCalendar(calendar, counter)
             break;
         default: ;
             break;
