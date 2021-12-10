@@ -7,7 +7,8 @@ typedef struct date{
 } date;
 
 typedef struct element{
-    date date;
+    date startDate;
+    date endDate;
     int time;   //determines start- or end-time. 1930 = 19:30
     int duration;    //duration in minutes
     char *subject; 

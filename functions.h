@@ -8,7 +8,7 @@ void readyState(int),
      schedule(),
      logOut();
 
-void calcWorkLoad();
+double calcWorkLoad(element);
 
 int login();
 
@@ -18,8 +18,27 @@ void printSchedule (int userID, int loginID){
 
 }
 
-void calcWorkLoad(){
+double calcWorkLoad(element element){
+    double result = 0;
+    int days = 0;
+    switch (element.type){
+        case 1: //Module
+            result = element.duration / 60;
+            break;
+        case 2: //Assignment
+            
+            break;
+        case 3: //Homework
 
+            break;
+        case 4: //Test
+
+            break;
+        default:
+            break;
+    }
+    printf("Calculated workload: %lf\n", result); //TESTING PURPOSES. REMEMBER TO REMOVE!
+    return result;
 }
 
 int readTime(char input[]){
