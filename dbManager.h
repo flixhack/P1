@@ -33,15 +33,15 @@ void databaseEdit(char *mode, int *lineNum, char newLine[], char databaseSelect[
         count++;
 
         if (count == *lineNum) {
-            if (*mode == 'D') {
+            if (*mode == 'D' || *mode == 'd') {
                 fputs("", writeTemp);
             }
-            else if (*mode == 'C') {
+            else if (*mode == 'C' || *mode == 'c') {
                 strcat(buffer, newLine);
                 strcat(buffer, "\n");                
                 fputs(buffer, writeTemp);
             }
-            else if (*mode == 'E') {
+            else if (*mode == 'E' || *mode == 'e') {
                 strcat(newLine, "\n");
                 fputs(newLine, writeTemp);
             }
