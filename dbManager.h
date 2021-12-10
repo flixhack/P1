@@ -4,10 +4,10 @@
 #define MAX_LINE_LENGTH 100
 
 void databaseEdit(char *, int *, char *, char *);
-void findSection(int *, int *, char *, char *);
-void readSection(int *, int *, char [][100], char *);
+void findSection(char *, char *, int *, int *);
+void readSection(int, int, char [][100], char *);
 int findLineLoc(char *, int, char *);
-void calendarSplit(char [][100], int *, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][4], char [][MAX_LINE_LENGTH]);
+void calendarSplit(char [][100], int, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][4], char [][MAX_LINE_LENGTH]);
 int countChars(char *, int, char);
 
 int locOne = 0, locTwo = 0;
@@ -84,9 +84,20 @@ int findLineLoc (char testInput[], int locOne, char databaseSelect[]) {
     return lineLoc;
 }
 
+void findSection (char testInput[], char databaseSelect[], int *locOne, int *locTwo) {
+    char inputTwo[MAX_LINE_LENGTH];
+    int i;
+    for (i = 0; i < MAX_LINE_LENGTH; i++) {
+        inputTwo[i] = testInput[i];
+    }
+    strcat(inputTwo, "_END");
+    *locOne = findLineLoc(testInput, 0, databaseSelect);
+    *locTwo = findLineLoc(inputTwo, 0, databaseSelect);
+}
+
 /*This function can read the lines between locOne and locTwo and store them to the tempDB array.
   In the tempDB */
-void readSection(int *locOne, int *locTwo, char tempDB[][100], char databaseSelect[]) {
+void readSection(int locOne, int locTwo, char tempDB[][100], char databaseSelect[]) {
     //If statement uses the location variables assigned earlier (locOne and locTwo) to only store the necesarry text
     int lineCount = 0, bytes = 0;
     char string[MAX_LINE_LENGTH];
@@ -97,10 +108,10 @@ void readSection(int *locOne, int *locTwo, char tempDB[][100], char databaseSele
         exit(EXIT_FAILURE);
     }    
     
-    bytes = *locOne;
+    bytes = locOne;
     int i = 0;
     while (fscanf(readFile, "%s", string) == 1) {
-        if (lineCount > bytes && lineCount < *locTwo) {
+        if (lineCount > bytes && lineCount < locTwo) {
             strcpy(tempDB[i], string);
             i++;
             bytes++;
@@ -114,24 +125,24 @@ void readSection(int *locOne, int *locTwo, char tempDB[][100], char databaseSele
 }
 
 /*This function is specifically for use with the calendar database, and splits the output from its functions into time, duration, type and subject*/
-void calendarSplit (char tempDB[][100], int *lineLoc, char entryTime[][MAX_LINE_LENGTH], char entryDuration[][MAX_LINE_LENGTH], char entryType[][4], char entrySubject[][MAX_LINE_LENGTH]) {
+void calendarSplit (char tempDB[][100], int lineLoc, char entryTime[][MAX_LINE_LENGTH], char entryDuration[][MAX_LINE_LENGTH], char entryType[][4], char entrySubject[][MAX_LINE_LENGTH]) {
     int parseSwitch = 1, k;
 
     for (k = 0; k < MAX_LINE_LENGTH; k++) {
-        if (tempDB[*lineLoc][k] == '_') {
+        if (tempDB[lineLoc][k] == '_') {
             parseSwitch++;
         }
-        else if (tempDB[*lineLoc][k] != '_' && parseSwitch == 1) {
-            entryTime[*lineLoc][k] = tempDB[*lineLoc][k];
+        else if (tempDB[lineLoc][k] != '_' && parseSwitch == 1) {
+            entryTime[lineLoc][k] = tempDB[lineLoc][k];
         }        
-        else if (tempDB[*lineLoc][k] != '_' && parseSwitch == 2) {
-            entryDuration[*lineLoc][k - countChars(tempDB[*lineLoc], 1, '_')] = tempDB[*lineLoc][k];
+        else if (tempDB[lineLoc][k] != '_' && parseSwitch == 2) {
+            entryDuration[lineLoc][k - countChars(tempDB[lineLoc], 1, '_')] = tempDB[lineLoc][k];
         }
-        else if (tempDB[*lineLoc][k] != '_' && parseSwitch == 3) {
-            entryType[*lineLoc][k - countChars(tempDB[*lineLoc], 2, '_')] = tempDB[*lineLoc][k];
+        else if (tempDB[lineLoc][k] != '_' && parseSwitch == 3) {
+            entryType[lineLoc][k - countChars(tempDB[lineLoc], 2, '_')] = tempDB[lineLoc][k];
         }
-        else if (tempDB[*lineLoc][k] != '_' && parseSwitch == 4) {
-            entrySubject[*lineLoc][k - countChars(tempDB[*lineLoc], 3, '_')] = tempDB[*lineLoc][k];
+        else if (tempDB[lineLoc][k] != '_' && parseSwitch == 4) {
+            entrySubject[lineLoc][k - countChars(tempDB[lineLoc], 3, '_')] = tempDB[lineLoc][k];
         }
     }    
 }
