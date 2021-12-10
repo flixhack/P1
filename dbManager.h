@@ -61,8 +61,7 @@ void databaseEdit(char *mode, int *lineNum, char newLine[], char databaseSelect[
 
 /*This function can find a certain line of text from a string given from testInput, and saves the location to lineLoc
   locOne is set to 0, it will simply find the line that a certain string is on.
-  Otherwise you can use locOne as an offset, in you maybe want to only search for the string in a given section. Remember this requires you to use locOne - 1
-  This function can also be used to find sections, simply by running it once with the start and once with the end term.*/
+  Otherwise you can use locOne as an offset, in you maybe want to only search for the string in a given section. Remember this requires you to use locOne - 1*/
 int findLineLoc (char testInput[], int locOne, char databaseSelect[]) {
     int bytes = 0, lineLoc = 0;
     char string[MAX_LINE_LENGTH];
@@ -84,6 +83,8 @@ int findLineLoc (char testInput[], int locOne, char databaseSelect[]) {
     return lineLoc;
 }
 
+/*This function will find the start and stop points of a given section. It looks for "testInput" for locOne,
+  and then looks for "testInpuT_END" for locTwo*/
 void findSection (char testInput[], char databaseSelect[], int *locOne, int *locTwo) {
     char inputTwo[MAX_LINE_LENGTH];
     int i;
