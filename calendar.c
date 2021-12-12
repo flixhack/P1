@@ -86,24 +86,31 @@ void populateCalendar(date calendar[], date startDate){
     date counter = startDate;
     int run = 1;
     while (run == 1){
-    int daysInCurrentMonth = daysInMonth(counter.month, counter.year);
-        while (counter.day <= daysInCurrentMonth){
-            calender[i].year = counter.year;
-            calender[i].month = counter.month;
-            calender[i].day = counter.day;
+        printf("Top of while loop\n");
+        int daysInCurrentMonth = daysInMonth(counter.month, counter.year);
+        printf("Days in current month: %i\n", daysInCurrentMonth);
+        printf("counter.day: %i\n", counter.day);
+        printf("i: %i\n", i);
+        printf("Size of calendar: %i\n", ((sizeof &calendar)/(sizeof &calendar[0])));
+        while (counter.day <= daysInCurrentMonth && i != ((sizeof &calendar) / (sizeof calendar[0]))){
+            calendar[i].year = counter.year;
+            calendar[i].month = counter.month;
+            calendar[i].day = counter.day;
             i++;
             counter.day++;
+            printf("Populated one element with a date\n");
         }
-    counter.day = 1;
-    if (counter.month == 12){
-        counter.month = 1;
-        counter.year++;
-    }
-    else {
-        counter.month++;
-    }
-    if (i == (sizeof calendar[]) / (sizeof calendar[0])){
-        run = 0;
+        counter.day = 1;
+        if (counter.month == 12){
+            counter.month = 1;
+            counter.year++;
+        }
+        else {
+            counter.month++;
+        }
+        if (i == (sizeof &calendar) / (sizeof calendar[0])){
+            run = 0;
+        }
     }
 }
 
@@ -114,22 +121,10 @@ void calcHoursFree(date calendar[]){
 double calcWorkLoad(element newElement){
     double result = 0;
     date counter = newElement.startDate;
-    int daysInCurrentMonth = 0;
-    switch (newElement.type){
-        case 1: ;//Module
-            result = newElement.duration / 60;
-            break;
-        case 2: //Assignment
-        case 3: //Homework
-        case 4: //Test
-            int daysBetween = 0;
-            daysBetween = daysBetweenDates(newElement.startDate, newElement.endDate);
-            date calendar[daysBetween];
-            populateCalendar(calendar, counter)
-            break;
-        default: ;
-            break;
-    }
+    int daysBetween = 0;
+    daysBetween = daysBetweenDates(newElement.startDate, newElement.endDate);
+    date calendar[daysBetween];
+    populateCalendar(calendar, counter);
     printf("Calculated workload: %lf\n", result); //TESTING PURPOSES. REMEMBER TO REMOVE!
     return result;
 }
