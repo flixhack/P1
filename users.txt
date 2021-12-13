@@ -1,11 +1,8 @@
 USERS
-1;elev1_elev4;elev
-2;elev2_elev2;elev
-3;elev3_elev3;elev
-4;lærer1_lærer1;lærer
-5;lærer2_lærer2;lærer
+1;student1_student4;student
+2;student2_student2;student
+3;student3_student3;student
+4;teacher1_teacher1;teacher
+5;teacher2_teacher2;teacher
 6;admin_admin;admin
-elev1_elev1
-elev2_elev2
-admin_admin
-USERS
+USERS_END

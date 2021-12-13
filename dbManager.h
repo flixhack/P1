@@ -8,6 +8,7 @@ void findSection(char *, int *, int *, char *, char *);
 void readSection(char *, int *, int *, char [][100], char *);
 void findLine(char *, int *, char *, int *, char *);
 void calendarSplit(char [][100], int *, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][4], char [][MAX_LINE_LENGTH]);
+int countChars(char *, int , char);
 
 int locOne = 0, locTwo = 0;
 
@@ -37,7 +38,7 @@ void databaseEdit(char *mode, int *lineNum, char newLine[], char databaseSelect[
             }
             else if (*mode == 'C') {
                 strcat(buffer, newLine);
-                strcat(buffer, "\n");                
+                strcat(buffer, "\n");
                 fputs(buffer, writeTemp);
             }
             else if (*mode == 'R') {
@@ -55,16 +56,16 @@ void databaseEdit(char *mode, int *lineNum, char newLine[], char databaseSelect[
 
     //Replaces the old db file with the one that now has the desired corrections
     remove("calendar.txt");
-    rename("replace.tmp", "calendar.txt");    
+    rename("replace.tmp", "calendar.txt");
 }
 
 /*this function finds a start and a stop point in a certain section of a database. locOne being start, locTwo being end
   The start and end is determined by a certain string in the db that indicates the start, and once repeated indicates the end
   searchTerm indicates the term the function looks for to find locOne and locTwo*/
-void findSection(char string[], int *locOne, int *locTwo, char searchTerm[], char databaseSelect[]) { 
+void findSection(char string[], int *locOne, int *locTwo, char searchTerm[], char databaseSelect[]) {
     int bytes = 0, readSwitch = 0;
 
-    //Opens the text file, and returns an error if it cannot be found    
+    //Opens the text file, and returns an error if it cannot be found
     FILE *readFile = fopen(databaseSelect, "r");
     if (readFile == NULL){
         printf("Database file not found. Contact an administrator\n");
@@ -73,7 +74,7 @@ void findSection(char string[], int *locOne, int *locTwo, char searchTerm[], cha
 
     //Terrible variable naming ahead. "calendar" is the string entered by the user to be searched for, "string" is the string from the text file
     while ( fscanf(readFile,"%s", string) == 1){
-     
+
         //Checks if the current string is the string you are looking for. Assigns readSwitch, and the variables that indicate where the section you are looking for begins and ends
         if(strstr(searchTerm, string) != 0) {
             if (readSwitch == 0) {
@@ -86,26 +87,25 @@ void findSection(char string[], int *locOne, int *locTwo, char searchTerm[], cha
         }
         bytes++;
     }
-    fclose(readFile);   
+    fclose(readFile);
 }
 
 /*This function can read the lines between locOne and locTwo and store them to the tempDB array*/
 void readSection(char string[], int *locOne, int *locTwo, char tempDB[][100], char databaseSelect[]) {
     //If statement uses the location variables assigned earlier (locOne and locTwo) to only store the necesarry text
     int lineCount = 0, bytes = 0;
-    
+
     FILE *readFile = fopen(databaseSelect, "r");
     if (readFile == NULL){
         printf("Database file not found. Contact an administrator\n");
         exit(EXIT_FAILURE);
-    }    
-    
+    }
+
     bytes = *locOne;
     int i = 0;
     while (fscanf(readFile, "%s", string) == 1) {
         if (lineCount > bytes && lineCount < *locTwo) {
             strcpy(tempDB[i], string);
-            printf("readSection, string: %s, bytes: %i", string, bytes);
             i++;
             bytes++;
             if (string[strlen(string) - 1] != '\n') {
@@ -131,7 +131,7 @@ void findLine (char string[], int *lineLoc, char testInput[], int *locOne, char 
         if (strstr(testInput, string) != 0) {
             *lineLoc = bytes - *locOne;
         }
-        bytes++;    
+        bytes++;
     }
 
     *lineLoc = *lineLoc - 1;
@@ -151,27 +151,27 @@ void calendarSplit (char tempDB[][100], int *lineLoc, char entryTime[][MAX_LINE_
         }
         else if (tempDB[*lineLoc][k] != '_' && parseSwitch == 1) {
             entryTime[*lineLoc][k] = tempDB[*lineLoc][k];
-        }        
+        }
         else if (tempDB[*lineLoc][k] != '_' && parseSwitch == 2) {
-            entryDuration[*lineLoc][k - countChars(tempDB[*lineLoc], 1)] = tempDB[*lineLoc][k];
+            entryDuration[*lineLoc][k - countChars(tempDB[*lineLoc], 1, '_')] = tempDB[*lineLoc][k];
         }
         else if (tempDB[*lineLoc][k] != '_' && parseSwitch == 3) {
-            entryType[*lineLoc][k - countChars(tempDB[*lineLoc], 2)] = tempDB[*lineLoc][k];
+            entryType[*lineLoc][k - countChars(tempDB[*lineLoc], 2, '_')] = tempDB[*lineLoc][k];
         }
         else if (tempDB[*lineLoc][k] != '_' && parseSwitch == 4) {
-            entrySubject[*lineLoc][k - countChars(tempDB[*lineLoc], 3)] = tempDB[*lineLoc][k];
+            entrySubject[*lineLoc][k - countChars(tempDB[*lineLoc], 3, '_')] = tempDB[*lineLoc][k];
         }
-    }    
+    }
 }
 
-int countChars(char string[], int underscores){
-    int underscoreCount = 0;
+int countChars(char string[], int underscores, char charToCount){
+    int charCount = 0;
     int chars = 0;
     int i = 0;
-    for (i = 0; underscoreCount != underscores && i < MAX_LINE_LENGTH; i++){
+    for (i = 0; charCount != underscores && i < MAX_LINE_LENGTH; i++){
         chars++;
-        if (string[i] == '_'){
-            underscoreCount++;
+        if (string[i] == charToCount){
+            charCount++;
         }
     }
     return chars;
