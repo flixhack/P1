@@ -85,7 +85,6 @@ void populateCalendar(date calendar[], date startDate, int size){
     date counter = startDate;
     int run = 1;
     while (run == 1){
-        printf("Top of while loop\n");
         int daysInCurrentMonth = daysInMonth(counter.month, counter.year);
         printf("Days in current month: %i\n", daysInCurrentMonth);
         printf("counter.day: %i\n", counter.day);
@@ -97,7 +96,7 @@ void populateCalendar(date calendar[], date startDate, int size){
             calendar[i].day = counter.day;
             i++;
             counter.day++;
-            printf("Populated one element with a date\n");
+            printf("Populated one element with a date\n"); //TESTING
         }
         counter.day = 1;
         if (counter.month == 12){
@@ -113,14 +112,9 @@ void populateCalendar(date calendar[], date startDate, int size){
     }
 }
 
-void dateToString(date calendar[], int i){
-    char string[10];
-    char day[2];
-    char month[2];
-    char year[4];
+void dateToString(date calendar[], int i, char string[]){
     sprintf(string, "%i/%i/%i\n", calendar[i].day, calendar[i].month, calendar[i].year);
-    printf("Day: %i\n", calendar[i].day);
-    printf("%s", string);
+    printf("Day: %i\n", calendar[i].day); //TESTING
 }
 
 void calcHoursFree(date calendar[]){
@@ -133,15 +127,22 @@ void readDB(date calendar[], int size){
     char entryDuration[100][MAX_LINE_LENGTH];
     char entryType[100][4];
     char entrySubject[100][MAX_LINE_LENGTH];
+    char string[10];
     int lineLoc;
     int locOne;
     int locTwo;
     int i = 0;
-    //for (i = 0; i <= size; i++){
+    int k = 0;
+    for (i = 0; i <= size; i++){
         calendar[0].hoursFree = DAILY_SCHOOL_HOURS;
-        dateToString(calendar, i);
-        //findSection("", "calendar.txt", &locOne, &locTwo);
-    //}
+        dateToString(calendar, i, string);
+        printf("%s", string); //TESTING
+        findSection(string, "calendar.txt", &locOne, &locTwo);
+        readSection(locOne, locTwo, tempDB[][100], "calendar.txt");
+        for (k = 0; k <= (locTwo - locOne); k++){
+            calendarSplit (tempDB[][100], k, entryTime[][MAX_LINE_LENGTH], entryDuration[][MAX_LINE_LENGTH], entryType[][4], entrySubject[][MAX_LINE_LENGTH]);
+        }
+    }
 }
 
 double calcWorkLoad(element newElement){
