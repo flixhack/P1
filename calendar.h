@@ -91,8 +91,8 @@ void populateCalendar(date calendar[], date startDate){
         printf("Days in current month: %i\n", daysInCurrentMonth);
         printf("counter.day: %i\n", counter.day);
         printf("i: %i\n", i);
-        printf("Size of calendar: %i\n", ((sizeof &calendar)/(sizeof &calendar[0])));
-        while (counter.day <= daysInCurrentMonth && i != ((sizeof &calendar) / (sizeof calendar[0]))){
+        printf("Size of calendar: %i\n", ((sizeof calendar)/(sizeof calendar[0])));
+        while (counter.day <= daysInCurrentMonth && i != ((sizeof calendar) / (sizeof calendar[0]))){
             calendar[i].year = counter.year;
             calendar[i].month = counter.month;
             calendar[i].day = counter.day;
@@ -108,7 +108,7 @@ void populateCalendar(date calendar[], date startDate){
         else {
             counter.month++;
         }
-        if (i == (sizeof &calendar) / (sizeof calendar[0])){
+        if (i == (sizeof calendar) / (sizeof calendar[0])){
             run = 0;
         }
     }
