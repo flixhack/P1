@@ -1,9 +1,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "functions.h"
-#include "dbManager.h"
 #define MAX_LINE_LENGTH 100
+#define DAILY_SCHOOL_HOURS 9
 
 int determineLeapYear(int year){
     if ((year% 4 == 0 && year%100 != 0) || year%400 == 0){
@@ -81,7 +80,7 @@ int daysBetweenDates(date startDate, date endDate){ //counts days between two da
     return days;
 }
 
-void populateCalendar(date calendar[], date startDate){
+void populateCalendar(date calendar[], date startDate, int size){
     int i = 0;
     date counter = startDate;
     int run = 1;
@@ -91,8 +90,8 @@ void populateCalendar(date calendar[], date startDate){
         printf("Days in current month: %i\n", daysInCurrentMonth);
         printf("counter.day: %i\n", counter.day);
         printf("i: %i\n", i);
-        printf("Size of calendar: %i\n", ((sizeof calendar)/(sizeof calendar[0])));
-        while (counter.day <= daysInCurrentMonth && i != ((sizeof calendar) / (sizeof calendar[0]))){
+        printf("Size of calendar: %i\n", (size));
+        while (counter.day <= daysInCurrentMonth && i != (size)){
             calendar[i].year = counter.year;
             calendar[i].month = counter.month;
             calendar[i].day = counter.day;
@@ -108,23 +107,54 @@ void populateCalendar(date calendar[], date startDate){
         else {
             counter.month++;
         }
-        if (i == (sizeof calendar) / (sizeof calendar[0])){
+        if (i == size){
             run = 0;
         }
     }
+}
+
+void dateToString(date calendar[], int i){
+    char string[10];
+    char day[2];
+    char month[2];
+    char year[4];
+    sprintf(string, "%i/%i/%i\n", calendar[i].day, calendar[i].month, calendar[i].year);
+    printf("Day: %i\n", calendar[i].day);
+    printf("%s", string);
 }
 
 void calcHoursFree(date calendar[]){
 
 }
 
+void readDB(date calendar[], int size){
+    char tempDB[100][MAX_LINE_LENGTH];
+    char entryTime[100][MAX_LINE_LENGTH];
+    char entryDuration[100][MAX_LINE_LENGTH];
+    char entryType[100][4];
+    char entrySubject[100][MAX_LINE_LENGTH];
+    int lineLoc;
+    int locOne;
+    int locTwo;
+    int i = 0;
+    //for (i = 0; i <= size; i++){
+        calendar[0].hoursFree = DAILY_SCHOOL_HOURS;
+        dateToString(calendar, i);
+        //findSection("", "calendar.txt", &locOne, &locTwo);
+    //}
+}
+
 double calcWorkLoad(element newElement){
     double result = 0;
     date counter = newElement.startDate;
-    int daysBetween = 0;
+    int daysBetween = 0,
+        size = 0;
     daysBetween = daysBetweenDates(newElement.startDate, newElement.endDate);
     date calendar[daysBetween];
-    populateCalendar(calendar, counter);
+    printf("Size of calendar: %i\n", ((sizeof calendar)/(sizeof calendar[0])));
+    size = (sizeof calendar) / (sizeof calendar[0]);
+    populateCalendar(calendar, counter, size);
+    readDB(calendar, size);
     printf("Calculated workload: %lf\n", result); //TESTING PURPOSES. REMEMBER TO REMOVE!
     return result;
 }
