@@ -160,7 +160,6 @@ void deductModulesFromHoursFree(date calendar[], int size){
 date stringToDate(char string[], char separator){
     date date;
         int parseSwitch = 1, k;
-    int k;
     char day[2];
     char month[2];
     char year[4];
@@ -169,18 +168,18 @@ date stringToDate(char string[], char separator){
     int yearNumCount = 0;
     // char separator;
     for (k = 0; k < 10; k++) {
-        if (string[k] == 'separator') {
+        if (string[k] == separator) {
             parseSwitch++;
         }
-        else if (string[k] != 'separator' && parseSwitch == 1) {
+        else if (string[k] != separator && parseSwitch == 1) {
             day[dayNumCount] = string[k];
             dayNumCount++;
         }
-        else if (string[k] != 'separator' && parseSwitch == 2) {
+        else if (string[k] != separator && parseSwitch == 2) {
             month[monthNumCount] = string[k];
             monthNumCount++;
         }
-        else if (string[k] != 'separator' && parseSwitch == 3) {
+        else if (string[k] != separator && parseSwitch == 3) {
             year[yearNumCount] = string[k];
             yearNumCount++;
         }
@@ -194,47 +193,29 @@ date stringToDate(char string[], char separator){
 }
 
 date scanForEarliestAssignmentDate(void){
-    int totalLines = 0;
     int i;
-    totalLines = countLines("calendar.txt");
-    printf("Counted lines: %i\n", totalLines);
-    char entryTime[totalLines][MAX_LINE_LENGTH];
-    char entryDuration[totalLines][MAX_LINE_LENGTH];
-    char entryType[totalLines][4];
-    char entrySubject[totalLines][MAX_LINE_LENGTH];
-    char tempDB[totalLines][MAX_LINE_LENGTH];
-    char endDate[totalLines][10];
-    readSection(-1, totalLines, tempDB, "calendar.txt");
-    printf("Read file\n");
-    for (i = 0; i <= totalLines; i++){
-        calendarSplit(tempDB, i, entryTime, entryDuration, entryType, entrySubject, endDate);
-        printf("i: %i\nentryTime: %s\nentryDuration: %s\nentryType: %s\nentrySubject: %s\nendDate: %s\n", i, entryTime[i], entryDuration[i], entryType[i], entrySubject[i], endDate[i]);
+    char tempDB[100][MAX_LINE_LENGTH];
+    char entryTime[100][100], entryDuration[100][100], entryType[100][4], entrySubject[100][100], endDate[100][10];
+    char lol[100] = "calendar.txt";
+
+    readSection(-1, 15, tempDB, lol);
+    for (i = 0; i < 15; i++) {
+        printf("[%i] %s\n", i, tempDB[i]);
     }
-    printf("Split calendar\n");
-    int ass = 0;
-    for (i = 0; i <= totalLines; i++){
-        if ((strcmp (entryType[i], "ass")) == 0){
-            ass++;
-            printf("Counted one ass\n");
-        }
+
+    int k;
+    for (k = 0; k < 15; k++) {
+        calendarSplit(tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
     }
-    printf("Counted assignments: %i\n", ass);
-    int n = 0;
-    element assignmentArray[ass];
-    for (i = 0; i <= totalLines; i++){
-        if ((strcmp (entryType[i], "ass")) == 0){
-            assignmentArray[n].type = 2;
-            assignmentArray[n].startDate = stringToDate(endDate[i], '-');
-            n++;
-        }
+    
+    int j;
+    for (j = 0; j < 15; j++) {
+        printf("[%i] entryTime: %s, entryDuration: %s, entryType: %s, entrySubject: %s, endDate: %s\n", j, entryTime[j], entryDuration[j], entryType[j], entrySubject[j], endDate[j]);
     }
-    //sort array here
-    return assignmentArray[0].startDate;
 }
 
-void deductAssignmentsFromHoursFree(calendar, size){
+void deductAssignmentsFromHoursFree(date calendar[], int size){
     int totalLines = 0;
-    int i;
     totalLines = countLines("calendar.txt");
     char entryTime[totalLines][MAX_LINE_LENGTH];
     char entryDuration[totalLines][MAX_LINE_LENGTH];
@@ -247,9 +228,10 @@ void deductAssignmentsFromHoursFree(calendar, size){
     int locTwo;
     int i = 0;
     int k = 0;
-    //date compareDateStart;
-    date compareDateEnd;
+    date compareDateStart;
+    //date compareDateEnd;
     int daysBetween;
+    double averageTime;
     for (i = 0; i <= size; i++){
         dateToString(calendar, i, string);
         printf("%s", string); //TESTING
@@ -264,6 +246,8 @@ void deductAssignmentsFromHoursFree(calendar, size){
                 compareDateStart = stringToDate(endDate[k], '-');
                 //calendar[i] er vores compareDateEnd
                 daysBetween = daysBetweenDates(compareDateStart, calendar[i]);
+                averageTime = ((stringToInt(entryDuration[k]) / 60) / daysBetween);
+                printf("Average time: %lf", averageTime); //TESTING ONLY
             }
         }
     }
