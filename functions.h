@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <time.h>
 #include "dbManager.h"
+#include "structs.h"
+
+
+// enum role {student = 1, teacher, administrator}; typedef enum role role;
+
 
 void readyState(),
-
-#include "structs.h"
-enum role {student = 1, teacher, administrator}; typedef enum role role;
-
-
      findCommand(char),
      assignments(),
      schedule(),
@@ -101,15 +101,15 @@ void printTime(char *string, int time){ //must recieve a array of size 5
 }  //Recieve a stored int and print it as a time stamp. Example: int == 945 becomes 9:45
 
 char* receiveString() {
-    
+
 // stolen: https://stackoverflow.com/questions/8164000/how-to-dynamically-allocate-memory-space-for-a-string-and-get-that-string-from-u
 
     printf("Enter string: ");
-    
+
     char *string = NULL;
     int currentChar = 0, sizeCounter = 1, c;
     string = (char *)malloc(sizeof(char));
-   
+
     //error checking
     if (string == NULL) { //hvis der ikke er blevet indtastet noget er string == NULL
         printf("Error allocating memory\n");
@@ -118,9 +118,9 @@ char* receiveString() {
 
     while((c = getc(stdin)) && c != '\n')
     {
-        string[currentChar] = c;  
+        string[currentChar] = c;
         string = realloc(string,sizeCounter * sizeof(char));
-      
+
 // printf(" string2: %s", string);
 
         //error checking
@@ -139,7 +139,7 @@ char* receiveString() {
 
     return string;
 
-    /* det vil være muligt at have en char* i main for at 
+    /* det vil være muligt at have en char* i main for at
     opbevare værdien for return af receiveString og derefter free() efter når den ikke bruges */
 }
 
@@ -168,38 +168,22 @@ void login(void){
   strcat(testInput, "_");
   strcat(testInput, password);
 
-  // printf("\n%s", testInput);
 
 
 
   findSection(search, databaseSelect, &locOne, &locTwo);
 
   readSection(locOne, locTwo, tempDB, databaseSelect);
-  // for (int i = 0; i < 10; i++) {
-  //   printf("%s, i er = %i", tempDB[i], i);
-  // }
   for (int i = locOne; i < locTwo; i++) {
-    // printf("\nFUCK IAN");
     lineSplit(tempDB, &i, tempUserID, usernameAndPassword, tempLoginID);
-    // printf("\n[%i] - %s", i, tempDB[i]);
-    // printf("\n%i, uid = %s, uname = %s, loginID = %s", i, tempUserID[i], usernameAndPassword[i], tempLoginID[i]);
     userFound = strcmp(testInput, usernameAndPassword[i]);
-    // printf("\nUserfound: %i", userFound );
     if (userFound == 0) {
       userID = atoi(tempUserID[i]);
       loginID = atoi(tempLoginID[i]);
-      // printf("\nUserID: %i og loginID: %i", userID, loginID);
       userFound = 1;
 
     }
-
   }
-
-  // findLine(string, &lineLoc, testInput, &locOne, databaseSelect);
-  // printf("%i", lineLoc);
-
-
-
 }
 
 void readyState(){
@@ -232,8 +216,9 @@ void findCommand(char command){
     case 'l':
     case 'L':
       logOut();
+      break;
      default:
-      printf("Command not Found\n");  
+      printf("Command not Found\n");
       break;
     }
 }
