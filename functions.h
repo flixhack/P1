@@ -132,10 +132,11 @@ void printAssignments(int LoginID){
 
 void assignmentEditor(int LoginID){
   int run = 1;
-  char mode, command;
-  char database[MAX_LINE_LENGTH] = "calendar.txt";
+  char mode, command, x;
+  char database[MAX_LINE_LENGTH] = "calendar.txt", tempTime[MAX_LINE_LENGTH];
+  char endTime[MAX_LINE_LENGTH], newLine[MAX_LINE_LENGTH];
   while (run == 1){
-    printf("Create an assignment, edit an assignment, delete an assignment or go back? (C/E/D/B)");
+    printf("\nCreate an assignment, edit an assignment, delete an assignment or go back? (C/E/D/B)");
     scanf("%c", &command);
     mode = command;
     switch (command)
@@ -146,7 +147,38 @@ void assignmentEditor(int LoginID){
       element newAssignment;
       newAssignment.date = newDate;
       newAssignment.type = 1;
-      break;
+        printf("Insert a day (DD), month (MM) and a year (YYYY) for the assignment to take place: ");
+        scanf("%d %d %d", &newDate.day, &newDate.month, &newDate.year);
+        sprintf(tempTime, "%d/%d/%d", newDate.day, newDate.month, newDate.year);
+
+        findSection(tempTime, database, &locOne, &locTwo);
+
+        if (locTwo == -1){
+          locTwo = countLines(database);
+          callDatabase(mode, database, locTwo, tempTime);
+          sprintf(endTime, "%s_END", tempTime);
+          callDatabase(mode, database, locTwo + 1, endTime);
+          locTwo = -1;
+          findSection(tempTime, database, &locOne, &locTwo);
+        }
+        
+        printf("Insert the starting time (Hours:Minutes), duration (in minutes) and module: ");
+
+        scanf("%s %d %s", &newAssignment.time, &newAssignment.duration, newAssignment.subject);
+        
+        printf("Is this module correct? (y/n)\n\n");
+        printf("Module: %s Date: %d/%d/%d   Duration: %d   Time: %s\n", newAssignment.subject, newDate.day, newDate.month, newDate.year, newAssignment.duration, newAssignment.time);
+        scanf(" %c", &x);
+
+        if(x == 'y'){
+          sprintf(newLine, "%s_%d_%d_%s", newAssignment.time, newAssignment.duration, newAssignment.type, newAssignment.subject);
+          //if(calcWorkLoad() >= 0){
+            callDatabase(mode, database, locOne + 1, newLine);
+          //}
+          //else printf("No more hours available to create assignment.\n");
+          break;
+        }
+        else break;
     case 'e':;
     case 'E':;
 
@@ -202,11 +234,10 @@ void printSchedule (int loginID){
 }
 
 void scheduleEditor(int userID){
-  char mode, x;
+  char mode, command, x;
   char database[MAX_LINE_LENGTH] = "calendar.txt", tempTime[MAX_LINE_LENGTH];
   char endTime[MAX_LINE_LENGTH], newLine[MAX_LINE_LENGTH];
   int run = 1, lineLoc = 0;
-  char command;
   while (run == 1){
     printf("\nCreate a module, Edit a module, delete a module or go back? (C/E/D/B): ");
     scanf(" %c", &command);
@@ -262,7 +293,7 @@ void scheduleEditor(int userID){
       printf("These are the modules for the given date:\n");
       readSection(locOne, locTwo, &tempDb, database);
       
-      printf("Input the time of the module that you wish to edit: ");
+      printf("Input the time of the module that you wish to edit (HH/MM): ");
       scanf(" %s", searchTerm);
       lineLoc = findLineLoc(searchTerm, locOne, database);
       
