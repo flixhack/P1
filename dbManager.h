@@ -126,7 +126,7 @@ void readSection(int locOne, int locTwo, char tempDB[][100], char databaseSelect
 }
 
 /*This function is specifically for use with the calendar database, and splits the output from its functions into time, duration, type and subject*/
-void calendarSplit (char tempDB[][100], int lineLoc, char entryTime[][MAX_LINE_LENGTH], char entryDuration[][MAX_LINE_LENGTH], char entryType[][4], char entrySubject[][MAX_LINE_LENGTH]) {
+void calendarSplit (char tempDB[][100], int lineLoc, char entryTime[][MAX_LINE_LENGTH], char entryDuration[][MAX_LINE_LENGTH], char entryType[][4], char entrySubject[][MAX_LINE_LENGTH], char endDate[][10]) {
     int parseSwitch = 1, k;
 
     for (k = 0; k < MAX_LINE_LENGTH; k++) {
@@ -144,6 +144,9 @@ void calendarSplit (char tempDB[][100], int lineLoc, char entryTime[][MAX_LINE_L
         }
         else if (tempDB[lineLoc][k] != '_' && parseSwitch == 4) {
             entrySubject[lineLoc][k - countChars(tempDB[lineLoc], 3, '_')] = tempDB[lineLoc][k];
+        }
+        else if (tempDB[lineLoc][k] != '_' && parseSwitch == 5) {
+            endDate[lineLoc][k - countChars(tempDB[lineLoc], 4, '_')] = tempDB[lineLoc][k];
         }
     }    
 }

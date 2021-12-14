@@ -1,7 +1,7 @@
 1/2/2012
 11:30_90_mod_math
 12:30_90_mod_danish
-20:00_3-2-2012_ass_mathOne
+20:00_120_ass_mathOne_25-1-2012
 1/2/2012_END
 
 3/2/2012
@@ -11,5 +11,5 @@
 4/2/2012
 11:30_90_mod_physics
 12:30_90_mod_biology
-19:30_14-2-2021_ass_physics
+19:30_90_ass_physics_1-20-2012
 4/2/2012_END
