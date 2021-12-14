@@ -5,20 +5,22 @@
 
 void lineSplit(char [][100], int *, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH]);
 
-
+int userID = 0;
+int loginID =0;
 int lineLoc = 0;
 char testInput[MAX_LINE_LENGTH];
 
 
-int main() {
+void main() {
   char password[20];
   char string[100];
   char databaseSelect[100] = "users.txt";
   char search[100] = "USERS";
   char tempDB[100][100];
-  char userID[100][MAX_LINE_LENGTH];
+  char tempUserID[100][MAX_LINE_LENGTH];
   char usernameAndPassword[100][MAX_LINE_LENGTH];
-  char loginID[100][MAX_LINE_LENGTH];
+  char tempLoginID[100][MAX_LINE_LENGTH];
+  int userFound = 1;
 
 
   printf("\nIndtast username: ");
@@ -31,7 +33,7 @@ int main() {
 
   printf("\n%s", testInput);
 
-  
+
 
   findSection(search, databaseSelect, &locOne, &locTwo);
 
@@ -39,11 +41,20 @@ int main() {
   // for (int i = 0; i < 10; i++) {
   //   printf("%s, i er = %i", tempDB[i], i);
   // }
-  for (int i = locOne; i <= locTwo; i++) {
+  for (int i = locOne; i < locTwo; i++) {
     // printf("\nFUCK IAN");
-    lineSplit(tempDB, &i, userID, usernameAndPassword, loginID);
-    printf("\n[%i] - %s", i, tempDB[i]);
-    printf("\n%i, uid = %s, uname = %s, loginID = %s", i, userID[i], usernameAndPassword[i], loginID[i]);
+    lineSplit(tempDB, &i, tempUserID, usernameAndPassword, tempLoginID);
+    // printf("\n[%i] - %s", i, tempDB[i]);
+    // printf("\n%i, uid = %s, uname = %s, loginID = %s", i, tempUserID[i], usernameAndPassword[i], tempLoginID[i]);
+    userFound = strcmp(testInput, usernameAndPassword[i]);
+    printf("\nUserfound: %i", userFound );
+    if (userFound == 0) {
+      userID = atoi(tempUserID[i]);
+      loginID = atoi(tempLoginID[i]);
+      printf("\nUserID: %i og loginID: %i", userID, loginID);
+      userFound = 1;
+
+    }
 
   }
 
@@ -52,10 +63,6 @@ int main() {
 
 
 
-
-
-
-  return 0;
 }
 
 void lineSplit (char tempDB[][100], int *lineLoc, char userID[][MAX_LINE_LENGTH], char usernameAndPassword[][MAX_LINE_LENGTH], char loginID[][MAX_LINE_LENGTH]) {

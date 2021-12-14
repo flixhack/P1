@@ -1,8 +1,8 @@
 USERS
-1;student1_student4;student
-2;student2_student2;student
-3;student3_student3;student
-4;teacher1_teacher1;teacher
-5;teacher2_teacher2;teacher
-6;admin_admin;admin
+1;student1_student4;1
+2;student2_student2;1
+3;student3_student3;1
+4;teacher1_teacher1;2
+5;teacher2_teacher2;2
+6;admin_admin;3
 USERS_END
