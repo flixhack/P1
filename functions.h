@@ -1,31 +1,30 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-<<<<<<< HEAD
 #include "dbManager.h"
 
 void readyState(),
-=======
+
 #include "structs.h"
-void readyState(int),
->>>>>>> main
+enum role {student = 1, teacher, administrator}; typedef enum role role;
+
+
      findCommand(char),
      assignments(),
      schedule(),
      logOut();
 
-<<<<<<< HEAD
+
 void login();
 
 int userID = 0;
 int loginID = 0;
 int lineLoc = 0;
 
-=======
+
 void calcWorkLoad();
 
-int login();
->>>>>>> main
+
 
 
 void printSchedule (){
@@ -206,28 +205,36 @@ void login(void){
 void readyState(){
     char command;
     while (loginID != 0) {
-        printf("\nEnter command here: ");
+        printf("\nEnter command here (press h for help): ");
+
         scanf(" %c", &command);
         findCommand(command);
-
     }
 }
 
 void findCommand(char command){
     switch (command){
+    case 'h':
+    case 'H':
+    printf("List of Commands:\n");
+    printf("A = Assignments\n");
+    printf("S = Schedule\n");
+    printf("L = Log Out:\n");
+    break;
     case 'a':
     case 'A':
-        assignments();
-        break;
+      assignments();
+      break;
     case 's':
     case 'S':
-        schedule();
-        break;
+      schedule();
+      break;
     case 'l':
     case 'L':
-        logOut();
+      logOut();
      default:
-        break;
+      printf("Command not Found\n");  
+      break;
     }
 }
 
