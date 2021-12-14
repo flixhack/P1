@@ -157,28 +157,30 @@ void deductModulesFromHoursFree(date calendar[], int size){
     }
 }
 
-date stringToDate(char string[]){
+date stringToDate(char string[], char separator){
     date date;
         int parseSwitch = 1, k;
+    int k;
     char day[2];
     char month[2];
     char year[4];
     int dayNumCount = 0;
     int monthNumCount = 0;
     int yearNumCount = 0;
+    // char separator;
     for (k = 0; k < 10; k++) {
-        if (string[k] == '-') {
+        if (string[k] == 'separator') {
             parseSwitch++;
         }
-        else if (string[k] != '-' && parseSwitch == 1) {
+        else if (string[k] != 'separator' && parseSwitch == 1) {
             day[dayNumCount] = string[k];
             dayNumCount++;
-        }        
-        else if (string[k] != '-' && parseSwitch == 2) {
+        }
+        else if (string[k] != 'separator' && parseSwitch == 2) {
             month[monthNumCount] = string[k];
             monthNumCount++;
         }
-        else if (string[k] != '-' && parseSwitch == 3) {
+        else if (string[k] != 'separator' && parseSwitch == 3) {
             year[yearNumCount] = string[k];
             yearNumCount++;
         }
@@ -186,6 +188,8 @@ date stringToDate(char string[]){
     date.day = atoi(day);
     date.month = atoi(month);
     date.year = atoi(year);
+
+
     return date;
 }
 
@@ -220,7 +224,7 @@ date scanForEarliestAssignmentDate(void){
     for (i = 0; i <= totalLines; i++){
         if ((strcmp (entryType[i], "ass")) == 0){
             assignmentArray[n].type = 2;
-            assignmentArray[n].startDate = stringToDate(endDate[i]);
+            assignmentArray[n].startDate = stringToDate(endDate[i], '-');
             n++;
         }
     }
@@ -243,6 +247,9 @@ void deductAssignmentsFromHoursFree(calendar, size){
     int locTwo;
     int i = 0;
     int k = 0;
+    //date compareDateStart;
+    date compareDateEnd;
+    int daysBetween;
     for (i = 0; i <= size; i++){
         dateToString(calendar, i, string);
         printf("%s", string); //TESTING
@@ -254,7 +261,9 @@ void deductAssignmentsFromHoursFree(calendar, size){
         for (k = 0; k <= (locTwo - locOne); k++){
             int test = strcmp(entryType[k], "ass");
             if (test == 0){
-
+                compareDateStart = stringToDate(endDate[k], '-');
+                //calendar[i] er vores compareDateEnd
+                daysBetween = daysBetweenDates(compareDateStart, calendar[i]);
             }
         }
     }
