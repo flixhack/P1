@@ -151,7 +151,26 @@ void calendarSplit (char tempDB[][100], int lineLoc, char entryTime[][MAX_LINE_L
     }    
 }
 
-int countChars(char string[], int underscores, char charToCount){
+void calendarDateSplit (char tempDB[][100], int lineLoc, char entryDay[][MAX_LINE_LENGTH], char entryMonth[][MAX_LINE_LENGTH], char entryYear[][MAX_LINE_LENGTH]) {
+    int parseSwitch = 1, k;
+
+    for (k = 0; k < MAX_LINE_LENGTH; k++) {
+        if (tempDB[lineLoc][k] == '/') {
+            parseSwitch++;
+        }
+        else if (tempDB[lineLoc][k] != '/' && parseSwitch == 1) {
+            entryDay[lineLoc][k] = tempDB[lineLoc][k];
+        }        
+        else if (tempDB[lineLoc][k] != '/' && parseSwitch == 2) {
+            entryMonth[lineLoc][k - countChars(tempDB[lineLoc], 1, '/')] = tempDB[lineLoc][k];
+        }
+        else if (tempDB[lineLoc][k] != '/' && parseSwitch == 3) {
+            entryYear[lineLoc][k - countChars(tempDB[lineLoc], 2, '/')] = tempDB[lineLoc][k];
+        }
+    }
+}
+
+int countChars(char string[], int underscores, char charToCount) {
     int charCount = 0;
     int chars = 0;
     int i = 0;
