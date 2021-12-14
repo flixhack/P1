@@ -46,163 +46,6 @@ int main(){
 }
 double calcWorkLoad(element);
 
-void printSchedule (int loginID){
-
-}
-
-double calcWorkLoad(element element){
-    double result = 0;
-    int days = 0;
-    switch (element.type){
-        case 1: //Module
-            result = element.duration / 60;
-            break;
-        case 2: //Assignment
-            
-            break;
-        case 3: //Homework
-
-            break;
-        case 4: //Test
-
-            break;
-        default:
-            break;
-    }
-    printf("Calculated workload: %lf\n", result); //TESTING PURPOSES. REMEMBER TO REMOVE!
-    return result;
-}
-
-int readTime(char input[]){
-    int n1 = 0;
-    if (input[1] == ':'){
-      n1 = ((input[0] - '0') * 100) + ((input[2] - '0') * 10) + (input[3] - '0');
-    }
-    else {
-      n1 = ((input[0] - '0') * 1000) + ((input[1] - '0')*100) + ((input[3] - '0') * 10) + (input[4] - '0');
-    }
-    return n1;
-}
-
-int promptTime(void){
-    char input[5];
-    scanf("%s", input);
-    int time = readTime(input);
-    return time;
-}
-
-void printTime(char *string, int time){ //must recieve a array of size 5
-    char timeCode[4];
-    if (time > 999){
-        sprintf(timeCode, "%i", time);
-        string[0] = timeCode[0];
-        string[1] = timeCode[1];
-        string[2] = ':';
-        string[3] = timeCode[2];
-        string[4] = timeCode[3];
-    }
-    else if (time < 1000 && time > 99){
-        sprintf(timeCode, "%i", time);
-        string[0] = '0';
-        string[1] = timeCode[0];
-        string[2] = ':';
-        string[3] = timeCode[1];
-        string[4] = timeCode[2];
-    }
-    else if (time < 100 && time > 9){
-        sprintf(timeCode, "%i", time);
-        string[0] = '0';
-        string[1] = '0';
-        string[2] = ':';
-        string[3] = timeCode[0];
-        string[4] = timeCode[1];
-    }
-    else if (time < 10){
-        sprintf(timeCode, "%i", time);
-        string[0] = '0';
-        string[1] = '0';
-        string[2] = ':';
-        string[3] = '0';
-        string[4] = timeCode[0];
-    }
-    for (int i = 0; i < 5; i++){
-        printf("%c", string[i]);
-    }
-}  //Recieve a stored int and print it as a time stamp. Example: int == 945 becomes 9:45
-
-char* receiveString() {
-    
-// stolen: https://stackoverflow.com/questions/8164000/how-to-dynamically-allocate-memory-space-for-a-string-and-get-that-string-from-u
-
-    printf("Enter string: ");
-    
-    char *string = NULL;
-    int currentChar = 0, sizeCounter = 1, c;
-    string = (char *)malloc(sizeof(char));
-   
-    //error checking
-    if (string == NULL) { //hvis der ikke er blevet indtastet noget er string == NULL
-        printf("Error allocating memory\n");
-        exit(EXIT_FAILURE);
-    }
-
-    while((c = getc(stdin)) && c != '\n')
-    {
-        string[currentChar] = c;  
-        string = realloc(string,sizeCounter * sizeof(char));
-      
-// printf(" string2: %s", string);
-
-        //error checking
-        if (string == NULL) {
-            printf("Error allocating memory\n");
-            free(string);
-            exit(EXIT_FAILURE);
-        }
-// printf(" string1s: %s", string);
-        sizeCounter++;
-        currentChar++;
-    }
-    string[currentChar] = '\0';
-
-    printf(" string: %s", string);
-
-    return string;
-
-    /* det vil være muligt at have en char* i main for at 
-    opbevare værdien for return af receiveString og derefter free() efter når den ikke bruges */
-}
-
-void writeLog (int currentDate, int affectedDate){
-
-  int loginID = login();
-  readyState(loginID);  
-}
-
-int login(void){
-    char loginScan;
-    printf("\nEnter your username (T, S, A): ");
-    scanf("%c", &loginScan);
-    switch (loginScan){
-    case 's':
-    case 'S':
-        loggedIn = 1;
-        break;
-    case 't':
-    case 'T':
-        loggedIn = 2;
-        break;
-    case 'a':
-    case 'A':
-        loggedIn = 3;
-        break;
-    default:
-        break;
-    }
-    printf("\nYou are logged in as %d", loggedIn );
-    return(loggedIn);
-}
-
 void readyState(int loginID){
     char command;
     while (loginID != 0) {
@@ -359,9 +202,11 @@ void scheduleEditor(int userID){
         findSection(tempTime, database, &locOne, &locTwo);
 
         if (&locTwo == -1){
-          callDatabase(mode, database, , tempTime);
+          locTwo = countLines(database);
+          callDatabase(mode, database, locTwo, tempTime);
           sprintf(endTime, "%s_END", tempTime);
-          callDatabase(mode, database, , endTime);
+          callDatabase(mode, database, locTwo + 1, endTime);
+          locTwo = -1;
           findSection(tempTime, database, &locOne, &locTwo);
         }
         
@@ -373,7 +218,8 @@ void scheduleEditor(int userID){
         printf("Module: %s Date: %d/%d/%d   Duration: %d   Time: %d\n", newModule.subject, newDate.day, newDate.month, newDate.year, newModule.duration, newModule.time);
         
         sprintf(newLine, "%s_%d_%d_%s", newModule.time, newModule.duration, newModule.type, newModule.subject);
-        callDatabase(mode, database, &(locOne + 1), newLine);
+        
+        callDatabase(mode, database, locOne + 1, newLine);
         break;
     case 'e':;
     case 'E':;
@@ -390,7 +236,7 @@ void scheduleEditor(int userID){
       scanf(" %s", searchTerm);
       lineLoc = findLineLoc(searchTerm, locOne, database);
       
-      callDatabase(mode, database, lineLoc);
+      callDatabase(mode, database, lineLoc, newLine);
 
     case 'd':;
     case 'D':;

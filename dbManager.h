@@ -8,7 +8,7 @@ void findSection(char *, char *, int *, int *);
 void readSection(int, int, char [][100], char *);
 int findLineLoc(char *, int, char *);
 void calendarSplit(char [][100], int, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][4], char [][MAX_LINE_LENGTH]);
-int countChars(char *, int, char);
+int countChars(char *, int, char), countLines(char *);
 
 int locOne = 0, locTwo = -1;
 
@@ -170,4 +170,22 @@ int stringToInt(char string[]){
         res = res + (string[i] - '0');
     }
     return res;
+}
+
+int countLines(char *filename){                         
+    FILE *readFile = fopen(filename,"r");
+    int lines = 0;
+    int chars = 0;
+
+    if (readFile == NULL){
+        return 0;
+    }
+    lines++;
+    while ((chars = fgetc(readFile)) != EOF){
+        if (chars == '\n'){
+            lines++;
+        }
+    }
+    fclose(readFile);
+    return lines;
 }
