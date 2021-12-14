@@ -1,4 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "dbManager.h"
+#include "structs.h"
 #define MAX_LINE_LENGTH 100
 
 struct date{
@@ -42,7 +46,7 @@ int main(){
 }
 double calcWorkLoad(element);
 
-void printSchedule (int userID, int loginID){
+void printSchedule (int loginID){
 
 }
 
@@ -332,10 +336,9 @@ void printSchedule (int loginID){
 
 void scheduleEditor(int userID){
   char mode;
-  char database[MAX_LINE_LENGTH] = "calendar.txt";
-  char tempTime[MAX_LINE_LENGTH];
-  char newLine[MAX_LINE_LENGTH];
-  int run = 1, locOne = 0, locTwo = 0, lineLoc = 0;
+  char database[MAX_LINE_LENGTH] = "calendar.txt", tempTime[MAX_LINE_LENGTH];
+  char endTime[MAX_LINE_LENGTH], newLine[MAX_LINE_LENGTH];
+  int run = 1, lineLoc = 0;
   char command;
   while (run == 1){
     printf("Create a module, Edit a module, delete a module or go back? (C/E/D/B): ");
@@ -349,20 +352,20 @@ void scheduleEditor(int userID){
       element newModule;
       newModule.date = newDate;
       newModule.type = 1;
-        printf("Insert a year, month and a day for the module to take place: ");
+        printf("Insert a day (DD), month (MM) and a year (YYYY) for the module to take place: ");
         scanf("%d %d %d", &newDate.day, &newDate.month, &newDate.year);
         sprintf(tempTime, "%d/%d/%d", newDate.day, newDate.month, newDate.year);
 
         findSection(tempTime, database, &locOne, &locTwo);
 
         if (&locTwo == -1){
-          callDatabase(mode, database, , tempTime)
-          tempTime = 
-          callDatabase(mode, database, )
+          callDatabase(mode, database, , tempTime);
+          sprintf(endTime, "%s_END", tempTime);
+          callDatabase(mode, database, , endTime);
+          findSection(tempTime, database, &locOne, &locTwo);
         }
-
         
-        printf("Insert the starting time, duration and module: ");
+        printf("Insert the starting time (Hours:Minutes), duration (in minutes) and module: ");
 
         scanf("%d %d %s", &newModule.time, &newModule.duration, newModule.subject);
         
@@ -370,7 +373,7 @@ void scheduleEditor(int userID){
         printf("Module: %s Date: %d/%d/%d   Duration: %d   Time: %d\n", newModule.subject, newDate.day, newDate.month, newDate.year, newModule.duration, newModule.time);
         
         sprintf(newLine, "%s_%d_%d_%s", newModule.time, newModule.duration, newModule.type, newModule.subject);
-        callDatabase(mode, database, locOne + 1, newLine);
+        callDatabase(mode, database, &(locOne + 1), newLine);
         break;
     case 'e':;
     case 'E':;
@@ -414,12 +417,7 @@ void scheduleEditor(int userID){
 }
 
 void callDatabase(char mode, char *database, int lineNum, char *newLine){
-
-    printf("Enter Line: (Format: HH:MM_DURATION_1_SUBJECT)");
-    scanf(" %s", newLine);
-
     databaseEdit(&mode, &lineNum, newLine, database);
-
 }
 
 void logOut(){
