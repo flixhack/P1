@@ -124,7 +124,7 @@ void calcHoursFree(date calendar[]){
 
 }
 
-void readDB(date calendar[], int size){
+void deductModulesFromHoursFree(date calendar[], int size){
     char tempDB[100][MAX_LINE_LENGTH];
     char entryTime[100][MAX_LINE_LENGTH];
     char entryDuration[100][MAX_LINE_LENGTH];
@@ -138,7 +138,7 @@ void readDB(date calendar[], int size){
     int i = 0;
     int k = 0;
     for (i = 0; i <= size; i++){
-        calendar[0].hoursFree = DAILY_SCHOOL_HOURS;
+        calendar[i].hoursFree = DAILY_SCHOOL_HOURS;
         dateToString(calendar, i, string);
         printf("%s", string); //TESTING
         findSection(string, "calendar.txt", &locOne, &locTwo);
@@ -193,7 +193,7 @@ date scanForEarliestAssignmentDate(void){
     int totalLines = 0;
     int i;
     totalLines = countLines("calendar.txt");
-    printf("Counted lines\n");
+    printf("Counted lines: %i\n", totalLines);
     char entryTime[totalLines][MAX_LINE_LENGTH];
     char entryDuration[totalLines][MAX_LINE_LENGTH];
     char entryType[totalLines][4];
@@ -224,6 +224,7 @@ date scanForEarliestAssignmentDate(void){
             n++;
         }
     }
+    //sort array here
     return assignmentArray[0].startDate;
 }
 
@@ -239,7 +240,7 @@ int calcWorkLoad(element newElement){
     printf("Size of calendar: %i\n", ((sizeof calendar)/(sizeof calendar[0])));
     size = (sizeof calendar) / (sizeof calendar[0]);
     populateCalendar(calendar, counter, size);
-    readDB(calendar, size);
+    deductModulesFromHoursFree(calendar, size);
     printf("Calculated workload: %lf\n", result); //TESTING PURPOSES. REMEMBER TO REMOVE!
     return result;
 }
