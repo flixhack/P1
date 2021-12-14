@@ -116,9 +116,9 @@ void readSection(int locOne, int locTwo, char tempDB[][100], char databaseSelect
             strcpy(tempDB[i], string);
             i++;
             bytes++;
-            if (string[strlen(string) - 1] != '\n') {
-                printf("\n");
-            }
+            // if (string[strlen(string) - 1] != '\n') {
+            //     printf("\n");
+            // }
         }
         lineCount++;
     }

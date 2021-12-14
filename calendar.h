@@ -160,7 +160,6 @@ void readDB(date calendar[], int size){
 date stringToDate(char string[]){
     date date;
         int parseSwitch = 1, k;
-    int k;
     char day[2];
     char month[2];
     char year[4];
@@ -191,9 +190,10 @@ date stringToDate(char string[]){
 }
 
 date scanForEarliestAssignmentDate(void){
-    int totalLines;
+    int totalLines = 0;
     int i;
     totalLines = countLines("calendar.txt");
+    printf("Counted lines\n");
     char entryTime[totalLines][MAX_LINE_LENGTH];
     char entryDuration[totalLines][MAX_LINE_LENGTH];
     char entryType[totalLines][4];
@@ -201,24 +201,30 @@ date scanForEarliestAssignmentDate(void){
     char tempDB[totalLines][MAX_LINE_LENGTH];
     char endDate[totalLines][10];
     readSection(-1, totalLines, tempDB, "calendar.txt");
+    printf("Read file\n");
     for (i = 0; i <= totalLines; i++){
         calendarSplit(tempDB, i, entryTime, entryDuration, entryType, entrySubject, endDate);
+        printf("i: %i\nentryTime: %s\nentryDuration: %s\nentryType: %s\nentrySubject: %s\nendDate: %s\n", i, entryTime[i], entryDuration[i], entryType[i], entrySubject[i], endDate[i]);
     }
+    printf("Split calendar\n");
     int ass = 0;
     for (i = 0; i <= totalLines; i++){
-        if (entryType[i] == "ass"){
+        if ((strcmp (entryType[i], "ass")) == 0){
             ass++;
+            printf("Counted one ass\n");
         }
     }
+    printf("Counted assignments: %i\n", ass);
     int n = 0;
     element assignmentArray[ass];
     for (i = 0; i <= totalLines; i++){
-        if (entryType[i] == "ass"){
+        if ((strcmp (entryType[i], "ass")) == 0){
             assignmentArray[n].type = 2;
             assignmentArray[n].startDate = stringToDate(endDate[i]);
             n++;
         }
     }
+    return assignmentArray[0].startDate;
 }
 
 int calcWorkLoad(element newElement){
