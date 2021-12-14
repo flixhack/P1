@@ -7,7 +7,7 @@ void databaseEdit(char *, int *, char *, char *);
 void findSection(char *, char *, int *, int *);
 void readSection(int, int, char [][100], char *);
 int findLineLoc(char *, int, char *);
-void calendarSplit(char [][100], int, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][4], char [][MAX_LINE_LENGTH]);
+void calendarSplit(char [][100], int, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][4], char [][MAX_LINE_LENGTH], char [][10]);
 int countChars(char *, int, char);
 
 int locOne = 0, locTwo = 0;

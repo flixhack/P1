@@ -1,9 +1,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "structs.h" //included to remove error squiggles
+#include "functions.h"
+#include "structs.h"
 #include "dbManager.h"
-#define MAX_LINE_LENGTH 100
 #define DAILY_SCHOOL_HOURS 9
 
 
@@ -130,9 +130,9 @@ void readDB(date calendar[], int size){
     char entryDuration[100][MAX_LINE_LENGTH];
     char entryType[100][4];
     char entrySubject[100][MAX_LINE_LENGTH];
-    char endDate[100][MAX_LINE_LENGTH];
+    char endDate[100][10];
     char string[10];
-    int lineLoc;
+    //int lineLoc;
     int locOne;
     int locTwo;
     int i = 0;
@@ -147,7 +147,8 @@ void readDB(date calendar[], int size){
             calendarSplit (tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
         }
         for (k = 0; k <= (locTwo - locOne); k++){
-            if (entryType[k] == "mod"){
+            int test = strcmp(entryType[k], "mod");
+            if (test == 0){
                 int duration;
                 duration = stringToInt(entryDuration[k]);
                 calendar[k].hoursFree -= (duration / 60);
@@ -158,11 +159,38 @@ void readDB(date calendar[], int size){
 
 date stringToDate(char string[]){
     date date;
-    date.day = //day-month-year
+        int parseSwitch = 1, k;
+    int k;
+    char day[2];
+    char month[2];
+    char year[4];
+    int dayNumCount = 0;
+    int monthNumCount = 0;
+    int yearNumCount = 0;
+    for (k = 0; k < 10; k++) {
+        if (string[k] == '_') {
+            parseSwitch++;
+        }
+        else if (string[k] != '-' && parseSwitch == 1) {
+            day[dayNumCount] = string[k];
+            dayNumCount++;
+        }        
+        else if (string[k] != '-' && parseSwitch == 2) {
+            month[monthNumCount] = string[k];
+            monthNumCount++;
+        }
+        else if (string[k] != '-' && parseSwitch == 3) {
+            year[yearNumCount] = string[k];
+            yearNumCount++;
+        }
+    }
+    date.day = atoi(day);
+    date.month = atoi(month);
+    date.year = atoi(year);
+    return date;
 }
 
 date scanForEarliestAssignmentDate(void){
-    int run = 1;
     int totalLines;
     int i;
     totalLines = countLines("calendar.txt");
@@ -171,12 +199,26 @@ date scanForEarliestAssignmentDate(void){
     char entryType[totalLines][4];
     char entrySubject[totalLines][MAX_LINE_LENGTH];
     char tempDB[totalLines][MAX_LINE_LENGTH];
-    char endDate[totalLines][MAX_LINE_LENGTH];
+    char endDate[totalLines][10];
     readSection(-1, totalLines, tempDB, "calendar.txt");
     for (i = 0; i <= totalLines; i++){
         calendarSplit(tempDB, i, entryTime, entryDuration, entryType, entrySubject, endDate);
     }
-
+    int ass = 0;
+    for (i = 0; i <= totalLines; i++){
+        if (entryType[i] == "ass"){
+            ass++;
+        }
+    }
+    int n = 0;
+    element assignmentArray[ass];
+    for (i = 0; i <= totalLines; i++){
+        if (entryType[i] == "ass"){
+            assignmentArray[n].type = 2;
+            assignmentArray[n].startDate = stringToDate(endDate[i]);
+            n++;
+        }
+    }
 }
 
 int calcWorkLoad(element newElement){
@@ -184,7 +226,7 @@ int calcWorkLoad(element newElement){
     int daysBetween = 0,
         size = 0;
     date earliestDate;
-    date latestDate;
+    //date latestDate;
     date counter = earliestDate;
     daysBetween = daysBetweenDates(newElement.startDate, newElement.endDate);
     date calendar[daysBetween];
