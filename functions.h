@@ -275,7 +275,7 @@ void scheduleEditor(int userID){
 
         if(x == 'y'){
           sprintf(newLine, "%s_%d_%d_%s", newModule.time, newModule.duration, newModule.type, newModule.subject);
-          //if(calcWorkLoad() >= 0){
+          //if(calcWorkLoad() == 1){
             callDatabase(mode, database, locOne + 1, newLine);
           //}
           //else printf("No more hours available to create module.\n");
@@ -285,18 +285,41 @@ void scheduleEditor(int userID){
     case 'e':;
     case 'E':;
       date editDate;
+      element editModule;
       char searchTerm[MAX_LINE_LENGTH], tempDb[MAX_LINE_LENGTH];
+      char stringDuration[MAX_LINE_LENGTH], stringType[MAX_LINE_LENGTH];
       printf("Choose a date from which you wish to edit a module: ");
       scanf("%d %d %d", &editDate.day, &editDate.month, &editDate.year);
       sprintf(tempTime, "%d/%d/%d", editDate.day, editDate.month, editDate.year);
 
       printf("These are the modules for the given date:\n");
-      readSection(locOne, locTwo, &tempDb, database);
+      readSection(&locOne, &locTwo, tempTime, database);
+      for(int i = 0; i < locTwo; i++){
+        printf(" %s \n", tempTime[i]);
+      }
       
-      printf("Input the time of the module that you wish to edit (HH/MM): ");
+      printf("Input the time of the module that you wish to edit (HH:MM): ");
       scanf(" %s", searchTerm);
-      lineLoc = findLineLoc(searchTerm, locOne, database);
+      int editLine = findLineLoc(searchTerm, locOne, database);
       
+      calendarSplit(tempDb, &editLine, editModule.time, stringDuration, stringType, editModule.subject);
+      stringToInt(stringDuration);
+
+      printf("Do you wish to edit the time, duration or subject? (T/D/S): ");
+      scanf(" %c", &command);
+      if(command == 't' || command 'T'){
+
+      }
+
+      else if(command == 'd' || command 'D'){
+
+      }
+
+      else if(command == 's' || command 'S'){
+
+      }
+      else printf("Invalid edit parameter");
+
       callDatabase(mode, database, lineLoc, newLine);
 
     case 'd':;
