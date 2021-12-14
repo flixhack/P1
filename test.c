@@ -2,34 +2,77 @@
 #include <stdlib.h>
 #include "dbManager.h"
 
-char searchTerm[100], blah[100], database[100] = "calendar.txt", tempDB[100][100];
-int lineLoc;
-char entryTime[100][100], entryDuration[100][100], entryType[100][4], entrySubject[100][100], endDate[100][10];
+date stringToDateConvert(char);
+
+
 
 int main() {
-    printf("Enter the searchterm: ");
-    scanf(" %s", searchTerm);
+  char databaseSelect[12] = "calendar.txt";
+  char buffer[MAX_LINE_LENGTH];
+  char str[999];
+  int count = 0;
+  int currentDate;
+  int lastestDate = 0;
 
-    findSection(searchTerm, database, &locOne, &locTwo);
-    readSection(-1, 15, tempDB, database);
-    
-    int i;
-    for (i = 0; i < 10; i++) {
-        printf("[%i] %s\n", i, tempDB[i]);
-    }
+  FILE *readFile = fopen(databaseSelect, "r");
+  FILE *writeTemp = fopen("replace.tmp", "w");
 
-    // printf("Enter the line to split: ");
-    // scanf(" %s", blah);
+  if (readFile == NULL) {
+    printf("Database file not found. Contact an administrator.");
+    exit(EXIT_FAILURE);
+  }
 
-    findLineLoc (blah, locOne, database);
+  currentDate = date;
 
+  while(fscanf(databaseSelect, "%s", str) != EOF && *currentDate != lastestDate){
+
+    //if(*currentDate > lastestDate) {
+
+
+
+    return lastestDate;
+    //}
+
+
+  }
+
+
+
+  return 0;
+}
+
+date stringToDateConvert(char string[], char separator){
+    date date;
+        int parseSwitch = 1, k;
     int k;
+    char day[2];
+    char month[2];
+    char year[4];
+    int dayNumCount = 0;
+    int monthNumCount = 0;
+    int yearNumCount = 0;
+    // char separator;
     for (k = 0; k < 10; k++) {
-    calendarSplit(tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
+        if (string[k] == 'separator') {
+            parseSwitch++;
+        }
+        else if (string[k] != 'separator' && parseSwitch == 1) {
+            day[dayNumCount] = string[k];
+            dayNumCount++;
+        }
+        else if (string[k] != 'separator' && parseSwitch == 2) {
+            month[monthNumCount] = string[k];
+            monthNumCount++;
+        }
+        else if (string[k] != 'separator' && parseSwitch == 3) {
+            year[yearNumCount] = string[k];
+            yearNumCount++;
+        }
     }
+    date.day = atoi(day);
+    date.month = atoi(month);
+    date.year = atoi(year);
 
-    int j;
-    for (j = 0; j < 10; j++) {
-    printf("[%i] entryTime: %s, entryDuration: %s, entryType: %s, entrySubject: %s, endDate: %s\n", j, entryTime[j], entryDuration[j], entryType[j], entrySubject[j], endDate[j]);
-    }
+
+    return date;
 }
