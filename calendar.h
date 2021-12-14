@@ -167,7 +167,7 @@ date stringToDate(char string[]){
     int monthNumCount = 0;
     int yearNumCount = 0;
     for (k = 0; k < 10; k++) {
-        if (string[k] == '_') {
+        if (string[k] == '-') {
             parseSwitch++;
         }
         else if (string[k] != '-' && parseSwitch == 1) {
@@ -228,6 +228,38 @@ date scanForEarliestAssignmentDate(void){
     return assignmentArray[0].startDate;
 }
 
+void deductAssignmentsFromHoursFree(calendar, size){
+    int totalLines = 0;
+    int i;
+    totalLines = countLines("calendar.txt");
+    char entryTime[totalLines][MAX_LINE_LENGTH];
+    char entryDuration[totalLines][MAX_LINE_LENGTH];
+    char entryType[totalLines][4];
+    char entrySubject[totalLines][MAX_LINE_LENGTH];
+    char tempDB[totalLines][MAX_LINE_LENGTH];
+    char endDate[totalLines][10];
+    char string[10];
+    int locOne;
+    int locTwo;
+    int i = 0;
+    int k = 0;
+    for (i = 0; i <= size; i++){
+        dateToString(calendar, i, string);
+        printf("%s", string); //TESTING
+        findSection(string, "calendar.txt", &locOne, &locTwo);
+        readSection(locOne, locTwo, tempDB, "calendar.txt");
+        for (k = 0; k <= (locTwo - locOne); k++){
+            calendarSplit (tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
+        }
+        for (k = 0; k <= (locTwo - locOne); k++){
+            int test = strcmp(entryType[k], "ass");
+            if (test == 0){
+
+            }
+        }
+    }
+}
+
 int calcWorkLoad(element newElement){
     double result = 0;
     int daysBetween = 0,
@@ -241,6 +273,7 @@ int calcWorkLoad(element newElement){
     size = (sizeof calendar) / (sizeof calendar[0]);
     populateCalendar(calendar, counter, size);
     deductModulesFromHoursFree(calendar, size);
+    deductAssignmentsFromHoursFree(calendar, size);
     printf("Calculated workload: %lf\n", result); //TESTING PURPOSES. REMEMBER TO REMOVE!
     return result;
 }
