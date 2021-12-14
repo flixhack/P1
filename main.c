@@ -15,10 +15,9 @@
 
 
 int main(void){
-    int loginVar = 0;
-    loginVar = login();
-    if (loginVar != 0){
-        readyState(loginVar);
+    login();
+    if (loginID != 0){
+        readyState();
     }
     return(0);
 }

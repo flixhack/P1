@@ -3,15 +3,15 @@
 #include <stdlib.h>
 #include "dbManager.h"
 
-void lineSplit(char [][100], int *, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH]);
+// void lineSplit(char [][100], int *, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH]);
 
 int userID = 0;
-int loginID =0;
+int loginID = 0;
 int lineLoc = 0;
-char testInput[MAX_LINE_LENGTH];
 
 
 void main() {
+  char testInput[MAX_LINE_LENGTH];
   char password[20];
   char string[100];
   char databaseSelect[100] = "users.txt";
@@ -65,22 +65,22 @@ void main() {
 
 }
 
-void lineSplit (char tempDB[][100], int *lineLoc, char userID[][MAX_LINE_LENGTH], char usernameAndPassword[][MAX_LINE_LENGTH], char loginID[][MAX_LINE_LENGTH]) {
-    int parseSwitch = 1, k;
-    //printf("\nlineSplit: [%i] %s", *lineLoc, tempDB[*lineLoc]);
-
-    for (k = 0; k < MAX_LINE_LENGTH; k++) {
-        if (tempDB[*lineLoc][k] == ';') {
-            parseSwitch++;
-        }
-        else if (tempDB[*lineLoc][k] != ';' && parseSwitch == 1) {
-            userID[*lineLoc][k] = tempDB[*lineLoc][k];
-        }
-        else if (tempDB[*lineLoc][k] != ';' && parseSwitch == 2) {
-            usernameAndPassword[*lineLoc][k - countChars(tempDB[*lineLoc], 1, ';')] = tempDB[*lineLoc][k];
-        }
-        else if (tempDB[*lineLoc][k] != ';' && parseSwitch == 3) {
-            loginID[*lineLoc][k - countChars(tempDB[*lineLoc], 2, ';')] = tempDB[*lineLoc][k];
-        }
-    }
-}
+// void lineSplit (char tempDB[][100], int *lineLoc, char userID[][MAX_LINE_LENGTH], char usernameAndPassword[][MAX_LINE_LENGTH], char loginID[][MAX_LINE_LENGTH]) {
+//     int parseSwitch = 1, k;
+//     //printf("\nlineSplit: [%i] %s", *lineLoc, tempDB[*lineLoc]);
+//
+//     for (k = 0; k < MAX_LINE_LENGTH; k++) {
+//         if (tempDB[*lineLoc][k] == ';') {
+//             parseSwitch++;
+//         }
+//         else if (tempDB[*lineLoc][k] != ';' && parseSwitch == 1) {
+//             userID[*lineLoc][k] = tempDB[*lineLoc][k];
+//         }
+//         else if (tempDB[*lineLoc][k] != ';' && parseSwitch == 2) {
+//             usernameAndPassword[*lineLoc][k - countChars(tempDB[*lineLoc], 1, ';')] = tempDB[*lineLoc][k];
+//         }
+//         else if (tempDB[*lineLoc][k] != ';' && parseSwitch == 3) {
+//             loginID[*lineLoc][k - countChars(tempDB[*lineLoc], 2, ';')] = tempDB[*lineLoc][k];
+//         }
+//     }
+// }
