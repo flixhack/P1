@@ -171,3 +171,21 @@ int stringToInt(char string[]){
     }
     return res;
 }
+
+int countLines(char *filename){                         
+    FILE *readFile = fopen(filename,"r");
+    int lines = 0;
+    int chars = 0;
+
+    if (readFile == NULL){
+        return 0;
+    }
+    lines++;
+    while ((chars = fgetc(readFile)) != EOF){
+        if (chars == '\n'){
+            lines++;
+        }
+    }
+    fclose(readFile);
+    return lines;
+}
