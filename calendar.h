@@ -1,8 +1,11 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "structs.h" //included to remove error squiggles
+#include "dbManager.h"
 #define MAX_LINE_LENGTH 100
 #define DAILY_SCHOOL_HOURS 9
+
 
 int determineLeapYear(int year){
     if ((year% 4 == 0 && year%100 != 0) || year%400 == 0){
@@ -127,6 +130,7 @@ void readDB(date calendar[], int size){
     char entryDuration[100][MAX_LINE_LENGTH];
     char entryType[100][4];
     char entrySubject[100][MAX_LINE_LENGTH];
+    char endDate[100][MAX_LINE_LENGTH];
     char string[10];
     int lineLoc;
     int locOne;
@@ -138,18 +142,50 @@ void readDB(date calendar[], int size){
         dateToString(calendar, i, string);
         printf("%s", string); //TESTING
         findSection(string, "calendar.txt", &locOne, &locTwo);
-        readSection(locOne, locTwo, tempDB[][100], "calendar.txt");
+        readSection(locOne, locTwo, tempDB, "calendar.txt");
         for (k = 0; k <= (locTwo - locOne); k++){
-            calendarSplit (tempDB[][100], k, entryTime[][MAX_LINE_LENGTH], entryDuration[][MAX_LINE_LENGTH], entryType[][4], entrySubject[][MAX_LINE_LENGTH]);
+            calendarSplit (tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
+        }
+        for (k = 0; k <= (locTwo - locOne); k++){
+            if (entryType[k] == "mod"){
+                int duration;
+                duration = stringToInt(entryDuration[k]);
+                calendar[k].hoursFree -= (duration / 60);
+            }
         }
     }
 }
 
-double calcWorkLoad(element newElement){
+date stringToDate(char string[]){
+    date date;
+    date.day = //day-month-year
+}
+
+date scanForEarliestAssignmentDate(void){
+    int run = 1;
+    int totalLines;
+    int i;
+    totalLines = countLines("calendar.txt");
+    char entryTime[totalLines][MAX_LINE_LENGTH];
+    char entryDuration[totalLines][MAX_LINE_LENGTH];
+    char entryType[totalLines][4];
+    char entrySubject[totalLines][MAX_LINE_LENGTH];
+    char tempDB[totalLines][MAX_LINE_LENGTH];
+    char endDate[totalLines][MAX_LINE_LENGTH];
+    readSection(-1, totalLines, tempDB, "calendar.txt");
+    for (i = 0; i <= totalLines; i++){
+        calendarSplit(tempDB, i, entryTime, entryDuration, entryType, entrySubject, endDate);
+    }
+
+}
+
+int calcWorkLoad(element newElement){
     double result = 0;
-    date counter = newElement.startDate;
     int daysBetween = 0,
         size = 0;
+    date earliestDate;
+    date latestDate;
+    date counter = earliestDate;
     daysBetween = daysBetweenDates(newElement.startDate, newElement.endDate);
     date calendar[daysBetween];
     printf("Size of calendar: %i\n", ((sizeof calendar)/(sizeof calendar[0])));
