@@ -46,6 +46,30 @@ int main(){
 }
 double calcWorkLoad(element);
 
+int login(void){
+    char loginScan;
+    printf("\nEnter your username (T, S, A): ");
+    scanf("%c", &loginScan);
+    switch (loginScan){
+    case 's':
+    case 'S':
+        loggedIn = 1;
+        break;
+    case 't':
+    case 'T':
+        loggedIn = 2;
+        break;
+    case 'a':
+    case 'A':
+        loggedIn = 3;
+        break;
+    default:
+        break;
+    }
+    printf("\nYou are logged in as %d", loggedIn );
+    return(loggedIn);
+}
+
 void readyState(int loginID){
     char command;
     while (loginID != 0) {
