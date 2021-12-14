@@ -202,13 +202,13 @@ void printSchedule (int loginID){
 }
 
 void scheduleEditor(int userID){
-  char mode;
+  char mode, x;
   char database[MAX_LINE_LENGTH] = "calendar.txt", tempTime[MAX_LINE_LENGTH];
   char endTime[MAX_LINE_LENGTH], newLine[MAX_LINE_LENGTH];
   int run = 1, lineLoc = 0;
   char command;
   while (run == 1){
-    printf("Create a module, Edit a module, delete a module or go back? (C/E/D/B): ");
+    printf("\nCreate a module, Edit a module, delete a module or go back? (C/E/D/B): ");
     scanf(" %c", &command);
     mode = command;
     switch (command)
@@ -225,7 +225,7 @@ void scheduleEditor(int userID){
 
         findSection(tempTime, database, &locOne, &locTwo);
 
-        if (&locTwo == -1){
+        if (locTwo == -1){
           locTwo = countLines(database);
           callDatabase(mode, database, locTwo, tempTime);
           sprintf(endTime, "%s_END", tempTime);
@@ -236,15 +236,21 @@ void scheduleEditor(int userID){
         
         printf("Insert the starting time (Hours:Minutes), duration (in minutes) and module: ");
 
-        scanf("%d %d %s", &newModule.time, &newModule.duration, newModule.subject);
+        scanf("%s %d %s", &newModule.time, &newModule.duration, newModule.subject);
         
         printf("Is this module correct? (y/n)\n\n");
-        printf("Module: %s Date: %d/%d/%d   Duration: %d   Time: %d\n", newModule.subject, newDate.day, newDate.month, newDate.year, newModule.duration, newModule.time);
-        
-        sprintf(newLine, "%s_%d_%d_%s", newModule.time, newModule.duration, newModule.type, newModule.subject);
-        
-        callDatabase(mode, database, locOne + 1, newLine);
-        break;
+        printf("Module: %s Date: %d/%d/%d   Duration: %d   Time: %s\n", newModule.subject, newDate.day, newDate.month, newDate.year, newModule.duration, newModule.time);
+        scanf(" %c", &x);
+
+        if(x == 'y'){
+          sprintf(newLine, "%s_%d_%d_%s", newModule.time, newModule.duration, newModule.type, newModule.subject);
+          //if(calcWorkLoad() >= 0){
+            callDatabase(mode, database, locOne + 1, newLine);
+          //}
+          //else printf("No more hours available to create module.\n");
+          break;
+        }
+        else break;
     case 'e':;
     case 'E':;
       date editDate;
