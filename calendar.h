@@ -196,9 +196,8 @@ date scanForEarliestAssignmentDate(void){
     int i;
     char tempDB[100][MAX_LINE_LENGTH];
     char entryTime[100][100], entryDuration[100][100], entryType[100][4], entrySubject[100][100], endDate[100][10];
-    char lol[100] = "calendar.txt";
 
-    readSection(-1, 15, tempDB, lol);
+    readSection(-1, 15, tempDB, "calendar.txt");
     for (i = 0; i < 15; i++) {
         printf("[%i] %s\n", i, tempDB[i]);
     }
@@ -214,7 +213,65 @@ date scanForEarliestAssignmentDate(void){
     }
 }
 
-void deductAssignmentsFromHoursFree(date calendar[], int size){
+int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryType[], char entryDuration[], char endDate[]){
+    int k;
+    int j;
+    int daysBetween;
+    int fitsEasy = 0;
+    date compareDateStart;
+    double averageTime;
+    double durationDouble = (stringToInt(entryDuration[k]) / 60);
+    for (k = 0; k <= (locTwo - locOne); k++){
+        int test = strcmp(entryType[k], "ass");
+        if (test == 0){
+            compareDateStart = stringToDate(endDate[k], '-');
+            //calendar[i] er vores compareDateEnd
+            daysBetween = daysBetweenDates(compareDateStart, calendar[i]);
+            averageTime = ((stringToInt(entryDuration[k]) / 60) / daysBetween);
+            printf("Average time: %lf", averageTime); //TESTING ONLY
+            fitsEasy = 1;
+            for (j = (i - daysBetween); j <= (i + daysBetween) && fitsEasy != 0; j++){
+                printf("Day is %i/%i/%i\n", calendar[j].day, calendar[j].month, calendar[j].year);
+                if (calendar[j].hoursFree < averageTime){
+                    fitsEasy = 0;
+                    printf("Doesn't fit easy\n");
+                }
+            }
+            if (fitsEasy == 1){
+                printf("Fits easy\n");
+                for (j = (i - daysBetween); j <= (i + daysBetween); j++){
+                    calendar[j].hoursFree -= averageTime;
+                }
+            }
+            else {
+                double accumulator = 0.0;
+                for (j = (i - daysBetween); j <= (i + daysBetween); j++){
+                    accumulator += calendar[j].hoursFree;
+                }
+                durationDouble = (stringToInt(entryDuration[k]) / 60);
+                if (accumulator >= durationDouble){
+                    printf("Fits\n");
+                    for (j = (i - daysBetween); j <= (i + daysBetween); j++){
+                        durationDouble -= calendar[j].hoursFree;
+                        if (durationDouble < 0){
+                            calendar[j].hoursFree = (durationDouble * -1);
+                        }
+                        else {
+                            calendar[j].hoursFree = 0;
+                        }
+                    }
+                }
+                else {
+                    printf("Doesn't fit\n");
+                    return 0
+                }
+            }
+        }
+    }
+    return 1;
+}
+
+int deductAssignmentsFromHoursFree(date calendar[], int size){
     int totalLines = 0;
     totalLines = countLines("calendar.txt");
     char entryTime[totalLines][MAX_LINE_LENGTH];
@@ -228,10 +285,7 @@ void deductAssignmentsFromHoursFree(date calendar[], int size){
     int locTwo;
     int i = 0;
     int k = 0;
-    date compareDateStart;
-    //date compareDateEnd;
-    int daysBetween;
-    double averageTime;
+    int returnValue;
     for (i = 0; i <= size; i++){
         dateToString(calendar, i, string);
         printf("%s", string); //TESTING
@@ -240,17 +294,9 @@ void deductAssignmentsFromHoursFree(date calendar[], int size){
         for (k = 0; k <= (locTwo - locOne); k++){
             calendarSplit (tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
         }
-        for (k = 0; k <= (locTwo - locOne); k++){
-            int test = strcmp(entryType[k], "ass");
-            if (test == 0){
-                compareDateStart = stringToDate(endDate[k], '-');
-                //calendar[i] er vores compareDateEnd
-                daysBetween = daysBetweenDates(compareDateStart, calendar[i]);
-                averageTime = ((stringToInt(entryDuration[k]) / 60) / daysBetween);
-                printf("Average time: %lf", averageTime); //TESTING ONLY
-            }
-        }
+        returnValue = calcAssignmentWorkLoad(i, calendar, size, entryType, entryDuration, endDate);
     }
+    return returnValue;
 }
 
 int calcWorkLoad(element newElement){
@@ -266,7 +312,7 @@ int calcWorkLoad(element newElement){
     size = (sizeof calendar) / (sizeof calendar[0]);
     populateCalendar(calendar, counter, size);
     deductModulesFromHoursFree(calendar, size);
-    deductAssignmentsFromHoursFree(calendar, size);
+    result = deductAssignmentsFromHoursFree(calendar, size);
     printf("Calculated workload: %lf\n", result); //TESTING PURPOSES. REMEMBER TO REMOVE!
     return result;
 }
