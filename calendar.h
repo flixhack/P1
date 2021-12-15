@@ -251,7 +251,7 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
                 for (j = (i - daysBetween); j <= (i + daysBetween); j++){
                     accumulator += calendar[j].hoursFree;
                 }
-                durationDouble = (stringToInt(entryDuration[k]) / 60);
+                durationDouble = (stringToInt(entryDuration[k]) / 60.0);
                 if (accumulator >= durationDouble){
                     printf("Fits\n");
                     for (j = (i - daysBetween); j <= (i + daysBetween); j++){
@@ -302,10 +302,17 @@ int deductAssignmentsFromHoursFree(date calendar[], int size){
     return returnValue;
 }
 
+void createAssignmentArray(){
+    int test = strcmp(entryType[k], "ass");
+    if (test == 0)
+}
+
 int calcWorkLoad(element newElement){
     double result = 0;
     int daysBetween = 0,
         size = 0;
+    int totalLines = countLines("calendar.txt");
+    
     date earliestDate;
     //date latestDate;
     date counter = earliestDate;
