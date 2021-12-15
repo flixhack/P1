@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "structs.h"
 #define MAX_LINE_LENGTH 100
 
 void databaseEdit(char *, int *, char *, char *);
@@ -9,6 +10,7 @@ void readSection(int, int, char [][100], char *);
 int findLineLoc(char *, int, char *);
 void calendarSplit(char [][100], int, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][4], char [][MAX_LINE_LENGTH], char [][10]);
 int countChars(char *, int, char);
+date findLatestDate(char *, char [][100]);
 
 int locOne = 0, locTwo = 0;
 
@@ -210,4 +212,50 @@ int countLines(char *filename){
     }
     fclose(readFile);
     return lines;
+}
+
+//returns 1 if the char "searchTerm" is present in the given string. Otherwise returns 0.
+int containsChar(char string[], char searchTerm) {
+    int isPresent = 0, i;
+
+    for(i = 0; i < MAX_LINE_LENGTH; i++) {
+        if (string[i] == searchTerm) {
+            isPresent = 1;
+        }
+    }
+    return isPresent;
+}
+
+date findLatestDate(char databaseSelect[], char tempDB[][100]) {
+
+    date output;
+
+    FILE *readFile = fopen(databaseSelect, "r");
+    if (readFile == NULL){
+        printf("Database file not found. Contact an administrator\n");
+        exit(EXIT_FAILURE);
+    }
+    int i;
+    char entryDay[100][100], entryMonth[100][100], entryYear[100][100];
+    int lineCount = countLines(databaseSelect);
+
+    readSection(-1, lineCount, tempDB, "calendar.txt");
+
+    for (i = 0; i < lineCount; i++) {
+    calendarDateSplit(tempDB, i, entryDay, entryMonth, entryYear);
+    }
+
+    int latestDate = 0, j;
+    for (j = 0; j < lineCount; j++) {
+        if (containsChar(tempDB[j], '/') == 1) {
+            if (stringToInt(entryYear[j]) * 10000 + stringToInt(entryMonth[j]) * 100 + stringToInt(entryDay[j]) > latestDate) {
+                latestDate = (stringToInt(entryYear[j]) * 10000) + (stringToInt(entryMonth[j]) * 100) + stringToInt(entryDay[j]);
+                output.day = stringToInt(entryDay[j]);
+                output.month = stringToInt(entryMonth[j]);
+                output.year = stringToInt(entryYear[j]);
+                printf("latestDate: %i, entryDay: %s\n", latestDate, entryDay[j]);
+            }
+        }
+    }
+    return output;
 }
