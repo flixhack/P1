@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "functions.h"
-#include "structs.h"
 #include "dbManager.h"
 #define DAILY_SCHOOL_HOURS 9
 
@@ -213,21 +212,22 @@ date scanForEarliestAssignmentDate(void){
     }
 }
 
-int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryType[], char entryDuration[], char endDate[]){
+int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryType[][4], char entryDuration[][MAX_LINE_LENGTH], char endDate[][10]){
     int k;
     int j;
     int daysBetween;
     int fitsEasy = 0;
     date compareDateStart;
     double averageTime;
-    double durationDouble = (stringToInt(entryDuration[k]) / 60);
+    double durationDouble;
     for (k = 0; k <= (locTwo - locOne); k++){
         int test = strcmp(entryType[k], "ass");
         if (test == 0){
             compareDateStart = stringToDate(endDate[k], '-');
             //calendar[i] er vores compareDateEnd
+            durationDouble = (atoi(entryDuration[k])) / 60.0;
             daysBetween = daysBetweenDates(compareDateStart, calendar[i]);
-            averageTime = ((stringToInt(entryDuration[k]) / 60) / daysBetween);
+            averageTime = (durationDouble / daysBetween);
             printf("Average time: %lf", averageTime); //TESTING ONLY
             fitsEasy = 1;
             for (j = (i - daysBetween); j <= (i + daysBetween) && fitsEasy != 0; j++){
@@ -263,7 +263,7 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
                 }
                 else {
                     printf("Doesn't fit\n");
-                    return 0
+                    return 0;
                 }
             }
         }
