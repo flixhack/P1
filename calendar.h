@@ -87,11 +87,14 @@ void populateCalendar(date calendar[], date startDate, int size){
     date counter = startDate;
     int run = 1;
     while (run == 1){
+        printf("Counter date: %i/%i/%i\n", counter.day, counter.month, counter.year);
+        printf("startdate: %i/%i/%i\n", startDate.day, startDate.month, startDate.year);
         int daysInCurrentMonth = daysInMonth(counter.month, counter.year);
         printf("Days in current month: %i\n", daysInCurrentMonth);
         printf("counter.day: %i\n", counter.day);
         printf("i: %i\n", i);
         printf("Size of calendar: %i\n", (size));
+        run = 0;
         while (counter.day <= daysInCurrentMonth && i != (size)){
             calendar[i].year = counter.year;
             calendar[i].month = counter.month;
@@ -306,6 +309,7 @@ int calcWorkLoad(element newElement){
     date earliestDate;
     //date latestDate;
     date counter = earliestDate;
+    printf("newElement.startDate: %i/%i/%i\n", newElement.startDate.day, newElement.startDate.month, newElement.startDate.year);
     daysBetween = daysBetweenDates(newElement.startDate, newElement.endDate);
     date calendar[daysBetween];
     printf("Size of calendar: %i\n", ((sizeof calendar)/(sizeof calendar[0])));
