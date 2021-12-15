@@ -122,10 +122,6 @@ void dateToString(date calendar[], int i, char string[]){
     printf("Day: %i\n", calendar[i].day); //TESTING
 }
 
-void calcHoursFree(date calendar[]){
-
-}
-
 void deductModulesFromHoursFree(date calendar[], int size){
     char tempDB[100][MAX_LINE_LENGTH];
     char entryTime[100][MAX_LINE_LENGTH];
@@ -302,22 +298,15 @@ int deductAssignmentsFromHoursFree(date calendar[], int size){
     return returnValue;
 }
 
-void createAssignmentArray(){
-    int test = strcmp(entryType[k], "ass");
-    if (test == 0)
-}
-
 int calcWorkLoad(element newElement){
     double result = 0;
     int daysBetween = 0,
         size = 0;
-    int totalLines = countLines("calendar.txt");
-    
-    date earliestDate;
-    //date latestDate;
+    date earliestDate = scanForEarliestAssignmentDate;
+    date latestDate = findLatestDate;
     date counter = earliestDate;
     printf("newElement.startDate: %i/%i/%i\n", newElement.startDate.day, newElement.startDate.month, newElement.startDate.year);
-    daysBetween = daysBetweenDates(newElement.startDate, newElement.endDate);
+    daysBetween = daysBetweenDates(earliestDate, latestDate);
     date calendar[daysBetween];
     printf("Size of calendar: %i\n", ((sizeof calendar)/(sizeof calendar[0])));
     size = (sizeof calendar) / (sizeof calendar[0]);
