@@ -103,13 +103,11 @@ void populateCalendar(date calendar[], date startDate, int size){
             counter.day++;
             printf("Populated one element with a date\n"); //TESTING
         }
+        counter.month++;
         counter.day = 1;
-        if (counter.month == 12){
+        if (counter.month == 13){
             counter.month = 1;
             counter.year++;
-        }
-        else {
-            counter.month++;
         }
         if (i == size){
             run = 0;
@@ -131,8 +129,6 @@ void deductModulesFromHoursFree(date calendar[], int size){
     char endDate[100][10];
     char string[10];
     //int lineLoc;
-    int locOne;
-    int locTwo;
     int i = 0;
     int k = 0;
     for (i = 0; i <= size; i++){
@@ -155,16 +151,15 @@ void deductModulesFromHoursFree(date calendar[], int size){
     }
 }
 
-date stringToDate(char string[], char separator){
+date stringToDate(char string[], char separator){ //Doesn't fully work
     date date;
         int parseSwitch = 1, k;
-    char day[2];
-    char month[2];
-    char year[4];
+    char day[3];
+    char month[3];
+    char year[5];
     int dayNumCount = 0;
     int monthNumCount = 0;
     int yearNumCount = 0;
-    // char separator;
     for (k = 0; k < 10; k++) {
         if (string[k] == separator) {
             parseSwitch++;
@@ -185,30 +180,49 @@ date stringToDate(char string[], char separator){
     date.day = atoi(day);
     date.month = atoi(month);
     date.year = atoi(year);
+    printf("%i/%i/%i\n",date.day, date.month, date.year);
+    printf("month[]: %s\n", month);
 
 
     return date;
 }
 
-date scanForEarliestAssignmentDate(void){
+date scanForEarliestAssignmentDate(char databaseSelect[]){
+    date earliestAssDate;
+    FILE *readFile = fopen(databaseSelect, "r");
+    if (readFile == NULL){
+        printf("Database file not found. Contact an administrator\n");
+        exit(EXIT_FAILURE);
+    }
     int i;
     char tempDB[100][MAX_LINE_LENGTH];
     char entryTime[100][100], entryDuration[100][100], entryType[100][4], entrySubject[100][100], endDate[100][10];
 
-    readSection(-1, 15, tempDB, "calendar.txt");
-    for (i = 0; i < 15; i++) {
+    int lineCount = countLines(databaseSelect);
+
+    readSection(-1, lineCount, tempDB, databaseSelect);
+    for (i = 0; i < lineCount; i++) {
         printf("[%i] %s\n", i, tempDB[i]);
     }
-
     int k;
-    for (k = 0; k < 15; k++) {
+    for (k = 0; k < lineCount + 1; k++) {
         calendarSplit(tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
     }
-    
     int j;
-    for (j = 0; j < 15; j++) {
-        printf("[%i] entryTime: %s, entryDuration: %s, entryType: %s, entrySubject: %s, endDate: %s\n", j, entryTime[j], entryDuration[j], entryType[j], entrySubject[j], endDate[j]);
+    int earliestDate = 100000000;
+    for (j = 0; j < lineCount + 1; j++){
+        if (containsChar(tempDB[j], '-') == 1) {
+            date tempDate = stringToDate(endDate[j], '-');
+            if (tempDate.year * 10000 + tempDate.month * 100 + tempDate.day < earliestDate) {
+                earliestDate = tempDate.year * 10000 + tempDate.month * 100 + tempDate.day;
+                earliestAssDate.day = tempDate.day;
+                earliestAssDate.month = tempDate.month;
+                earliestAssDate.year = tempDate.year;
+                printf("earliestDate: %i, entryDay: %i, entryMonth: %i, entryYear: %i\n", earliestDate, tempDate.day, tempDate.month, tempDate.year);
+            }
+        }
     }
+    return earliestAssDate;
 }
 
 int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryType[][4], char entryDuration[][MAX_LINE_LENGTH], char endDate[][10]){
@@ -280,8 +294,6 @@ int deductAssignmentsFromHoursFree(date calendar[], int size){
     char tempDB[totalLines][MAX_LINE_LENGTH];
     char endDate[totalLines][10];
     char string[10];
-    int locOne;
-    int locTwo;
     int i = 0;
     int k = 0;
     int returnValue;
@@ -302,10 +314,14 @@ int calcWorkLoad(element newElement){
     double result = 0;
     int daysBetween = 0,
         size = 0;
-    date earliestDate = scanForEarliestAssignmentDate;
-    date latestDate = findLatestDate;
+    date earliestDate;
+    earliestDate = scanForEarliestAssignmentDate("calendar.txt");
+    date latestDate;
+    latestDate = findLatestDate("calendar.txt");
+    printf("Latest date: %i/%i/%i\n", latestDate.day, latestDate.month, latestDate.year);
     date counter = earliestDate;
-    printf("newElement.startDate: %i/%i/%i\n", newElement.startDate.day, newElement.startDate.month, newElement.startDate.year);
+    printf("Earliest date: %i/%i/%i\n", earliestDate.day, earliestDate.month, earliestDate.year);
+    //printf("newElement.startDate: %i/%i/%i\n", newElement.startDate.day, newElement.startDate.month, newElement.startDate.year);
     daysBetween = daysBetweenDates(earliestDate, latestDate);
     date calendar[daysBetween];
     printf("Size of calendar: %i\n", ((sizeof calendar)/(sizeof calendar[0])));

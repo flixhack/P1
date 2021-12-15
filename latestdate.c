@@ -42,5 +42,4 @@ void findLatestDate(char databaseSelect[], char tempDB[][100]) {
             output.year = stringToInt(entryYear[j]);
         }
     }
-
 }

@@ -10,7 +10,7 @@ void readSection(int, int, char [][100], char *);
 int findLineLoc(char *, int, char *);
 void calendarSplit(char [][100], int, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][4], char [][MAX_LINE_LENGTH], char [][10]);
 int countChars(char *, int, char);
-date findLatestDate(char *, char [][100]);
+date findLatestDate(char *);
 
 int locOne = 0, locTwo = 0;
 
@@ -226,8 +226,10 @@ int containsChar(char string[], char searchTerm) {
     return isPresent;
 }
 
-date findLatestDate(char databaseSelect[], char tempDB[][100]) {
-
+date findLatestDate(char databaseSelect[]) {
+    int totalLines;
+    totalLines = countLines(databaseSelect);
+    char tempDB[totalLines][100];
     date output;
 
     FILE *readFile = fopen(databaseSelect, "r");
@@ -253,7 +255,6 @@ date findLatestDate(char databaseSelect[], char tempDB[][100]) {
                 output.day = stringToInt(entryDay[j]);
                 output.month = stringToInt(entryMonth[j]);
                 output.year = stringToInt(entryYear[j]);
-                printf("latestDate: %i, entryDay: %s\n", latestDate, entryDay[j]);
             }
         }
     }
