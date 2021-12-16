@@ -4,7 +4,6 @@
 #include "dbManager.h"
 #include "structs.h"
 
-
 enum types {mod = 1, ass}; typedef enum role role;
 
 
@@ -20,7 +19,7 @@ void readyState(),
      assignmentEditor(int),
      login();
 
-int loggedIn = 0;
+void login();
 
 int userID = 0;
 int loginID = 0;
@@ -30,14 +29,39 @@ int lineLoc = 0;
 void calcWorkLoad();
 
 
-
-
 void printSchedule (){
 
 }
 
 void calcWorkLoad(){
 
+}
+
+
+int readTime(void){
+    int n1 = 0;
+    int n2 = 0;
+    char col;
+    scanf(" %i", &n1);
+    scanf("%c", &col);
+    if (col != ':'){
+        return 0;
+    }
+    else if (n1 > 24 || n1 < 0){
+        return 0;
+    }
+    else {
+        scanf("%i", &n2);
+    }
+    if (n2 > 60 || n2 < 0){
+        return 0;
+    }
+    else if (n1 == 0 && n2 == 0){
+      return 2400;  // since 0 is the error value, a time  of 00:00  will instead be read as 24:00.
+    }
+    else {
+        return n2 + n1 * 100;
+    }
 }
 
 int readTime(void){
