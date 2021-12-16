@@ -100,7 +100,7 @@ void findSection (char testInput[], char databaseSelect[], int *locOne, int *loc
 
 /*This function can read the lines between locOne and locTwo and store them to the tempDB array.
   In the tempDB */
-void readSection(int locOne, int locTwo, char tempDB[][100], char databaseSelect[]) {
+void readSection(int locOne, int locTwo, char tempDB[][MAX_LINE_LENGTH], char databaseSelect[]) {
     //If statement uses the location variables assigned earlier (locOne and locTwo) to only store the necesarry text
     int lineCount = 0, bytes = 0;
     char string[MAX_LINE_LENGTH];
@@ -217,8 +217,10 @@ int countLines(char *filename){
 //returns 1 if the char "searchTerm" is present in the given string. Otherwise returns 0.
 int containsChar(char string[], char searchTerm) {
     int isPresent = 0, i;
+    int stringLength;
+    stringLength = strlen(string);
 
-    for(i = 0; i < MAX_LINE_LENGTH; i++) {
+    for(i = 0; i < stringLength; i++) {
         if (string[i] == searchTerm) {
             isPresent = 1;
         }

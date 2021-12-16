@@ -87,20 +87,20 @@ void populateCalendar(date calendar[], date startDate, int size){
     date counter = startDate;
     int run = 1;
     while (run == 1){
-        printf("Counter date: %i/%i/%i\n", counter.day, counter.month, counter.year);
-        printf("startdate: %i/%i/%i\n", startDate.day, startDate.month, startDate.year);
+        // printf("Counter date: %i/%i/%i\n", counter.day, counter.month, counter.year);
+        // printf("startdate: %i/%i/%i\n", startDate.day, startDate.month, startDate.year);
         int daysInCurrentMonth = daysInMonth(counter.month, counter.year);
-        printf("Days in current month: %i\n", daysInCurrentMonth);
-        printf("counter.day: %i\n", counter.day);
-        printf("i: %i\n", i);
-        printf("Size of calendar: %i\n", (size));
+        // printf("Days in current month: %i\n", daysInCurrentMonth);
+        // printf("counter.day: %i\n", counter.day);
+        // printf("i: %i\n", i);
+        //printf("Size of calendar: %i\n", (size));
         while (counter.day <= daysInCurrentMonth && i != (size)){
             calendar[i].year = counter.year;
             calendar[i].month = counter.month;
             calendar[i].day = counter.day;
             i++;
             counter.day++;
-            printf("Populated one element with a date\n"); //TESTING
+            //printf("Populated one element with a date\n"); //TESTING
         }
         counter.month++;
         counter.day = 1;
@@ -115,17 +115,19 @@ void populateCalendar(date calendar[], date startDate, int size){
 }
 
 void dateToString(date calendar[], int i, char string[]){
-    sprintf(string, "%i/%i/%i\n", calendar[i].day, calendar[i].month, calendar[i].year);
-    printf("Day: %i\n", calendar[i].day); //TESTING
+    sprintf(string, "%i/%i/%i", calendar[i].day, calendar[i].month, calendar[i].year);
+    //printf("Day: %i\n", calendar[i].day); //TESTING
 }
 
 void deductModulesFromHoursFree(date calendar[], int size){
-    char tempDB[100][MAX_LINE_LENGTH];
-    char entryTime[100][MAX_LINE_LENGTH];
-    char entryDuration[100][MAX_LINE_LENGTH];
-    char entryType[100][4];
-    char entrySubject[100][MAX_LINE_LENGTH];
-    char endDate[100][10];
+    int totalLines;
+    totalLines = countLines("calendar.txt");
+    char tempDB[totalLines][MAX_LINE_LENGTH];
+    char entryTime[totalLines][MAX_LINE_LENGTH];
+    char entryDuration[totalLines][MAX_LINE_LENGTH];
+    char entryType[totalLines][4];
+    char entrySubject[totalLines][MAX_LINE_LENGTH];
+    char endDate[totalLines][10];
     char string[10];
     //int lineLoc;
     int i = 0;
@@ -133,18 +135,26 @@ void deductModulesFromHoursFree(date calendar[], int size){
     for (i = 0; i < size; i++){
         calendar[i].hoursFree = DAILY_SCHOOL_HOURS;
         dateToString(calendar, i, string);
-        printf("%s", string); //TESTING
+        printf("%s\n", string); //TESTING
         findSection(string, "calendar.txt", &locOne, &locTwo);
+        printf("locOne: %i  locTwo: %i\n", locOne, locTwo);
         readSection(locOne, locTwo, tempDB, "calendar.txt");
-        for (k = 0; k <= (locTwo - locOne); k++){
-            calendarSplit (tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
-        }
-        for (k = 0; k <= (locTwo - locOne); k++){
-            int test = strcmp(entryType[k], "mod");
-            if (test == 0){
-                int duration;
-                duration = stringToInt(entryDuration[k]);
-                calendar[k].hoursFree -= (duration / 60);
+        if (locTwo + locOne != 0){
+            for (k = 0; k <= (locTwo - locOne); k++){
+                calendarSplit (tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
+            }
+        
+            for (k = 0; k <= (locTwo - locOne); k++){
+                int test = strcmp(entryType[k], "mod");
+                if (test == 0){
+                    int duration;
+                    duration = atoi(entryDuration[k]);
+                    printf("entryDuration: %s\n", entryDuration[k]);
+
+                    calendar[i].hoursFree -= ((duration + 0.0) / 60.0);
+                    printf("Hours: %lf\n", ((duration + 0.0) / 60.0));
+                    printf("hoursFree efter deduktion af moduler: %lf\n", calendar[i].hoursFree);
+                }
             }
         }
     }
@@ -190,7 +200,7 @@ date stringToDate(char string[], char separator){ //Doesn't fully work
     date.day = stringToInt(day);
     date.month = stringToInt(month);
     date.year = stringToInt(year);
-    printf("%i/%i/%i\n",date.day, date.month, date.year);
+    //printf("%i/%i/%i\n",date.day, date.month, date.year);
     printf("month[]: %s\n", month);
 
 
@@ -311,7 +321,7 @@ int deductAssignmentsFromHoursFree(date calendar[], int size){
     int returnValue;
     for (i = 0; i < size; i++){
         dateToString(calendar, i, string);
-        printf("%s", string); //TESTING
+        //printf("%s", string); //TESTING
         findSection(string, "calendar.txt", &locOne, &locTwo);
         readSection(locOne, locTwo, tempDB, "calendar.txt");
         for (k = 0; k <= (locTwo - locOne); k++){
@@ -345,10 +355,10 @@ int calcWorkLoad(element newElement){
     printf("\nPopulating calendar...\n");
     populateCalendar(calendar, counter, size);
     //------------
-    int i = 0;
-    for (i=0; i < daysBetween; i++){
-        printf("Day is %i/%i/%i\n", calendar[i].day, calendar[i].month, calendar[i].year);
-    }
+    // int i = 0;
+    // for (i=0; i < daysBetween; i++){
+    //     printf("Day is %i/%i/%i\n", calendar[i].day, calendar[i].month, calendar[i].year);
+    // }
     //------------
     printf("\nDeducting modules from hoursFree, after setting hoursFree to the given daily hours...\n");
     deductModulesFromHoursFree(calendar, size);
