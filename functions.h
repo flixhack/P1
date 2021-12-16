@@ -17,52 +17,12 @@ void readyState(),
      printAssignments(int),
      callDatabase(char, char*, int, char*),
      assignmentEditor(int),
-     login();
-
-void login();
+     login(),
+     lineSplit();
 
 int userID = 0;
 int loginID = 0;
 int lineLoc = 0;
-
-
-void calcWorkLoad();
-
-
-void printSchedule (){
-
-}
-
-void calcWorkLoad(){
-
-}
-
-
-int readTime(void){
-    int n1 = 0;
-    int n2 = 0;
-    char col;
-    scanf(" %i", &n1);
-    scanf("%c", &col);
-    if (col != ':'){
-        return 0;
-    }
-    else if (n1 > 24 || n1 < 0){
-        return 0;
-    }
-    else {
-        scanf("%i", &n2);
-    }
-    if (n2 > 60 || n2 < 0){
-        return 0;
-    }
-    else if (n1 == 0 && n2 == 0){
-      return 2400;  // since 0 is the error value, a time  of 00:00  will instead be read as 24:00.
-    }
-    else {
-        return n2 + n1 * 100;
-    }
-}
 
 int readTime(void){
     int n1 = 0;
@@ -288,7 +248,7 @@ void printAssignments(int LoginID){
 void assignmentEditor(int LoginID){
   int run = 1;
   char mode, command, editCondition;
-  char database[MAX_LINE_LENGTH] = "calendar.txt", tempTime[MAX_LINE_LENGTH];
+  char database[MAX_LINE_LENGTH] = "calendar.txt", tempDate[MAX_LINE_LENGTH];
   char endTime[MAX_LINE_LENGTH], newLine[MAX_LINE_LENGTH];
   time_t current = time(NULL);
   struct tm tm = *localtime(&current);
@@ -300,34 +260,39 @@ void assignmentEditor(int LoginID){
     {
     case 'c':;
     case 'C':;
-      date newDate;
+      date handIn;
+      date handOut;
       element newAssignment;
-      newAssignment.date = newDate;
+      handOut.day = tm.tm_mday;
+      handOut.month = tm.tm_mon + 1;
+      handOut.year = tm.tm_year + 1900;
+      newAssignment.endDate = handIn;
+      newAssignment.startDate = handOut;
       newAssignment.type = 2;
         printf("Insert a day (DD), month (MM) and a year (YYYY) for the assignment to take place: ");
-        scanf("%d %d %d", &newDate.day, &newDate.month, &newDate.year);
-        sprintf(tempTime, "%d/%d/%d", newDate.day, newDate.month, newDate.year);
-        if(newDate.year < (tm.tm_year + 1900)){
+        scanf("%d %d %d", &handIn.day, &handIn.month, &handIn.year);
+        sprintf(tempDate, "%d/%d/%d", handIn.day, handIn.month, handIn.year);
+        if(handIn.year < (tm.tm_year + 1900)){
           printf("Can't make an assignment in the past.");
           break;
         }
-        if(newDate.month < (tm.tm_mon + 1) && newDate.year == (tm.tm_year + 1900)){
+        if(handIn.month < (tm.tm_mon + 1) && handIn.year == (tm.tm_year + 1900)){
           printf("Can't make an assignment in the past.");
           break;
         }
-        if (newDate.day < (tm.tm_mday) && newDate.month == (tm.tm_mon + 1) && newDate.year == (tm.tm_year + 1900)){
+        if (handIn.day < (tm.tm_mday) && handIn.month == (tm.tm_mon + 1) && handIn.year == (tm.tm_year + 1900)){
           printf("Can't make an assignment in the past.");
           break;
         }
-        else findSection(tempTime, database, &locOne, &locTwo);
+        else findSection(tempDate, database, &locOne, &locTwo);
 
         if(locTwo == 0){
           printf("Date not found, creating new date in database.\n");
-          callDatabase(mode, database, locTwo + 1, tempTime);
-          sprintf(endTime, "%s_END", tempTime);
+          callDatabase(mode, database, locTwo + 1, tempDate);
+          sprintf(endTime, "%s_END", tempDate);
           callDatabase(mode, database, locTwo + 2, endTime);
           locTwo = 0;
-          findSection(tempTime, database, &locOne, &locTwo);
+          findSection(tempDate, database, &locOne, &locTwo);
         }
         
         printf("Insert the starting time (Hours:Minutes), duration (in minutes) and subject: ");
@@ -335,7 +300,7 @@ void assignmentEditor(int LoginID){
         scanf("%s %d %s", newAssignment.time, &newAssignment.duration, newAssignment.subject);
         
         printf("Is this assignment correct? (y/n)\n\n");
-        printf("Subject: %s Date: %d/%d/%d   Duration: %d   Time: %s\n", newAssignment.subject, newDate.day, newDate.month, newDate.year, newAssignment.duration, newAssignment.time);
+        printf("Subject: %s Date: %d/%d/%d   Duration: %d   Time: %s\n", newAssignment.subject, handIn.day, handIn.month, handIn.year, newAssignment.duration, newAssignment.time);
         scanf(" %c", &editCondition);
 
         if(editCondition == 'y'){
@@ -360,8 +325,8 @@ void assignmentEditor(int LoginID){
       printf("Choose a date from which you wish to edit an assignment: ");
       scanf("%d %d %d", &editDate.day, &editDate.month, &editDate.year);
       editAssignment.date = editDate;
-      sprintf(tempTime, "%d/%d/%d", editDate.day, editDate.month, editDate.year);
-      findSection(tempTime, database, &locOne, &locTwo);
+      sprintf(tempDate, "%d/%d/%d", editDate.day, editDate.month, editDate.year);
+      findSection(tempDate, database, &locOne, &locTwo);
       if(locTwo == 0){
         printf("There is nothing listed under the given date");
       }
@@ -500,7 +465,7 @@ void scheduleEditor(int userID){
     case 'C':;
       date newDate;
       element newModule;
-      newModule.date = newDate;
+      newModule.endDate = newDate;
       newModule.type = 1;
         printf("Insert a day (DD), month (MM) and a year (YYYY) for the module to take place: ");
         scanf("%d %d %d", &newDate.day, &newDate.month, &newDate.year);

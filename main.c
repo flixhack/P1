@@ -2,9 +2,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include "functions.h"
-// #include "calendar.h"
-// int loggedIn = 0; //needs to go
-
 // void readyState(int),
 //      findCommand(char),
 //      assignments(),
