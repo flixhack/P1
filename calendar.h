@@ -94,7 +94,6 @@ void populateCalendar(date calendar[], date startDate, int size){
         printf("counter.day: %i\n", counter.day);
         printf("i: %i\n", i);
         printf("Size of calendar: %i\n", (size));
-        run = 0;
         while (counter.day <= daysInCurrentMonth && i != (size)){
             calendar[i].year = counter.year;
             calendar[i].month = counter.month;
@@ -131,7 +130,7 @@ void deductModulesFromHoursFree(date calendar[], int size){
     //int lineLoc;
     int i = 0;
     int k = 0;
-    for (i = 0; i <= size; i++){
+    for (i = 0; i < size; i++){
         calendar[i].hoursFree = DAILY_SCHOOL_HOURS;
         dateToString(calendar, i, string);
         printf("%s", string); //TESTING
@@ -297,7 +296,7 @@ int deductAssignmentsFromHoursFree(date calendar[], int size){
     int i = 0;
     int k = 0;
     int returnValue;
-    for (i = 0; i <= size; i++){
+    for (i = 0; i < size; i++){
         dateToString(calendar, i, string);
         printf("%s", string); //TESTING
         findSection(string, "calendar.txt", &locOne, &locTwo);
@@ -311,7 +310,7 @@ int deductAssignmentsFromHoursFree(date calendar[], int size){
 }
 
 int calcWorkLoad(element newElement){
-    double result = 0;
+    int result = 0;
     int daysBetween = 0,
         size = 0;
     date earliestDate;
@@ -327,8 +326,14 @@ int calcWorkLoad(element newElement){
     printf("Size of calendar: %i\n", ((sizeof calendar)/(sizeof calendar[0])));
     size = (sizeof calendar) / (sizeof calendar[0]);
     populateCalendar(calendar, counter, size);
+    //------------
+    int i = 0;
+    for (i=0; i < daysBetween; i++){
+        printf("Day is %i/%i/%i\n", calendar[i].day, calendar[i].month, calendar[i].year);
+    }
+    //------------
     deductModulesFromHoursFree(calendar, size);
     result = deductAssignmentsFromHoursFree(calendar, size);
-    printf("Calculated workload: %lf\n", result); //TESTING PURPOSES. REMEMBER TO REMOVE!
+    printf("Result after deductAssignmentsFromHoursFree: %i\n", result); //TESTING PURPOSES. REMEMBER TO REMOVE!
     return result;
 }
