@@ -251,7 +251,6 @@ date findLatestDate(char databaseSelect[]) {
     for (j = 0; j < lineCount; j++) {
         if (containsChar(tempDB[j], '/') == 1 && containsChar(tempDB[j], '_') == 0) {
             if (stringToInt(entryYear[j]) * 10000 + stringToInt(entryMonth[j]) * 100 + stringToInt(entryDay[j]) > latestDate) {
-                printf("day: %s, month: %s, year: %s\n", entryDay[j], entryMonth[
                 latestDate = (stringToInt(entryYear[j]) * 10000) + (stringToInt(entryMonth[j]) * 100) + stringToInt(entryDay[j]);
                 output.day = stringToInt(entryDay[j]);
                 output.month = stringToInt(entryMonth[j]);
