@@ -183,6 +183,7 @@ date stringToDate(char string[], char separator){ //Doesn't fully work
         month[monthNumCount] = '\0';
         year[yearNumCount] = '\0';
     }
+    printf("month: %s\n", month);
     date.day = stringToInt(day);
     date.month = stringToInt(month);
     date.year = stringToInt(year);
