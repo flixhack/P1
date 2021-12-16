@@ -153,7 +153,7 @@ void deductModulesFromHoursFree(date calendar[], int size){
 date stringToDate(char string[], char separator){ //Doesn't fully work
     printf("String going into stringToDate: %s (using seperator %c)\n", string, separator);
     date date;
-        int parseSwitch = 1, k;
+    int parseSwitch = 1, k;
     char day[3];
     char month[3];
     char year[5];
@@ -166,20 +166,26 @@ date stringToDate(char string[], char separator){ //Doesn't fully work
         }
         else if (string[k] != separator && parseSwitch == 1) {
             day[dayNumCount] = string[k];
+            printf("%c", string[k]);
             dayNumCount++;
         }
         else if (string[k] != separator && parseSwitch == 2) {
             month[monthNumCount] = string[k];
+            printf("%c", string[k]);
             monthNumCount++;
         }
         else if (string[k] != separator && parseSwitch == 3) {
             year[yearNumCount] = string[k];
+            printf("%c", string[k]);
             yearNumCount++;
         }
+        day[dayNumCount] = '\0';
+        month[monthNumCount] = '\0';
+        year[yearNumCount] = '\0';
     }
-    date.day = atoi(day);
-    date.month = atoi(month);
-    date.year = atoi(year);
+    date.day = stringToInt(day);
+    date.month = stringToInt(month);
+    date.year = stringToInt(year);
     printf("%i/%i/%i\n",date.day, date.month, date.year);
     printf("month[]: %s\n", month);
 
