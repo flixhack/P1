@@ -8,14 +8,20 @@
 enum types {mod = 1, ass}; typedef enum role role;
 
 
-void readyState(),
-     findCommand(char),
-     assignments(),
-     schedule(),
-     logOut();
+void readyState(int),
+     findCommand(char, int),
+     assignments(int),
+     schedule(int),
+     printSchedule(int),
+     scheduleEditor(int),
+     logOut(),
+     printAssignments(int),
+     callDatabase(char, char*, int, char*),
+     assignmentEditor(int);
 
+int login();
 
-void login();
+int loggedIn = 0;
 
 int userID = 0;
 int loginID = 0;
@@ -207,11 +213,11 @@ void findCommand(char command){
     break;
     case 'a':
     case 'A':
-      assignments();
+      assignments(loginID);
       break;
     case 's':
     case 'S':
-      schedule();
+      schedule(loginID);
       break;
     case 'l':
     case 'L':
@@ -258,7 +264,7 @@ void printAssignments(int LoginID){
 
 void assignmentEditor(int LoginID){
   int run = 1;
-  char mode, command, x;
+  char mode, command, editCondition;
   char database[MAX_LINE_LENGTH] = "calendar.txt", tempTime[MAX_LINE_LENGTH];
   char endTime[MAX_LINE_LENGTH], newLine[MAX_LINE_LENGTH];
   time_t current = time(NULL);
@@ -307,9 +313,9 @@ void assignmentEditor(int LoginID){
         
         printf("Is this assignment correct? (y/n)\n\n");
         printf("Subject: %s Date: %d/%d/%d   Duration: %d   Time: %s\n", newAssignment.subject, newDate.day, newDate.month, newDate.year, newAssignment.duration, newAssignment.time);
-        scanf(" %c", &x);
+        scanf(" %c", &editCondition);
 
-        if(x == 'y'){
+        if(editCondition == 'y'){
           sprintf(newLine, "%s_%d_%d_%s_%d-%d-%d", newAssignment.time, newAssignment.duration, newAssignment.type, newAssignment.subject, tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
           //if(calcWorkLoad() >= 0){
             callDatabase(mode, database, locOne + 1, newLine);
@@ -320,75 +326,104 @@ void assignmentEditor(int LoginID){
         else break;
     case 'e':;
     case 'E':;
-      date editDate;
+      printf("This function is not yet implemented\n");
+      /* date editDate;
       element editAssignment;
-      int duration;
+      int confirm;
       char searchTerm[MAX_LINE_LENGTH], tempDb[MAX_LINE_LENGTH];
       char stringDuration[MAX_LINE_LENGTH], stringType[4], 
+           stringSubject[MAX_LINE_LENGTH], stringTime[MAX_LINE_LENGTH],
            printer[MAX_LINE_LENGTH][MAX_LINE_LENGTH];
       printf("Choose a date from which you wish to edit an assignment: ");
       scanf("%d %d %d", &editDate.day, &editDate.month, &editDate.year);
       editAssignment.date = editDate;
       sprintf(tempTime, "%d/%d/%d", editDate.day, editDate.month, editDate.year);
-
-      for(int i = 0; i < MAX_LINE_LENGTH; i++){
-        printer[0][i] = tempTime[i];
-      }
-      printf("These are the blocs for the given date:\n");
       findSection(tempTime, database, &locOne, &locTwo);
-      readSection(locOne, locTwo, &tempTime, database);
-      for(int i = 0; i < locTwo; i++){
-        for(int j = 0; j < MAX_LINE_LENGTH; j++){
-          printf(" %c \n", printer[i][j]);
-        }
+      if(locTwo == 0){
+        printf("There is nothing listed under the given date");
       }
-      
-      printf("Input the time of the module that you wish to edit (HH:MM): ");
+      readSection(locOne, locTwo, &tempDb, database);
+      for(int i = 0; i <= locTwo - locOne; i++){
+        calendarSplit(&tempDb, i, &stringTime, &stringDuration, &stringType, &stringSubject);
+      }
+      printf("Input the time of the assignment that you wish to edit (HH:MM): ");
       scanf(" %s", searchTerm);
-      int editLine = findLineLoc(searchTerm, locOne, database);
-      
-      calendarSplit(&tempDb, editLine, &editAssignment.time, &stringDuration, &stringType, &editAssignment.subject);
-      duration = stringToInt(stringDuration);
-      x = 'x';
-      while(x == 'x'){
-        printf("Do you wish to edit the time, hours set or subject? (T/D/S): ");
-        scanf(" %c", &command);
-        if(command == 't' || command == 'T'){
-          scanf(" %s", editAssignment.time);
-        }
-        else if(command == 'd' || command == 'D'){
-          scanf("%d", &duration);
-        }
+      for(int j = 0; j <= locTwo - locOne; j++){
+        confirm = strcmp(&stringType[j], "Ass");
+        if(confirm == 0){
+          confirm = strcmp(&stringTime[j], searchTerm);
+          if (confirm == 0){
+            int editLine = findLineLoc(searchTerm, locOne, database);
+            printf("editline: %d\n", editLine);
+            int duration = stringToInt(stringDuration);
+            editCondition = 'x';
+            printf("%c", editCondition);
+            while(editCondition == 'x'){
+              printf("Do you wish to edit the end date, hours set or subject? (E/D/S): ");
+              scanf(" %c", &command);
+              if(command == 'e' || command == 'E'){
+                printf("\nPlease enter this assignment's new end date: ");
+                scanf(" %s", editAssignment.time);
+              }
+              else if(command == 'd' || command == 'D'){
+                printf("\nPlease enter the hours set for this assignment: ");
+                scanf("%d", &duration);
+              }
 
-        else if(command == 's' || command == 'S'){
-          scanf(" %s", editAssignment.subject);
-        }
-        else printf("Invalid edit parameter");
+              else if(command == 's' || command == 'S'){
+                printf("Please enter this assignment's new subject: ");
+                scanf(" %s", editAssignment.subject);
+              }
+              else printf("Invalid edit parameter");
         
-        printf("This is your current Module: Subject: %s Date: %d/%d/%d   Duration: %d   Time: %s.\n confirm module, edit further or cancel? (y/n/c)", editAssignment.subject, editDate.day, editDate.month, editDate.year, duration, editAssignment.time);
-        scanf(" %c", &x);
-        if(x == 'y'){
-            sprintf(newLine, "%s_%d_%s_%s_%d-%d-%d", editAssignment.time, duration, stringType, editAssignment.subject, tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
-            callDatabase(mode, database, editLine, newLine);
-        }
-        else if(x == 'n'){
-          sprintf(newLine, "%s_%d_%s_%s_%d-%d-%d", editAssignment.time, duration, stringType, editAssignment.subject, tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
-          x = 'x';
-        }
-        else if(x == 'c'){
-          while(x != 'y' && x != 'x'){
-            printf("Do you wish to exit editing this module? (y/n)");
-            if(x == 'y'){
-
+              printf("This is your current Assignment: Subject: %s Date: %d/%d/%d   Duration: %d   Time: %s.\n confirm module, edit further or cancel? (y/n/c)", editAssignment.subject, editDate.day, editDate.month, editDate.year, duration, editAssignment.time);
+              scanf(" %c", &editCondition);
+              if(editCondition == 'y'){
+                sprintf(newLine, "%s_%d_%s_%s_%d-%d-%d", editAssignment.time, duration, stringType, editAssignment.subject, tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
+                callDatabase(mode, database, editLine, newLine);
+              }
+              else if(editCondition == 'n'){
+                sprintf(newLine, "%s_%d_%s_%s_%d-%d-%d", editAssignment.time, duration, stringType, editAssignment.subject, tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
+                editCondition = 'x';
+              }
+              else if(editCondition == 'c'){
+                while(editCondition != 'y' && editCondition != 'x'){
+                  printf("Do you wish to exit editing this assignment? (y/n)");
+                  if(editCondition == 'y'){
+                
+                  }
+                  else if(editCondition == 'n'){
+                    editCondition = 'x';
+                  }
+                  else printf("Invalid Command.");
+                }
+              }
             }
-            else if(x == 'n'){
-              x = 'x';
-            }
-            else printf("Invalid Command.");
+          locTwo = 0; 
           }
         }
-      }
-    break;
+      } */
+      break; 
+    case 'd':;
+    case 'D':;
+      printf("This function is not yet implemented\n");
+    /*  date deleteDate;
+      int tempTime;
+        printf("Choose a date from which you wish to delete an assignment: ");
+        scanf("%d %d %d", &deleteDate.day, &deleteDate.month, &deleteDate.year);
+        
+        printf("Please enter the time for the Assignment that you wish to delete: ");
+        scanf("%d", &tempTime);
+        printf("Confirm? (y/n): ");
+      */
+      break;
+    case 'b':
+    case 'B':
+      run = 0;
+      break;
+    default:
+      printf("Not a valid command.\n");
+      break;
     }
   }
 }
@@ -423,7 +458,7 @@ void schedule(int loginID) {
 }
 
 void printSchedule (int loginID){
- 
+  printf("The function printSchedule is not yet implemented\n");
 }
 
 void scheduleEditor(int userID){
@@ -478,24 +513,90 @@ void scheduleEditor(int userID){
         else break;
     case 'e':;
     case 'E':;
+      printf("This function is not yet implemented\n");
+    /*  date editDate;
       date editDate;
+      element editSchedule;
+      int confirm;
       char searchTerm[MAX_LINE_LENGTH], tempDb[MAX_LINE_LENGTH];
+      char stringDuration[MAX_LINE_LENGTH], stringType[4], 
+           stringSubject[MAX_LINE_LENGTH], stringTime[MAX_LINE_LENGTH],
+           printer[MAX_LINE_LENGTH][MAX_LINE_LENGTH];
       printf("Choose a date from which you wish to edit a module: ");
       scanf("%d %d %d", &editDate.day, &editDate.month, &editDate.year);
+      editSchedule.date = editDate;
       sprintf(tempTime, "%d/%d/%d", editDate.day, editDate.month, editDate.year);
-
-      printf("These are the modules for the given date:\n");
+      findSection(tempTime, database, &locOne, &locTwo);
+      if(locTwo == 0){
+        printf("There is nothing listed under the given date");
+      }
       readSection(locOne, locTwo, &tempDb, database);
-      
-      printf("Input the time of the module that you wish to edit: ");
+      for(int i = 0; i <= locTwo - locOne; i++){
+        calendarSplit(&tempDb, i, &stringTime, &stringDuration, &stringType, &stringSubject);
+      }
+      printf("Input the time of the module that you wish to edit (HH:MM): ");
       scanf(" %s", searchTerm);
-      lineLoc = findLineLoc(searchTerm, locOne, database);
-      
-      callDatabase(mode, database, lineLoc, newLine);
+      for(int j = 0; j <= locTwo - locOne; j++){
+        confirm = strcmp(&stringType[j], "Ass");
+        if(confirm == 0){
+          confirm = strcmp(&stringTime[j], searchTerm);
+          if (confirm == 0){
+            int editLine = findLineLoc(searchTerm, locOne, database);
+            printf("editline: %d\n", editLine);
+            int duration = stringToInt(stringDuration);
+            editCondition = 'x';
+            printf("%c", editCondition);
+            while(editCondition == 'x'){
+              printf("Do you wish to edit the time, duration or subject? (T/D/S): ");
+              scanf(" %c", &command);
+              if(command == 't' || command == 'T'){
+                printf("\nPlease enter this module's new time: ");
+                scanf(" %s", editAssignment.time);
+              }
+              else if(command == 'd' || command == 'D'){
+                printf("\nPlease enter this module's new duration: ");
+                scanf("%d", &duration);
+              }
+
+              else if(command == 's' || command == 'S'){
+                printf("Please enter this module's new subject: ");
+                scanf(" %s", editAssignment.subject);
+              }
+              else printf("Invalid edit parameter");
+        
+              printf("This is your current Module: Subject: %s Date: %d/%d/%d   Duration: %d   Time: %s.\n confirm module, edit further or cancel? (y/n/c)", editAssignment.subject, editDate.day, editDate.month, editDate.year, duration, editAssignment.time);
+              scanf(" %c", &editCondition);
+              if(editCondition == 'y'){
+                sprintf(newLine, "%s_%d_%s_%s_%d-%d-%d", editSchedule.time, duration, stringType, editSchedule.subject, tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
+                callDatabase(mode, database, editLine, newLine);
+              }
+              else if(editCondition == 'n'){
+                sprintf(newLine, "%s_%d_%s_%s_%d-%d-%d", editSchedule.time, duration, stringType, editSchedule.subject, tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
+                editCondition = 'x';
+              }
+              else if(editCondition == 'c'){
+                while(editCondition != 'y' && editCondition != 'x'){
+                  printf("Do you wish to exit editing this module? (y/n)");
+                  if(editCondition == 'y'){
+                
+                  }
+                  else if(editCondition == 'n'){
+                    editCondition = 'x';
+                  }
+                  else printf("Invalid Command.");
+                }
+              }
+            }
+          locTwo = 0; 
+          }
+        }
+      } */
+      break; 
 
     case 'd':;
     case 'D':;
-      date deleteDate;
+      printf("This function is not yet implemented\n");
+    /*  date deleteDate;
       int tempTime;
         printf("Choose a date from which you wish to delete a module: ");
         scanf("%d %d %d", &deleteDate.day, &deleteDate.month, &deleteDate.year);
@@ -504,7 +605,7 @@ void scheduleEditor(int userID){
         printf("Please enter the time for the Module that you wish to delete: ");
         scanf("%d", &tempTime);
         printf("Confirm? (y/n): ");
-
+    */
       break;
     case 'b':
     case 'B':
