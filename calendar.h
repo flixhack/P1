@@ -160,7 +160,9 @@ date stringToDate(char string[], char separator){ //Doesn't fully work
     int dayNumCount = 0;
     int monthNumCount = 0;
     int yearNumCount = 0;
-    for (k = 0; k < 10; k++) {
+    int lineLength;
+    lineLength = strlen(string);
+    for (k = 0; k < lineLength; k++) {
         if (string[k] == separator) {
             parseSwitch++;
         }
@@ -179,10 +181,11 @@ date stringToDate(char string[], char separator){ //Doesn't fully work
             printf("%c", string[k]);
             yearNumCount++;
         }
-        day[dayNumCount] = '\0';
-        month[monthNumCount] = '\0';
-        year[yearNumCount] = '\0';
     }
+    day[dayNumCount] = '\0';
+    month[monthNumCount] = '\0';
+    year[yearNumCount] = '\0';
+    printf("\n");
     printf("month: %s\n", month);
     date.day = stringToInt(day);
     date.month = stringToInt(month);
@@ -202,11 +205,10 @@ date scanForEarliestAssignmentDate(char databaseSelect[]){
         printf("Database file not found. Contact an administrator\n");
         exit(EXIT_FAILURE);
     }
-    int i;
-    char tempDB[100][MAX_LINE_LENGTH];
-    char entryTime[100][100], entryDuration[100][100], entryType[100][4], entrySubject[100][100], endDate[100][10];
-
     int lineCount = countLines(databaseSelect);
+    int i;
+    char tempDB[lineCount][MAX_LINE_LENGTH];
+    char entryTime[lineCount][100], entryDuration[lineCount][100], entryType[lineCount][4], entrySubject[lineCount][100], endDate[lineCount][10];
 
     readSection(-1, lineCount, tempDB, databaseSelect);
     for (i = 0; i < lineCount; i++) {
@@ -218,8 +220,9 @@ date scanForEarliestAssignmentDate(char databaseSelect[]){
     }
     int j;
     int earliestDate = 100000000;
-    for (j = 0; j < lineCount + 1; j++){
+    for (j = 0; j < lineCount; j++){
         if (containsChar(tempDB[j], '-') == 1) {
+            printf("Copying date to tempDate using stringToDate...\n");
             date tempDate = stringToDate(endDate[j], '-');
             printf("tempDate: %i/%i/%i\n", tempDate.day, tempDate.month, tempDate.year);
             if (tempDate.year * 10000 + tempDate.month * 100 + tempDate.day < earliestDate) {
@@ -324,22 +327,22 @@ int calcWorkLoad(element newElement){
     int daysBetween = 0,
         size = 0;
     date earliestDate;
-    printf("Scanning for earliest assignment...\n");
+    printf("\nScanning for earliest assignment...\n");
     earliestDate = scanForEarliestAssignmentDate("calendar.txt");
     date latestDate;
-    printf("Scanning for latest date...\n");
+    printf("\nScanning for latest date...\n");
     latestDate = findLatestDate("calendar.txt");
     printf("Latest date: %i/%i/%i\n", latestDate.day, latestDate.month, latestDate.year);
     date counter = earliestDate;
     printf("Earliest date: %i/%i/%i\n", earliestDate.day, earliestDate.month, earliestDate.year);
     //printf("newElement.startDate: %i/%i/%i\n", newElement.startDate.day, newElement.startDate.month, newElement.startDate.year);
-    printf("Calculating days between dates...\n");
+    printf("\nCalculating days between dates...\n");
     daysBetween = daysBetweenDates(earliestDate, latestDate);
-    printf("Creating an array of size %i...\n", daysBetween);
+    printf("\nCreating an array of size %i...\n", daysBetween);
     date calendar[daysBetween];
     printf("Size of calendar: %i\n", ((sizeof calendar)/(sizeof calendar[0])));
     size = (sizeof calendar) / (sizeof calendar[0]);
-    printf("Populating calendar...\n");
+    printf("\nPopulating calendar...\n");
     populateCalendar(calendar, counter, size);
     //------------
     int i = 0;
@@ -347,10 +350,10 @@ int calcWorkLoad(element newElement){
         printf("Day is %i/%i/%i\n", calendar[i].day, calendar[i].month, calendar[i].year);
     }
     //------------
-    printf("Deducting modules from hoursFree, after setting hoursFree to the given daily hours...");
+    printf("\nDeducting modules from hoursFree, after setting hoursFree to the given daily hours...\n");
     deductModulesFromHoursFree(calendar, size);
-    printf("Deducting assignments from hoursFree...");
+    printf("\nDeducting assignments from hoursFree...\n");
     result = deductAssignmentsFromHoursFree(calendar, size);
-    printf("Result after deductAssignmentsFromHoursFree: %i\n", result); //TESTING PURPOSES. REMEMBER TO REMOVE!
+    printf("\nResult after deductAssignmentsFromHoursFree: %i\n", result); //TESTING PURPOSES. REMEMBER TO REMOVE!
     return result;
 }
