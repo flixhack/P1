@@ -151,6 +151,7 @@ void deductModulesFromHoursFree(date calendar[], int size){
 }
 
 date stringToDate(char string[], char separator){ //Doesn't fully work
+    printf("String going into stringToDate: %s (using seperator %c)\n", string, separator);
     date date;
         int parseSwitch = 1, k;
     char day[3];
@@ -187,6 +188,7 @@ date stringToDate(char string[], char separator){ //Doesn't fully work
 }
 
 date scanForEarliestAssignmentDate(char databaseSelect[]){
+    printf("Reading from %s\n", databaseSelect);
     date earliestAssDate;
     FILE *readFile = fopen(databaseSelect, "r");
     if (readFile == NULL){
@@ -212,6 +214,7 @@ date scanForEarliestAssignmentDate(char databaseSelect[]){
     for (j = 0; j < lineCount + 1; j++){
         if (containsChar(tempDB[j], '-') == 1) {
             date tempDate = stringToDate(endDate[j], '-');
+            printf("tempDate: %i/%i/%i\n", tempDate.day, tempDate.month, tempDate.year);
             if (tempDate.year * 10000 + tempDate.month * 100 + tempDate.day < earliestDate) {
                 earliestDate = tempDate.year * 10000 + tempDate.month * 100 + tempDate.day;
                 earliestAssDate.day = tempDate.day;
@@ -314,17 +317,22 @@ int calcWorkLoad(element newElement){
     int daysBetween = 0,
         size = 0;
     date earliestDate;
+    printf("Scanning for earliest assignment...\n");
     earliestDate = scanForEarliestAssignmentDate("calendar.txt");
     date latestDate;
+    printf("Scanning for latest date...\n");
     latestDate = findLatestDate("calendar.txt");
     printf("Latest date: %i/%i/%i\n", latestDate.day, latestDate.month, latestDate.year);
     date counter = earliestDate;
     printf("Earliest date: %i/%i/%i\n", earliestDate.day, earliestDate.month, earliestDate.year);
     //printf("newElement.startDate: %i/%i/%i\n", newElement.startDate.day, newElement.startDate.month, newElement.startDate.year);
+    printf("Calculating days between dates...\n");
     daysBetween = daysBetweenDates(earliestDate, latestDate);
+    printf("Creating an array of size %i...\n", daysBetween);
     date calendar[daysBetween];
     printf("Size of calendar: %i\n", ((sizeof calendar)/(sizeof calendar[0])));
     size = (sizeof calendar) / (sizeof calendar[0]);
+    printf("Populating calendar...\n");
     populateCalendar(calendar, counter, size);
     //------------
     int i = 0;
@@ -332,7 +340,9 @@ int calcWorkLoad(element newElement){
         printf("Day is %i/%i/%i\n", calendar[i].day, calendar[i].month, calendar[i].year);
     }
     //------------
+    printf("Deducting modules from hoursFree, after setting hoursFree to the given daily hours...");
     deductModulesFromHoursFree(calendar, size);
+    printf("Deducting assignments from hoursFree...");
     result = deductAssignmentsFromHoursFree(calendar, size);
     printf("Result after deductAssignmentsFromHoursFree: %i\n", result); //TESTING PURPOSES. REMEMBER TO REMOVE!
     return result;
