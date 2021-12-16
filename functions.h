@@ -17,8 +17,7 @@ void readyState(),
      printAssignments(int),
      callDatabase(char, char*, int, char*),
      assignmentEditor(int),
-     login(),
-     lineSplit();
+     login();
 
 int userID = 0;
 int loginID = 0;
