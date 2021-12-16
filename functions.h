@@ -8,18 +8,17 @@
 enum types {mod = 1, ass}; typedef enum role role;
 
 
-void readyState(int),
-     findCommand(char, int),
+void readyState(),
+     findCommand(char),
      assignments(int),
      schedule(int),
-     printSchedule(int),
+     printSchedule(),
      scheduleEditor(int),
      logOut(),
      printAssignments(int),
      callDatabase(char, char*, int, char*),
-     assignmentEditor(int);
-
-int login();
+     assignmentEditor(int),
+     login();
 
 int loggedIn = 0;
 
