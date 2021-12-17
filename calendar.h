@@ -335,6 +335,46 @@ int deductAssignmentsFromHoursFree(date calendar[], int size){
     return returnValue;
 }
 
+int calcPrimaryAssWorkLoad(date calendar[], int size, element assignment){
+    int startingPoint;
+    int i = 0;
+    int run = 1;
+    int daysBetween;
+    double averageTime;
+    int noFitEasy = 0;
+    daysBetween = daysBetweenDates(assignment.startDate, assignment.endDate);
+    while (run == 1){
+        i++;
+        if (calendar[i].year == assignment.startDate.year && calendar[i].month == assignment.startDate.month && calendar[i].day == assignment.startDate.day){
+            startingPoint = i;
+            run = 0;
+        }
+    }
+    averageTime = ((assignment.duration + 0.0) / 60) / (daysBetween - 2);
+    for (i = startingPoint; i < startingPoint + daysBetween - 2; i++){
+        if (calendar[i].hoursFree <= averageTime){
+            noFitEasy++;
+        }
+    }
+    if (noFitEasy == 0){
+        return 1;
+    }
+    else {
+        double totalHours;
+        totalHours = (assignment.duration + 0.0) / (60.0);
+        for (i = startingPoint; i < startingPoint + daysBetween - 2 && totalHours > 0; i++){
+            totalHours -= calendar[i].hoursFree;
+            calendar[i].hoursFree = 0;
+        }
+        if (totalHours > 0){
+            return 0;
+        }
+        else {
+            return 1;
+        }
+    }
+}
+
 int calcWorkLoad(element newElement){
     int result = 0;
     int daysBetween = 0,
@@ -373,5 +413,9 @@ int calcWorkLoad(element newElement){
     printf("\nDeducting assignments from hoursFree...\n");
     result = deductAssignmentsFromHoursFree(calendar, size);
     printf("\nResult after deductAssignmentsFromHoursFree: %i\n", result); //TESTING PURPOSES. REMEMBER TO REMOVE!
+    if (result == 0){
+        return 0;
+    }
+    result = calcPrimaryAssWorkLoad(calendar, size, newElement);
     return result;
 }
