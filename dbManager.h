@@ -116,6 +116,7 @@ void readSection(int locOne, int locTwo, char tempDB[][MAX_LINE_LENGTH], char da
     while (fscanf(readFile, "%s", string) == 1) {
         if (lineCount > bytes && lineCount < locTwo) {
             strcpy(tempDB[i], string);
+            printf("[%i] %s\n", i, tempDB[i]);
             i++;
             bytes++;
             // if (string[strlen(string) - 1] != '\n') {
