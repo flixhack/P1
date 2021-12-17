@@ -320,8 +320,8 @@ int deductAssignmentsFromHoursFree(date calendar[], int size){
     char string[10];
     int i = 0;
     int k = 0;
-    int returnValue;
-    for (i = 0; i < size; i++){
+    int returnValue = 1;
+    for (i = 0; i < size && returnValue != 0; i++){
         dateToString(calendar, i, string);
         //printf("%s", string); //TESTING
         findSection(string, "calendar.txt", &locOne, &locTwo);
