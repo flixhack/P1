@@ -135,9 +135,9 @@ void deductModulesFromHoursFree(date calendar[], int size){
     int k = 0;
     for (i = 0; i < size; i++){
         dateToString(calendar, i, string);
-        printf("%s\n", string); //TESTING
+        // printf("%s\n", string); //TESTING
         findSection(string, "calendar.txt", &locOne, &locTwo);
-        printf("locOne: %i  locTwo: %i\n", locOne, locTwo);
+        // printf("locOne: %i  locTwo: %i\n", locOne, locTwo);
         readSection(locOne, locTwo, tempDB, "calendar.txt");
         if (locTwo + locOne != 0){
             for (k = 0; k <= (locTwo - locOne); k++){
@@ -148,12 +148,12 @@ void deductModulesFromHoursFree(date calendar[], int size){
                 if (test == 0){
                     int duration;
                     duration = atoi(entryDuration[k]);
-                    printf("entryDuration: %s\n", entryDuration[k]);
-                    printf("Duration int: %i\n", duration);
+                    // printf("entryDuration: %s\n", entryDuration[k]);
+                    // printf("Duration int: %i\n", duration);
 
                     calendar[i].hoursFree -= ((duration + 0.0) / 60.0);
-                    printf("Hours: %lf\n", ((duration + 0.0) / 60.0));
-                    printf("hoursFree efter deduktion af moduler: %lf\n", calendar[i].hoursFree);
+                    // printf("Hours: %lf\n", ((duration + 0.0) / 60.0));
+                    // printf("hoursFree efter deduktion af moduler: %lf\n", calendar[i].hoursFree);
                 }
             }
         }
@@ -161,7 +161,7 @@ void deductModulesFromHoursFree(date calendar[], int size){
 }
 
 date stringToDate(char string[], char separator){
-    printf("String going into stringToDate: %s (using seperator %c)\n", string, separator);
+    //printf("String going into stringToDate: %s (using seperator %c)\n", string, separator);
     date date;
     int parseSwitch = 1, k;
     char day[3];
@@ -195,20 +195,20 @@ date stringToDate(char string[], char separator){
     day[dayNumCount] = '\0';
     month[monthNumCount] = '\0';
     year[yearNumCount] = '\0';
-    printf("\n");
-    printf("month: %s\n", month);
+    //printf("\n");
+    //printf("month: %s\n", month);
     date.day = stringToInt(day);
     date.month = stringToInt(month);
     date.year = stringToInt(year);
     //printf("%i/%i/%i\n",date.day, date.month, date.year);
-    printf("month[]: %s\n", month);
+    //printf("month[]: %s\n", month);
 
 
     return date;
 }
 
 date scanForEarliestAssignmentDate(char databaseSelect[]){
-    printf("Reading from %s\n", databaseSelect);
+    //printf("Reading from %s\n", databaseSelect);
     date earliestAssDate;
     FILE *readFile = fopen(databaseSelect, "r");
     if (readFile == NULL){
@@ -216,14 +216,10 @@ date scanForEarliestAssignmentDate(char databaseSelect[]){
         exit(EXIT_FAILURE);
     }
     int lineCount = countLines(databaseSelect);
-    int i;
     char tempDB[lineCount][MAX_LINE_LENGTH];
     char entryTime[lineCount][100], entryDuration[lineCount][100], entryType[lineCount][4], entrySubject[lineCount][100], endDate[lineCount][10];
 
     readSection(-1, lineCount, tempDB, databaseSelect);
-    for (i = 0; i < lineCount; i++) {
-        printf("[%i] %s\n", i, tempDB[i]);
-    }
     int k;
     for (k = 0; k < lineCount + 1; k++) {
         calendarSplit(tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
@@ -232,15 +228,15 @@ date scanForEarliestAssignmentDate(char databaseSelect[]){
     int earliestDate = 100000000;
     for (j = 0; j < lineCount; j++){
         if (containsChar(tempDB[j], '-') == 1) {
-            printf("Copying date to tempDate using stringToDate...\n");
+            //printf("Copying date to tempDate using stringToDate...\n");
             date tempDate = stringToDate(endDate[j], '-');
-            printf("tempDate: %i/%i/%i\n", tempDate.day, tempDate.month, tempDate.year);
+            //printf("tempDate: %i/%i/%i\n", tempDate.day, tempDate.month, tempDate.year);
             if (tempDate.year * 10000 + tempDate.month * 100 + tempDate.day < earliestDate) {
                 earliestDate = tempDate.year * 10000 + tempDate.month * 100 + tempDate.day;
                 earliestAssDate.day = tempDate.day;
                 earliestAssDate.month = tempDate.month;
                 earliestAssDate.year = tempDate.year;
-                printf("earliestDate: %i, entryDay: %i, entryMonth: %i, entryYear: %i\n", earliestDate, tempDate.day, tempDate.month, tempDate.year);
+                //printf("earliestDate: %i, entryDay: %i, entryMonth: %i, entryYear: %i\n", earliestDate, tempDate.day, tempDate.month, tempDate.year);
             }
         }
     }
@@ -256,7 +252,7 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
     double averageTime;
     double durationDouble;
     for (k = 0; k < (locTwo - locOne + 1); k++){
-        printf("locOne: %i. locTwo: %i\n", locOne, locTwo);
+        //printf("locOne: %i. locTwo: %i\n", locOne, locTwo);
         int test = strcmp(entryType[k], "ass");
         if (test == 0){
             compareDateStart = stringToDate(endDate[k], '-');
@@ -268,7 +264,7 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
             printf("Total time: %lf\n", durationDouble);
             fitsEasy = 1;
             for (j = (i - daysBetween); j < i && fitsEasy != 0; j++){
-                printf("Day is %i/%i/%i. hoursFree: %lf\n", calendar[j].day, calendar[j].month, calendar[j].year, calendar[j].hoursFree);
+                //printf("Day is %i/%i/%i. hoursFree: %lf\n", calendar[j].day, calendar[j].month, calendar[j].year, calendar[j].hoursFree);
                 if (calendar[j].hoursFree < averageTime){
                     fitsEasy = 0;
                     printf("Doesn't fit easy\n");
@@ -277,9 +273,9 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
             if (fitsEasy == 1){
                 printf("Fits easy\n");
                 for (j = (i - daysBetween); j < i; j++){
-                    printf("hoursFree before deducting in date %i/%i/%i: %lf\n",calendar[j].day, calendar[j].month, calendar[j].year, calendar[j].hoursFree);
+                    //printf("hoursFree before deducting in date %i/%i/%i: %lf\n",calendar[j].day, calendar[j].month, calendar[j].year, calendar[j].hoursFree);
                     calendar[j].hoursFree -= averageTime;
-                    printf("hoursFree after deducting in date %i/%i/%i: %lf\n",calendar[j].day, calendar[j].month, calendar[j].year, calendar[j].hoursFree);
+                    //printf("hoursFree after deducting in date %i/%i/%i: %lf\n",calendar[j].day, calendar[j].month, calendar[j].year, calendar[j].hoursFree);
                 }
             }
             else {
@@ -291,7 +287,7 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
                 if (accumulator >= durationDouble){
                     printf("Fits\n");
                     for (j = (i - daysBetween); j < i; j++){
-                        printf("hoursFree before: %lf\n", calendar[j].hoursFree);
+                        // printf("hoursFree before: %lf\n", calendar[j].hoursFree);
                         durationDouble -= calendar[j].hoursFree;
                         if (durationDouble < 0){
                             calendar[j].hoursFree = (durationDouble * -1);
@@ -299,7 +295,7 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
                         else {
                             calendar[j].hoursFree = 0;
                         }
-                        printf("hoursFree after: %lf\n", calendar[j].hoursFree);
+                        // printf("hoursFree after: %lf\n", calendar[j].hoursFree);
                     }
                 }
                 else {
@@ -333,7 +329,7 @@ int deductAssignmentsFromHoursFree(date calendar[], int size){
         for (k = 0; k <= (locTwo - locOne); k++){
             calendarSplit (tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
         }
-        printf("entering calcAssignmentWorkLoad on %i/%i/%i\n",calendar[i].day, calendar[i].month, calendar[i].year);
+        //printf("entering calcAssignmentWorkLoad on %i/%i/%i\n",calendar[i].day, calendar[i].month, calendar[i].year);
         returnValue = calcAssignmentWorkLoad(i, calendar, size, entryType, entryDuration, endDate);
     }
     return returnValue;
@@ -362,17 +358,17 @@ int calcWorkLoad(element newElement){
     printf("\nPopulating calendar...\n");
     populateCalendar(calendar, counter, size);
     //------------
-    int i = 0;
-    for (i=0; i < daysBetween; i++){
-        printf("Day is %i/%i/%i. hoursFree: %lf\n", calendar[i].day, calendar[i].month, calendar[i].year, calendar[i].hoursFree);
-    }
+    // int i = 0;
+    // for (i=0; i < daysBetween; i++){
+    //     printf("Day is %i/%i/%i. hoursFree: %lf\n", calendar[i].day, calendar[i].month, calendar[i].year, calendar[i].hoursFree);
+    // }
     //------------
     printf("\nDeducting modules from hoursFree, after setting hoursFree to the given daily hours...\n");
     deductModulesFromHoursFree(calendar, size);
     //------------
-    for (i=0; i < daysBetween; i++){
-        printf("Day is %i/%i/%i. hoursFree: %lf\n", calendar[i].day, calendar[i].month, calendar[i].year, calendar[i].hoursFree);
-    }
+    // for (i=0; i < daysBetween; i++){
+    //     printf("Day is %i/%i/%i. hoursFree: %lf\n", calendar[i].day, calendar[i].month, calendar[i].year, calendar[i].hoursFree);
+    // }
     //------------
     printf("\nDeducting assignments from hoursFree...\n");
     result = deductAssignmentsFromHoursFree(calendar, size);
