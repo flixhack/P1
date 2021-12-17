@@ -4,7 +4,7 @@
 #include "dbManager.h"
 #include "structs.h"
 
-enum types {mod = 1, ass}; typedef enum role role;
+enum types {mod = 1, ass}; typedef enum types types;
 
 
 void readyState(),
