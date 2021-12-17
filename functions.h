@@ -303,7 +303,7 @@ void assignmentEditor(int LoginID){
         scanf(" %c", &editCondition);
 
         if(editCondition == 'y'){
-          sprintf(newLine, "%s_%d_%d_%s_%d-%d-%d", newAssignment.time, newAssignment.duration, newAssignment.type, newAssignment.subject, tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
+          sprintf(newLine, "%s_%d_ass_%s_%d-%d-%d", newAssignment.time, newAssignment.duration, newAssignment.type, newAssignment.subject, tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
           //if(calcWorkLoad() >= 0){
             callDatabase(mode, database, locOne + 1, newLine);
           //}
@@ -313,7 +313,7 @@ void assignmentEditor(int LoginID){
         else break;
     case 'e':;
     case 'E':;
-      printf("This function is not yet implemented\n");
+      printf("The function editAssignment is not yet implemented\n");
       /* date editDate;
       element editAssignment;
       int confirm;
@@ -393,7 +393,7 @@ void assignmentEditor(int LoginID){
       break;
     case 'd':;
     case 'D':;
-      printf("This function is not yet implemented\n");
+      printf("The function deleteAssignment is not yet implemented\n");
     /*  date deleteDate;
       int tempTime;
         printf("Choose a date from which you wish to delete an assignment: ");
@@ -490,7 +490,7 @@ void scheduleEditor(int userID){
         scanf(" %c", &x);
 
         if(x == 'y'){
-          sprintf(newLine, "%s_%d_%d_%s", newModule.time, newModule.duration, newModule.type, newModule.subject);
+          sprintf(newLine, "%s_%d_mod_%s", newModule.time, newModule.duration, newModule.type, newModule.subject);
           //if(calcWorkLoad() >= 0){
             callDatabase(mode, database, locOne + 1, newLine);
           //}
@@ -500,7 +500,7 @@ void scheduleEditor(int userID){
         else break;
     case 'e':;
     case 'E':;
-      printf("This function is not yet implemented\n");
+      printf("The function editModule is not yet implemented\n");
     /*  date editDate;
       date editDate;
       element editSchedule;
@@ -582,7 +582,7 @@ void scheduleEditor(int userID){
 
     case 'd':;
     case 'D':;
-      printf("This function is not yet implemented\n");
+      printf("The function deleteModule is not yet implemented\n");
     /*  date deleteDate;
       int tempTime;
         printf("Choose a date from which you wish to delete a module: ");
