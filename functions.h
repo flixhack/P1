@@ -169,8 +169,8 @@ void login(void){
       userID = atoi(tempUserID[i]);
       loginID = atoi(tempLoginID[i]);
       userFound = 1;
-
     }
+    else printf("User not found, terminating program...");
   }
 }
 
