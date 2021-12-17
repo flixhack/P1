@@ -262,7 +262,7 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
             compareDateStart = stringToDate(endDate[k], '-');
             //calendar[i] er vores compareDateEnd
             durationDouble = (atoi(entryDuration[k])) / 60.0;
-            daysBetween = daysBetweenDates(compareDateStart, calendar[i]);
+            daysBetween = daysBetweenDates(compareDateStart, calendar[i]) - 2;
             averageTime = (durationDouble / daysBetween);
             printf("Average time: %lf\n", averageTime); //TESTING ONLY
             printf("Total time: %lf\n", durationDouble);
