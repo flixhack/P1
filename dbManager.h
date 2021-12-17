@@ -222,13 +222,16 @@ int countLines(char *filename){
 
 //returns 1 if the char "searchTerm" is present in the given string. Otherwise returns 0.
 int containsChar(char string[], char searchTerm) {
-    int isPresent = 0, i;
+    int isPresent = 0, i, run = 1;
     int stringLength;
     stringLength = strlen(string);
 
-    for(i = 0; i < stringLength; i++) {
+    for(i = 0; i < stringLength && run == 1; i++) {
         if (string[i] == searchTerm) {
             isPresent = 1;
+        }
+        else if (string[i] == '\n' || string[i] == ' ') {
+            run = 0;
         }
     }
     return isPresent;
