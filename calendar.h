@@ -326,11 +326,13 @@ int deductAssignmentsFromHoursFree(date calendar[], int size){
         //printf("%s", string); //TESTING
         findSection(string, "calendar.txt", &locOne, &locTwo);
         readSection(locOne, locTwo, tempDB, "calendar.txt");
-        for (k = 0; k <= (locTwo - locOne); k++){
-            calendarSplit (tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
+        if (locOne != 0 && locTwo != 0){    
+            for (k = 0; k <= (locTwo - locOne); k++){
+                calendarSplit (tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
+            }
+            //printf("entering calcAssignmentWorkLoad on %i/%i/%i\n",calendar[i].day, calendar[i].month, calendar[i].year);
+            returnValue = calcAssignmentWorkLoad(i, calendar, size, entryType, entryDuration, endDate);
         }
-        //printf("entering calcAssignmentWorkLoad on %i/%i/%i\n",calendar[i].day, calendar[i].month, calendar[i].year);
-        returnValue = calcAssignmentWorkLoad(i, calendar, size, entryType, entryDuration, endDate);
     }
     return returnValue;
 }
