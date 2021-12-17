@@ -98,6 +98,7 @@ void populateCalendar(date calendar[], date startDate, int size){
             calendar[i].year = counter.year;
             calendar[i].month = counter.month;
             calendar[i].day = counter.day;
+            calendar[i].hoursFree = DAILY_SCHOOL_HOURS + 0.0;
             i++;
             counter.day++;
             //printf("Populated one element with a date\n"); //TESTING
@@ -133,7 +134,6 @@ void deductModulesFromHoursFree(date calendar[], int size){
     int i = 0;
     int k = 0;
     for (i = 0; i < size; i++){
-        calendar[i].hoursFree = DAILY_SCHOOL_HOURS;
         dateToString(calendar, i, string);
         printf("%s\n", string); //TESTING
         findSection(string, "calendar.txt", &locOne, &locTwo);
@@ -143,13 +143,13 @@ void deductModulesFromHoursFree(date calendar[], int size){
             for (k = 0; k <= (locTwo - locOne); k++){
                 calendarSplit (tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
             }
-        
             for (k = 0; k <= (locTwo - locOne); k++){
                 int test = strcmp(entryType[k], "mod");
                 if (test == 0){
                     int duration;
                     duration = atoi(entryDuration[k]);
                     printf("entryDuration: %s\n", entryDuration[k]);
+                    printf("Duration int: %i\n", duration);
 
                     calendar[i].hoursFree -= ((duration + 0.0) / 60.0);
                     printf("Hours: %lf\n", ((duration + 0.0) / 60.0));
@@ -160,8 +160,8 @@ void deductModulesFromHoursFree(date calendar[], int size){
     }
 }
 
-date stringToDate(char string[], char separator){ //Doesn't fully work
-    printf("String going into stringToDate: %s (using seperator %c)\n", string, separator);
+date stringToDate(char string[], char separator){
+    //printf("String going into stringToDate: %s (using seperator %c)\n", string, separator);
     date date;
     int parseSwitch = 1, k;
     char day[3];
@@ -178,17 +178,17 @@ date stringToDate(char string[], char separator){ //Doesn't fully work
         }
         else if (string[k] != separator && parseSwitch == 1) {
             day[dayNumCount] = string[k];
-            printf("%c", string[k]);
+            //printf("%c", string[k]);
             dayNumCount++;
         }
         else if (string[k] != separator && parseSwitch == 2) {
             month[monthNumCount] = string[k];
-            printf("%c", string[k]);
+            //printf("%c", string[k]);
             monthNumCount++;
         }
         else if (string[k] != separator && parseSwitch == 3) {
             year[yearNumCount] = string[k];
-            printf("%c", string[k]);
+            //printf("%c", string[k]);
             yearNumCount++;
         }
     }
@@ -255,7 +255,7 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
     date compareDateStart;
     double averageTime;
     double durationDouble;
-    for (k = 0; k <= (locTwo - locOne); k++){
+    for (k = 0; k < (locTwo - locOne); k++){
         int test = strcmp(entryType[k], "ass");
         if (test == 0){
             compareDateStart = stringToDate(endDate[k], '-');
@@ -263,9 +263,9 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
             durationDouble = (atoi(entryDuration[k])) / 60.0;
             daysBetween = daysBetweenDates(compareDateStart, calendar[i]);
             averageTime = (durationDouble / daysBetween);
-            printf("Average time: %lf", averageTime); //TESTING ONLY
+            printf("Average time: %lf\n", averageTime); //TESTING ONLY
             fitsEasy = 1;
-            for (j = (i - daysBetween); j <= (i + daysBetween) && fitsEasy != 0; j++){
+            for (j = (i - daysBetween); j < i && fitsEasy != 0; j++){
                 printf("Day is %i/%i/%i\n", calendar[j].day, calendar[j].month, calendar[j].year);
                 if (calendar[j].hoursFree < averageTime){
                     fitsEasy = 0;
@@ -274,19 +274,21 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
             }
             if (fitsEasy == 1){
                 printf("Fits easy\n");
-                for (j = (i - daysBetween); j <= (i + daysBetween); j++){
+                for (j = (i - daysBetween); j < i; j++){
+                    printf("hoursFree before deducting in date %i/%i/%i: %lf\n",calendar[j].day, calendar[j].month, calendar[j].year, calendar[j].hoursFree);
                     calendar[j].hoursFree -= averageTime;
+                    printf("hoursFree after deducting in date %i/%i/%i: %lf\n",calendar[j].day, calendar[j].month, calendar[j].year, calendar[j].hoursFree);
                 }
             }
             else {
                 double accumulator = 0.0;
-                for (j = (i - daysBetween); j <= (i + daysBetween); j++){
+                for (j = (i - daysBetween); j < i; j++){
                     accumulator += calendar[j].hoursFree;
                 }
                 durationDouble = (stringToInt(entryDuration[k]) / 60.0);
                 if (accumulator >= durationDouble){
                     printf("Fits\n");
-                    for (j = (i - daysBetween); j <= (i + daysBetween); j++){
+                    for (j = (i - daysBetween); j < i; j++){
                         durationDouble -= calendar[j].hoursFree;
                         if (durationDouble < 0){
                             calendar[j].hoursFree = (durationDouble * -1);
@@ -327,6 +329,7 @@ int deductAssignmentsFromHoursFree(date calendar[], int size){
         for (k = 0; k <= (locTwo - locOne); k++){
             calendarSplit (tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
         }
+        printf("entering calcAssignmentWorkLoad on %i/%i/%i\n",calendar[i].day, calendar[i].month, calendar[i].year);
         returnValue = calcAssignmentWorkLoad(i, calendar, size, entryType, entryDuration, endDate);
     }
     return returnValue;
