@@ -192,17 +192,6 @@ int countChars(char string[], int underscores, char charToCount) {
     return chars;
 }
 
-//Converts a string of numbers to an integer
-int stringToInt(char string[]){
-    int i = 0;
-    int res = 0;
-    for (i = 0; string[i]; i++){    //if the char on string[i] is NULL, it returns false, thus ending the loop
-        res = res * 10;
-        res = res + (string[i] - '0');
-    }
-    return res;
-}
-
 int countLines(char *filename){                         
     FILE *readFile = fopen(filename,"r");
     int lines = 0;

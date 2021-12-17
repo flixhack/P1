@@ -197,9 +197,9 @@ date stringToDate(char string[], char separator){
     year[yearNumCount] = '\0';
     //printf("\n");
     //printf("month: %s\n", month);
-    date.day = stringToInt(day);
-    date.month = stringToInt(month);
-    date.year = stringToInt(year);
+    date.day = atoi(day);
+    date.month = atoi(month);
+    date.year = atoi(year);
     //printf("%i/%i/%i\n",date.day, date.month, date.year);
     //printf("month[]: %s\n", month);
 
@@ -283,7 +283,7 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
                 for (j = (i - daysBetween); j < i; j++){
                     accumulator += calendar[j].hoursFree;
                 }
-                durationDouble = (stringToInt(entryDuration[k]) / 60.0);
+                durationDouble = (atoi(entryDuration[k]) / 60.0);
                 if (accumulator >= durationDouble){
                     printf("Fits\n");
                     for (j = (i - daysBetween); j < i; j++){
