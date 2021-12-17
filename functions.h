@@ -205,7 +205,7 @@ void findCommand(char command){
     case 'L':
       logOut();
       break;
-     default:
+    default:
       printf("Command not Found\n");
       break;
     }
