@@ -255,7 +255,8 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
     date compareDateStart;
     double averageTime;
     double durationDouble;
-    for (k = 0; k < (locTwo - locOne); k++){
+    for (k = 0; k < (locTwo - locOne + 1); k++){
+        printf("locOne: %i. locTwo: %i\n", locOne, locTwo);
         int test = strcmp(entryType[k], "ass");
         if (test == 0){
             compareDateStart = stringToDate(endDate[k], '-');
@@ -264,9 +265,10 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
             daysBetween = daysBetweenDates(compareDateStart, calendar[i]);
             averageTime = (durationDouble / daysBetween);
             printf("Average time: %lf\n", averageTime); //TESTING ONLY
+            printf("Total time: %lf\n", durationDouble);
             fitsEasy = 1;
             for (j = (i - daysBetween); j < i && fitsEasy != 0; j++){
-                printf("Day is %i/%i/%i\n", calendar[j].day, calendar[j].month, calendar[j].year);
+                printf("Day is %i/%i/%i. hoursFree: %lf\n", calendar[j].day, calendar[j].month, calendar[j].year, calendar[j].hoursFree);
                 if (calendar[j].hoursFree < averageTime){
                     fitsEasy = 0;
                     printf("Doesn't fit easy\n");
@@ -289,6 +291,7 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
                 if (accumulator >= durationDouble){
                     printf("Fits\n");
                     for (j = (i - daysBetween); j < i; j++){
+                        printf("hoursFree before: %lf\n", calendar[j].hoursFree);
                         durationDouble -= calendar[j].hoursFree;
                         if (durationDouble < 0){
                             calendar[j].hoursFree = (durationDouble * -1);
@@ -296,6 +299,7 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
                         else {
                             calendar[j].hoursFree = 0;
                         }
+                        printf("hoursFree after: %lf\n", calendar[j].hoursFree);
                     }
                 }
                 else {

@@ -75,7 +75,7 @@ int findLineLoc (char testInput[], int locOne, char databaseSelect[]) {
     }
 
     while (fscanf(readFile, "%s", string) == 1) {
-        if (strstr(testInput, string) != 0) {
+        if (strcmp(testInput, string) == 0) {
             lineLoc = bytes - locOne;
         }
         bytes++;    
