@@ -357,10 +357,15 @@ int calcWorkLoad(element newElement){
     size = (sizeof calendar) / (sizeof calendar[0]);
     printf("\nPopulating calendar...\n");
     populateCalendar(calendar, counter, size);
+    //------------
+    int i = 0;
+    for (i=0; i < daysBetween; i++){
+        printf("Day is %i/%i/%i. hoursFree: %lf\n", calendar[i].day, calendar[i].month, calendar[i].year, calendar[i].hoursFree);
+    }
+    //------------
     printf("\nDeducting modules from hoursFree, after setting hoursFree to the given daily hours...\n");
     deductModulesFromHoursFree(calendar, size);
     //------------
-    int i = 0;
     for (i=0; i < daysBetween; i++){
         printf("Day is %i/%i/%i. hoursFree: %lf\n", calendar[i].day, calendar[i].month, calendar[i].year, calendar[i].hoursFree);
     }
