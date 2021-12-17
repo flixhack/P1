@@ -117,12 +117,12 @@ void readSection(int locOne, int locTwo, char tempDB[][MAX_LINE_LENGTH], char da
         if (lineCount > bytes && lineCount < locTwo) {
             strcpy(tempDB[i], string);
             printf("[%i] %s\n", i, tempDB[i]);
-            i++;
-            bytes++;
             // if (string[strlen(string) - 1] != '\n') {
             //     printf("\n");
             // }
         }
+        i++;
+        bytes++;
         lineCount++;
     }
     fclose(readFile);
@@ -262,11 +262,11 @@ date findLatestDate(char databaseSelect[]) {
     int latestDate = 0, j;
     for (j = 0; j < lineCount; j++) {
         if (containsChar(tempDB[j], '/') == 1 && containsChar(tempDB[j], '_') == 0) {
-            if (stringToInt(entryYear[j]) * 10000 + stringToInt(entryMonth[j]) * 100 + stringToInt(entryDay[j]) > latestDate) {
-                latestDate = (stringToInt(entryYear[j]) * 10000) + (stringToInt(entryMonth[j]) * 100) + stringToInt(entryDay[j]);
-                output.day = stringToInt(entryDay[j]);
-                output.month = stringToInt(entryMonth[j]);
-                output.year = stringToInt(entryYear[j]);
+            if (atoi(entryYear[j]) * 10000 + atoi(entryMonth[j]) * 100 + atoi(entryDay[j]) > latestDate) {
+                latestDate = (atoi(entryYear[j]) * 10000) + (atoi(entryMonth[j]) * 100) + atoi(entryDay[j]);
+                output.day = atoi(entryDay[j]);
+                output.month = atoi(entryMonth[j]);
+                output.year = atoi(entryYear[j]);
             }
         }
     }
