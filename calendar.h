@@ -330,6 +330,7 @@ int deductAssignmentsFromHoursFree(date calendar[], int size){
         printf("Entering findSection\n");
         findSection(string, "calendar.txt", &locOne, &locTwo);
         readSection(locOne, locTwo, tempDB, "calendar.txt");
+        printf("tempDB[1]: %s\n", tempDB[1]);
         if (locOne != 0 && locTwo != 0){
             printf("locOne: %i, locTwo: %i\n", locOne, locTwo);
             for (k = 0; k < (locTwo - locOne); k++){
