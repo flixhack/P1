@@ -349,12 +349,12 @@ int calcPrimaryAssWorkLoad(date calendar[], int size, element assignment){
     int run = 1;
     int daysBetween;
     daysBetween = daysBetweenDates(assignment.startDate, assignment.endDate);
-    while (run == 1){
-        i++;
+    while (run == 1 && i < size){
         if (calendar[i].year == assignment.startDate.year && calendar[i].month == assignment.startDate.month && calendar[i].day == assignment.startDate.day){
             startingPoint = i;
             run = 0;
         }
+        i++;
     }
     double totalHours;
     totalHours = (assignment.duration + 0.0) / (60.0);
