@@ -13,10 +13,12 @@ void readyState(),
      callDatabase(char, char*, int, char*),
      assignmentEditor(),
      login();
+int calcWorkLoad(element);
 
 int userID = 0;
 int loginID = 0;
 int lineLoc = 0;
+
 
 void printTime(char *string, int time){ //must recieve a array of size 5
     char timeCode[4];
@@ -220,11 +222,13 @@ void assignmentEditor(){
         scanf(" %c", &editCondition);
 
         if(editCondition == 'y'){
-          sprintf(newLine, "%s_%i_ass_%i_%s-%i-%i", newAssignment.time, newAssignment.duration, newAssignment.type, newAssignment.subject, tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
-          //if(calcWorkLoad() >= 0){
+          sprintf(newLine, "%s_%i_ass_%s_%i-%i-%i", newAssignment.time, newAssignment.duration, newAssignment.subject, tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
+          int fits;
+          fits = calcWorkLoad(newAssignment);
+          if(fits > 0){
             callDatabase(mode, database, locOne + 1, newLine);
-          //}
-          //else printf("No more hours available to create assignment.\n");
+          }
+          else printf("No more hours available to create assignment.\n");
           break;
         }
         else break;
@@ -407,11 +411,8 @@ void scheduleEditor(){
         scanf(" %c", &x);
 
         if(x == 'y'){
-          sprintf(newLine, "%s_%d_mod_%s", newModule.time, newModule.duration, newModule.type, newModule.subject);
-          //if(calcWorkLoad() >= 0){
-            callDatabase(mode, database, locOne + 1, newLine);
-          //}
-          //else printf("No more hours available to create assignment.\n");
+          sprintf(newLine, "%s_%i_mod_%s", newModule.time, newModule.duration, newModule.subject);
+          callDatabase(mode, database, locOne + 1, newLine);
           break;
         }
         else break;
