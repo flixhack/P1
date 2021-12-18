@@ -347,8 +347,6 @@ int calcPrimaryAssWorkLoad(date calendar[], int size, element assignment){
     int i = 0;
     int run = 1;
     int daysBetween;
-    double averageTime;
-    int noFitEasy = 0;
     daysBetween = daysBetweenDates(assignment.startDate, assignment.endDate);
     while (run == 1){
         i++;
@@ -357,28 +355,19 @@ int calcPrimaryAssWorkLoad(date calendar[], int size, element assignment){
             run = 0;
         }
     }
-    averageTime = ((assignment.duration + 0.0) / 60) / (daysBetween - 2);
-    for (i = startingPoint; i < startingPoint + daysBetween - 2; i++){
-        if (calendar[i].hoursFree <= averageTime){
-            noFitEasy++;
-        }
+    double totalHours;
+    totalHours = (assignment.duration + 0.0) / (60.0);
+    for (i = startingPoint; i < startingPoint + daysBetween - 2 && totalHours > 0; i++){
+        totalHours -= calendar[i].hoursFree;
+        calendar[i].hoursFree = 0;
     }
-    if (noFitEasy == 0){
-        return 1;
+    if (totalHours > 0){
+        printf("calcPrimaryAssWorkLoad returns 0");
+        return 0;
     }
     else {
-        double totalHours;
-        totalHours = (assignment.duration + 0.0) / (60.0);
-        for (i = startingPoint; i < startingPoint + daysBetween - 2 && totalHours > 0; i++){
-            totalHours -= calendar[i].hoursFree;
-            calendar[i].hoursFree = 0;
-        }
-        if (totalHours > 0){
-            return 0;
-        }
-        else {
-            return 1;
-        }
+        printf("calcPrimaryAssWorkLoad returns 1");
+        return 1;
     }
 }
 
