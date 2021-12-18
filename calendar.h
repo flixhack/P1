@@ -305,6 +305,7 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
             }
         }
     }
+    printf("Returning 1\n");
     return 1;
 }
 
@@ -322,8 +323,10 @@ int deductAssignmentsFromHoursFree(date calendar[], int size){
     int k = 0;
     int returnValue = 1;
     for (i = 0; i < size && returnValue != 0; i++){
+        printf("Entering dateToString\n");
         dateToString(calendar, i, string);
         //printf("%s", string); //TESTING
+        printf("Entering findSection\n");
         findSection(string, "calendar.txt", &locOne, &locTwo);
         readSection(locOne, locTwo, tempDB, "calendar.txt");
         if (locOne != 0 && locTwo != 0){    
