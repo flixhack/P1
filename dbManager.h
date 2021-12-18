@@ -101,7 +101,6 @@ void findSection (char testInput[], char databaseSelect[], int *locOne, int *loc
 /*This function can read the lines between locOne and locTwo and store them to the tempDB array.
   In the tempDB */
 void readSection(int locOne, int locTwo, char tempDB[][MAX_LINE_LENGTH], char databaseSelect[]) {
-    //If statement uses the location variables assigned earlier (locOne and locTwo) to only store the necesarry text
     int lineCount = 0, bytes = 0;
     char string[MAX_LINE_LENGTH];
     
@@ -113,13 +112,10 @@ void readSection(int locOne, int locTwo, char tempDB[][MAX_LINE_LENGTH], char da
     
     bytes = locOne;
     int i = 0;
+    //If statement uses the location variables assigned earlier (locOne and locTwo) to only store the necesarry text
     while (fscanf(readFile, "%s", string) == 1) {
         if (lineCount > bytes && lineCount < locTwo) {
             strcpy(tempDB[i], string);
-            printf("[%i] %s\n", i, tempDB[i]);
-            // if (string[strlen(string) - 1] != '\n') {
-            //     printf("\n");
-            // }
         }
         i++;
         bytes++;
@@ -132,12 +128,7 @@ void readSection(int locOne, int locTwo, char tempDB[][MAX_LINE_LENGTH], char da
 void calendarSplit (char tempDB[][100], int lineLoc, char entryTime[][MAX_LINE_LENGTH], char entryDuration[][MAX_LINE_LENGTH], char entryType[][4], char entrySubject[][MAX_LINE_LENGTH], char endDate[][10]) {
     int parseSwitch = 1, k;
 
-    //memset(entryTime[lineLoc], '\0', MAX_LINE_LENGTH);
     memset(entryDuration[lineLoc], '\0', MAX_LINE_LENGTH);
-    //memset(entryType[lineLoc], '\0', MAX_LINE_LENGTH);
-    //memset(endDate[lineLoc], '\0', MAX_LINE_LENGTH);
-
-    printf("tempDB[0]: %s\n", tempDB[0]);
 
     for (k = 0; k < MAX_LINE_LENGTH; k++) {
         if (tempDB[lineLoc][k] == '_') {
