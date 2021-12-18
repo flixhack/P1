@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-void readyState(int),
+void readyState(),
      findCommand(char),
      assignments(),
      schedule(),
@@ -70,9 +70,9 @@ void login(void){
 
 
   printf("\nEnter username: ");
-  scanf("%s", &testInput);
+  scanf("%s", testInput);
   printf("\nEnter password: ");
-  scanf("%s", &password);
+  scanf("%s", password);
 
   strcat(testInput, "_");
   strcat(testInput, password);
@@ -220,7 +220,7 @@ void assignmentEditor(){
         scanf(" %c", &editCondition);
 
         if(editCondition == 'y'){
-          sprintf(newLine, "%s_%d_ass_%s_%d-%d-%d", newAssignment.time, newAssignment.duration, newAssignment.type, newAssignment.subject, tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
+          sprintf(newLine, "%s_%i_ass_%i_%s-%i-%i", newAssignment.time, newAssignment.duration, newAssignment.type, newAssignment.subject, tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
           //if(calcWorkLoad() >= 0){
             callDatabase(mode, database, locOne + 1, newLine);
           //}
@@ -369,7 +369,7 @@ void scheduleEditor(){
   char mode, x;
   char database[MAX_LINE_LENGTH] = "calendar.txt", tempTime[MAX_LINE_LENGTH];
   char endTime[MAX_LINE_LENGTH], newLine[MAX_LINE_LENGTH];
-  int run = 1, lineLoc = 0;
+  int run = 1;
   char command;
   while (run == 1){
     printf("\nCreate a module, Edit a module, delete a module or go back? (C/E/D/B): ");

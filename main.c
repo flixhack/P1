@@ -1,14 +1,9 @@
+#define MAX_LINE_LENGTH 100
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "functions.h"
-// void readyState(int),
-//      findCommand(char),
-//      assignments(),
-//      schedule(),
-//      logOut();
-//
-// int login();
+#include "calendar.h"
 
 
 int main(void){

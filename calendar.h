@@ -1,8 +1,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "functions.h"
 #include "dbManager.h"
+#include "functions.h"
 #define DAILY_SCHOOL_HOURS 9
 
 
