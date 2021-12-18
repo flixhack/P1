@@ -360,9 +360,8 @@ int calcPrimaryAssWorkLoad(date calendar[], int size, element assignment){
     totalHours = (assignment.duration + 0.0) / (60.0);
     for (i = startingPoint; i < startingPoint + daysBetween - 2 && totalHours > 0; i++){
         totalHours -= calendar[i].hoursFree;
-        calendar[i].hoursFree = 0;
     }
-    if (totalHours > 0){
+    if (totalHours >= 0){
         printf("calcPrimaryAssWorkLoad returns 0\n");
         return 0;
     }
