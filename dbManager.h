@@ -132,10 +132,10 @@ void readSection(int locOne, int locTwo, char tempDB[][MAX_LINE_LENGTH], char da
 void calendarSplit (char tempDB[][100], int lineLoc, char entryTime[][MAX_LINE_LENGTH], char entryDuration[][MAX_LINE_LENGTH], char entryType[][4], char entrySubject[][MAX_LINE_LENGTH], char endDate[][10]) {
     int parseSwitch = 1, k;
 
-    memset(entryTime[lineLoc], '\0', MAX_LINE_LENGTH);
+    //memset(entryTime[lineLoc], '\0', MAX_LINE_LENGTH);
     memset(entryDuration[lineLoc], '\0', MAX_LINE_LENGTH);
-    memset(entryType[lineLoc], '\0', MAX_LINE_LENGTH);
-    memset(endDate[lineLoc], '\0', MAX_LINE_LENGTH);
+    //memset(entryType[lineLoc], '\0', MAX_LINE_LENGTH);
+    //memset(endDate[lineLoc], '\0', MAX_LINE_LENGTH);
 
     printf("tempDB[0]: %s\n", tempDB[0]);
 
