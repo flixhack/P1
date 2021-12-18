@@ -8,9 +8,10 @@ void databaseEdit(char *, int *, char *, char *);
 void findSection(char *, char *, int *, int *);
 void readSection(int, int, char [][100], char *);
 int findLineLoc(char *, int, char *);
-void calendarSplit(char [][100], int, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][4], char [][MAX_LINE_LENGTH], char [][10]);
-int countChars(char *, int, char);
-date findLatestDate(char *);
+void calendarSplit(char [][100], int, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][4], char [][MAX_LINE_LENGTH]);
+int countChars(char *, int, char), countLines(char *);
+void lineSplit(char [][100], int *, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH]);
+
 
 int locOne = 0, locTwo = 0;
 
@@ -40,7 +41,7 @@ void databaseEdit(char *mode, int *lineNum, char newLine[], char databaseSelect[
             }
             else if (*mode == 'C' || *mode == 'c') {
                 strcat(buffer, newLine);
-                strcat(buffer, "\n");                
+                strcat(buffer, "\n");
                 fputs(buffer, writeTemp);
             }
             else if (*mode == 'E' || *mode == 'e') {
@@ -58,7 +59,7 @@ void databaseEdit(char *mode, int *lineNum, char newLine[], char databaseSelect[
 
     //Replaces the old db file with the one that now has the desired corrections
     remove("calendar.txt");
-    rename("replace.tmp", "calendar.txt");    
+    rename("replace.tmp", "calendar.txt");
 }
 
 /*This function can find a certain line of text from a string given from testInput, and saves the location to lineLoc
@@ -75,10 +76,10 @@ int findLineLoc (char testInput[], int locOne, char databaseSelect[]) {
     }
 
     while (fscanf(readFile, "%s", string) == 1) {
-        if (strcmp(testInput, string) == 0) {
+        if (strstr(testInput, string) != 0) {
             lineLoc = bytes - locOne;
         }
-        bytes++;    
+        bytes++;
     }
 
     fclose(readFile);
@@ -101,24 +102,28 @@ void findSection (char testInput[], char databaseSelect[], int *locOne, int *loc
 /*This function can read the lines between locOne and locTwo and store them to the tempDB array.
   In the tempDB */
 void readSection(int locOne, int locTwo, char tempDB[][MAX_LINE_LENGTH], char databaseSelect[]) {
+    //If statement uses the location variables assigned earlier (locOne and locTwo) to only store the necesarry text
     int lineCount = 0, bytes = 0;
     char string[MAX_LINE_LENGTH];
-    
+
     FILE *readFile = fopen(databaseSelect, "r");
     if (readFile == NULL){
         printf("Database file not found. Contact an administrator\n");
         exit(EXIT_FAILURE);
-    }    
-    
+    }
+
     bytes = locOne;
     int i = 0;
     //If statement uses the location variables assigned earlier (locOne and locTwo) to only store the necesarry text
     while (fscanf(readFile, "%s", string) == 1) {
         if (lineCount > bytes && lineCount < locTwo) {
             strcpy(tempDB[i], string);
+            i++;
+            bytes++;
+            if (string[strlen(string) - 1] != '\n') {
+                printf("\n");
+            }
         }
-        i++;
-        bytes++;
         lineCount++;
     }
     fclose(readFile);
@@ -253,4 +258,22 @@ date findLatestDate(char databaseSelect[]) {
         }
     }
     return output;
+}
+void lineSplit (char tempDB[][100], int *lineLoc, char userID[][MAX_LINE_LENGTH], char usernameAndPassword[][MAX_LINE_LENGTH], char loginID[][MAX_LINE_LENGTH]) {
+    int parseSwitch = 1, k;
+
+    for (k = 0; k < MAX_LINE_LENGTH; k++) {
+        if (tempDB[*lineLoc][k] == ';') {
+            parseSwitch++;
+        }
+        else if (tempDB[*lineLoc][k] != ';' && parseSwitch == 1) {
+            userID[*lineLoc][k] = tempDB[*lineLoc][k];
+        }
+        else if (tempDB[*lineLoc][k] != ';' && parseSwitch == 2) {
+            usernameAndPassword[*lineLoc][k - countChars(tempDB[*lineLoc], 1, ';')] = tempDB[*lineLoc][k];
+        }
+        else if (tempDB[*lineLoc][k] != ';' && parseSwitch == 3) {
+            loginID[*lineLoc][k - countChars(tempDB[*lineLoc], 2, ';')] = tempDB[*lineLoc][k];
+        }
+    }
 }
