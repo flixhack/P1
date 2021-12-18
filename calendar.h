@@ -362,11 +362,11 @@ int calcPrimaryAssWorkLoad(date calendar[], int size, element assignment){
         calendar[i].hoursFree = 0;
     }
     if (totalHours > 0){
-        printf("calcPrimaryAssWorkLoad returns 0");
+        printf("calcPrimaryAssWorkLoad returns 0\n");
         return 0;
     }
     else {
-        printf("calcPrimaryAssWorkLoad returns 1");
+        printf("calcPrimaryAssWorkLoad returns 1\n");
         return 1;
     }
 }
