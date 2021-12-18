@@ -9,14 +9,14 @@ enum types {mod = 1, ass}; typedef enum types types;
 
 void readyState(),
      findCommand(char),
-     assignments(int),
-     schedule(int),
+     assignments(),
+     schedule(),
      printSchedule(),
-     scheduleEditor(int),
+     scheduleEditor(),
      logOut(),
-     printAssignments(int),
+     printAssignments(),
      callDatabase(char, char*, int, char*),
-     assignmentEditor(int),
+     assignmentEditor(),
      login();
 
 int userID = 0;
@@ -156,9 +156,6 @@ void login(void){
   strcat(testInput, "_");
   strcat(testInput, password);
 
-
-
-
   findSection(search, databaseSelect, &locOne, &locTwo);
 
   readSection(locOne, locTwo, tempDB, databaseSelect);
@@ -170,7 +167,6 @@ void login(void){
       loginID = atoi(tempLoginID[i]);
       userFound = 1;
     }
-    else printf("User not found, terminating program...");
   }
 }
 
@@ -195,11 +191,11 @@ void findCommand(char command){
     break;
     case 'a':
     case 'A':
-      assignments(loginID);
+      assignments();
       break;
     case 's':
     case 'S':
-      schedule(loginID);
+      schedule();
       break;
     case 'l':
     case 'L':
@@ -211,7 +207,7 @@ void findCommand(char command){
     }
 }
 
-void assignments(int loginID) {
+void assignments() {
   int run = 1;
   char command;
   while (run == 1){
@@ -221,11 +217,11 @@ void assignments(int loginID) {
       switch (command){
         case 'c':
         case 'C':
-        printAssignments(loginID);
+        printAssignments();
         break;
         case 'e':
         case 'E':
-        assignmentEditor(loginID);
+        assignmentEditor();
         break;
         case 'b':
         case 'B':
@@ -236,15 +232,15 @@ void assignments(int loginID) {
         break;
       }
     }
-    else printAssignments(loginID);
+    else printAssignments();
   }
 }
 
-void printAssignments(int LoginID){
+void printAssignments(){
 
 }
 
-void assignmentEditor(int LoginID){
+void assignmentEditor(){
   int run = 1;
   char mode, command, editCondition;
   char database[MAX_LINE_LENGTH] = "calendar.txt", tempDate[MAX_LINE_LENGTH];
@@ -414,7 +410,7 @@ void assignmentEditor(int LoginID){
     }
   }
 }
-void schedule(int loginID) {
+void schedule() {
 
   int run = 1;
   char command;
@@ -425,11 +421,11 @@ void schedule(int loginID) {
       switch (command){
         case 's':
         case 'S':
-        printSchedule(loginID);
+        printSchedule();
         break;
         case 'e':
         case 'E':
-        scheduleEditor(loginID);
+        scheduleEditor();
         break;
         case 'b':
         case 'B':
@@ -440,15 +436,15 @@ void schedule(int loginID) {
         break;
       }
     }
-    else printSchedule(loginID);
+    else printSchedule();
   }
 }
 
-void printSchedule (int loginID){
+void printSchedule (){
   printf("The function printSchedule is not yet implemented\n");
 }
 
-void scheduleEditor(int userID){
+void scheduleEditor(){
   char mode, x;
   char database[MAX_LINE_LENGTH] = "calendar.txt", tempTime[MAX_LINE_LENGTH];
   char endTime[MAX_LINE_LENGTH], newLine[MAX_LINE_LENGTH];
