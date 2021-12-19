@@ -389,7 +389,7 @@ void scheduleEditor(){
 
         findSection(tempTime, database, &locOne, &locTwo);
 
-        if (locTwo == -1){
+        if (locTwo == -1 || locTwo == 0){
           locTwo = countLines(database);
           callDatabase(mode, database, locTwo, tempTime);
           sprintf(endTime, "%s_END", tempTime);

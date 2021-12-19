@@ -12,7 +12,7 @@ int countChars(char *, int, char), countLines(char *);
 void lineSplit(char [][100], int *, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH]);
 
 
-int locOne = 0, locTwo = 0;
+int locOne = 0, locTwo = -1;
 
 /*This function edits a given database file. Made can be set to 'D' to delete a given line, 'C' to create a new line
 and 'E' to replace the text written on a given line.
