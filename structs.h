@@ -1,3 +1,5 @@
+typedef enum types {mod = 1, ass, hmw, tst}; types;
+
 typedef struct date{
     int week,
         day,
