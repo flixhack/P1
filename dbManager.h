@@ -133,13 +133,13 @@ void readSection(int locOne, int locTwo, char tempDB[][MAX_LINE_LENGTH], char da
 /*This function is specifically for use with the calendar database, and splits the output from its functions into time, duration, type and subject*/
 void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[][MAX_LINE_LENGTH], char entryDuration[][MAX_LINE_LENGTH], char entryType[][4], char entrySubject[][MAX_LINE_LENGTH], char endDate[][10]) {
     printf("calendarSplit start\n");
-    printf("tempDB[lineLoc]: %s\n", tempDB[lineLoc]);
+    printf("tempDB[lineLoc(%i)]: %s\n", lineLoc, tempDB[lineLoc]);
     int parseSwitch = 1, k;
     parseSwitch = 1;
     printf("parseSwitch init: %i\n", parseSwitch);
 
-    memset(entryDuration[lineLoc], '\0', MAX_LINE_LENGTH);
-    memset(endDate[lineLoc], '\0', MAX_LINE_LENGTH);
+    memset(entryDuration, '\0', MAX_LINE_LENGTH);
+    memset(endDate, '\0', MAX_LINE_LENGTH);
     printf("lineLoc: %i\n", lineLoc);
 
     for (k = 0; k < MAX_LINE_LENGTH; k++) {

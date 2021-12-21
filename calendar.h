@@ -294,7 +294,7 @@ int deductAssignmentsFromHoursFree(date calendar[], int size){
                 printf("%s\n", tempDB[k]);
             }
             //------
-            for (k = 0; k < (locTwo - locOne -1); k++){
+            for (k = 1; k < (locTwo - locOne -1); k++){
                 printf("tempDB[%i] foer: %s\n", k, tempDB[k]);
                 calendarSplit (tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
                 printf("tempDB[%i] efter: %s\n", k, tempDB[k]);
