@@ -105,6 +105,8 @@ void readSection(int locOne, int locTwo, char tempDB[][MAX_LINE_LENGTH], char da
     int lineCount = 0, bytes = 0;
     char string[MAX_LINE_LENGTH];
 
+    memset(tempDB, '\0', MAX_LINE_LENGTH);
+
     FILE *readFile = fopen(databaseSelect, "r");
     if (readFile == NULL){
         printf("Database file not found. Contact an administrator\n");
@@ -131,16 +133,18 @@ void readSection(int locOne, int locTwo, char tempDB[][MAX_LINE_LENGTH], char da
 /*This function is specifically for use with the calendar database, and splits the output from its functions into time, duration, type and subject*/
 void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[][MAX_LINE_LENGTH], char entryDuration[][MAX_LINE_LENGTH], char entryType[][4], char entrySubject[][MAX_LINE_LENGTH], char endDate[][10]) {
     printf("calendarSplit start\n");
+    printf("tempDB[lineLoc]: %s\n", tempDB[lineLoc]);
     int parseSwitch = 1, k;
     parseSwitch = 1;
+    printf("parseSwitch init: %i\n", parseSwitch);
 
     memset(entryDuration[lineLoc], '\0', MAX_LINE_LENGTH);
     memset(endDate[lineLoc], '\0', MAX_LINE_LENGTH);
-    printf("lineLoc: %i", lineLoc);
+    printf("lineLoc: %i\n", lineLoc);
 
-    for (k = 0; k < MAX_LINE_LENGTH; k++) {
+    for (k = 0; k < MAX_LINE_LENGTH && parseSwitch != 6; k++) {
         printf("calendar k: %i\n", k);
-        if (tempDB[lineLoc][k] == '_') {
+        if (tempDB[lineLoc][k] == '_' && parseSwitch) {
             parseSwitch++;
             printf("parseSwitch: %i\n", parseSwitch);
         }
