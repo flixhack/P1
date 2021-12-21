@@ -132,6 +132,7 @@ void readSection(int locOne, int locTwo, char tempDB[][MAX_LINE_LENGTH], char da
 
 /*This function is specifically for use with the calendar database, and splits the output from its functions into time, duration, type and subject*/
 void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[][MAX_LINE_LENGTH], char entryDuration[][MAX_LINE_LENGTH], char entryType[][4], char entrySubject[][MAX_LINE_LENGTH], char endDate[][10]) {
+    printf("recived string: %s", tempDB[lineLoc]);
     printf("calendarSplit start\n");
     printf("tempDB[lineLoc(%i)]: %s\n", lineLoc, tempDB[lineLoc]);
     int parseSwitch = 1, k;
@@ -155,34 +156,45 @@ void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[
     // memset(entryType, '\0', MAX_LINE_LENGTH);
     // memset(entrySubject, '\0', MAX_LINE_LENGTH);
     printf("lineLoc: %i\n", lineLoc);
+    char tempString[MAX_LINE_LENGTH];
+    int underScores = 0;
 
-    for (k = 0; k < 100; k++) {
-        //printf("calendar k: %i\n", k);
-        if (tempDB[lineLoc][k] == '_' && parseSwitch) {
-            parseSwitch++;
-            printf("parseSwitch: %i\n", parseSwitch);
-        }
-        else if (tempDB[lineLoc][k] != '_' && parseSwitch == 1) {
+    for (k = 0; k < MAX_LINE_LENGTH; k++) {
+        tempString[k] = tempDB[lineLoc][k];
+        underScores = countChars(tempString, 100, '_');
+        if (underScores == 0){
             entryTime[lineLoc][k] = tempDB[lineLoc][k];
-            printf("calendarTime\n");
+            if (entryTime[lineLoc][k] == '_'){
+                entryTime[lineLoc][k] = '\0';
+            }
         }
-        else if (tempDB[lineLoc][k] != '_' && parseSwitch == 2) {
+        if (underScores == 1){
             entryDuration[lineLoc][k - countChars(tempDB[lineLoc], 1, '_')] = tempDB[lineLoc][k];
-            printf("calendarDuration: %s\n", entryDuration[lineLoc]);
+            if (entryDuration[lineLoc][k - countChars(tempDB[lineLoc], 1, '_')] == '_'){
+                entryDuration[lineLoc][k - countChars(tempDB[lineLoc], 1, '_')] = '\0';
+            }
         }
-        else if (tempDB[lineLoc][k] != '_' && parseSwitch == 3) {
+        if (underScores == 2){
             entryType[lineLoc][k - countChars(tempDB[lineLoc], 2, '_')] = tempDB[lineLoc][k];
-            printf("calendarType\n");
+            if (entryType[lineLoc][k - countChars(tempDB[lineLoc], 2, '_')] == '_'){
+                entryType[lineLoc][k - countChars(tempDB[lineLoc], 2, '_')] = '\0';
+            }
         }
-        else if (tempDB[lineLoc][k] != '_' && parseSwitch == 4) {
+        if (underScores == 3){
             entrySubject[lineLoc][k - countChars(tempDB[lineLoc], 3, '_')] = tempDB[lineLoc][k];
-            printf("calendarSubject\n");
+            if (entrySubject[lineLoc][k - countChars(tempDB[lineLoc], 3, '_')] == '_'){
+                entrySubject[lineLoc][k - countChars(tempDB[lineLoc], 3, '_')] = '\0';
+            }
         }
-        else if (tempDB[lineLoc][k] != '_' && parseSwitch == 5) {
-            endDate[lineLoc][k - countChars(tempDB[lineLoc], 4, '_')] = tempDB[lineLoc][k];
-            printf("entryendDate, k: %i\n", k);
+        if (underScores == 4){
+            endDate[lineLoc][k - countChars(tempDB[lineLoc], 3, '_')] = tempDB[lineLoc][k];
+            if (endDate[lineLoc][k - countChars(tempDB[lineLoc], 3, '_')] == '_'){
+                endDate[lineLoc][k - countChars(tempDB[lineLoc], 3, '_')] = '\0';
+            }
         }
+        
     }
+    printf("End date: %s", endDate[lineLoc]);
 
 }
 

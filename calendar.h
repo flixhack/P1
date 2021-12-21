@@ -340,22 +340,18 @@ int calcPrimaryAssWorkLoad(date calendar[], int size, element assignment){
 int calcWorkLoad(element newElement){
     int result = 0;
     int daysBetween = 0;
-    int size = 0;
     date earliestDate;
     date *calendar;
-    int a,b;
     earliestDate = scanForEarliestAssignmentDate("calendar.txt");
     date latestDate;
     latestDate = findLatestDate("calendar.txt");
     date counter = earliestDate;
+    printf("earliestDate: %i/%i/%i\n", earliestDate.day, earliestDate.month, earliestDate.year);
+    printf("latestDate: %i/%i/%i\n", latestDate.day, latestDate.month, latestDate.year);
     daysBetween = daysBetweenDates(earliestDate, latestDate);
     // date calendar[daysBetween];
+    printf("daysBetween: %i\n", daysBetween);
     calendar = (date *) calloc(daysBetween, sizeof(date));
-    // size = (sizeof(calendar)) / (sizeof(calendar[0]);
-    a = sizeof(calendar);
-    b = sizeof(calendar[0]);
-    printf("\nSizeof calendar: %i",a );
-    printf("\nSizeof calendar[0]: %i",b );
     populateCalendar(calendar, counter, daysBetween);
     deductModulesFromHoursFree(calendar, daysBetween);
     result = deductAssignmentsFromHoursFree(calendar, daysBetween);
@@ -363,7 +359,6 @@ int calcWorkLoad(element newElement){
         free(calendar);
         return 0;
     }
-    printf("size in calcWorkLoad: %i\n", size);
     result = calcPrimaryAssWorkLoad(calendar, daysBetween, newElement);
     free(calendar);
     return result;
