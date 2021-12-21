@@ -49,7 +49,7 @@ int remainingDaysInYear(date givenDate){ // count remaining days in the current 
 int daysBetweenDates(date startDate, date endDate){ //counts days between two dates, including the start and end date
     int days = 0;
     date counter = startDate;
-    if (endDate.year - counter.year != 0){ 
+    if (endDate.year - counter.year != 0){
         days += remainingDaysInYear(counter);
         counter.day = 1;
         counter.month = 1;
@@ -338,12 +338,14 @@ int calcWorkLoad(element newElement){
     int daysBetween = 0,
         size = 0;
     date earliestDate;
+    date *calendar;
     earliestDate = scanForEarliestAssignmentDate("calendar.txt");
     date latestDate;
     latestDate = findLatestDate("calendar.txt");
     date counter = earliestDate;
     daysBetween = daysBetweenDates(earliestDate, latestDate);
-    date calendar[daysBetween];
+    // date calendar[daysBetween];
+    calendar = (date *) calloc(daysBetween, sizeof(date));
     size = (sizeof calendar) / (sizeof calendar[0]);
     populateCalendar(calendar, counter, size);
     deductModulesFromHoursFree(calendar, size);
@@ -353,4 +355,5 @@ int calcWorkLoad(element newElement){
     }
     result = calcPrimaryAssWorkLoad(calendar, size, newElement);
     return result;
+    free(calendar);
 }
