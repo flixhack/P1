@@ -169,7 +169,6 @@ void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[
         }
     }
 
-    printf("lineLoc: %i\n", lineLoc);
 
 
     char *token;
@@ -196,48 +195,38 @@ void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[
           else {
             strcpy(tempEntryDuration, token);
           }
-          printf("FUCKING FUCK 1 %s\n", entryDuration[lineLoc]);
         }
         else if (j == 2 && token != NULL) {
         strcpy(tempEntryTime, token);
         strcpy(entryTime[lineLoc], tempEntryTime);
-        printf("FUCKING FUCK 2 %s\n", entryTime[lineLoc]);
         }
         else if (j == 3 && token != NULL) {
         strcpy(tempEntrySubject, token);
         strcpy(entrySubject[lineLoc], tempEntrySubject);
-        printf("FUCKING FUCK 3 %s\n", entrySubject[lineLoc]);
         }
         else if (j == 4 && token != NULL) {
         strcpy(tempEndDate, token);
         strcpy(endDate[lineLoc], tempEndDate);
-        printf("FUCKING FUCK 4 %s\n", endDate[lineLoc]);
         }
         else if (j == 0 && token == NULL) {
         strcpy(tempEntryTime, "1111");
-        printf("FUCKING FUCK med NULL 0 %s\n", tempEntryTime);
         }
         else if (j == 1 && token == NULL) {
         strcpy(tempEntryDuration, "1111");
-        printf("FUCKING FUCK med NULL 1 %s\n", tempEntryDuration);
         }
         else if (j == 2 && token == NULL) {
         strcpy(tempEntryType, "1111");
-        printf("FUCKING FUCK med NULL 2 %s\n", tempEntryType);
         }
         else if (j == 3 && token == NULL) {
         strcpy(tempEntrySubject, "1111");
-        printf("FUCKING FUCK med NULL 3 %s\n", tempEntrySubject);
         }
         else if (j == 4 && token == NULL) {
         strcpy(tempEndDate, "1111");
-        printf("FUCKING FUCK med NULL 4 %s\n", tempEndDate);
         }
         token = strtok(NULL, s);
     }
 
 
- printf("Nu skrider vi\n");
 }
 
 void calendarDateSplit (char tempDB[][100], int lineLoc, char entryDay[][MAX_LINE_LENGTH], char entryMonth[][MAX_LINE_LENGTH], char entryYear[][MAX_LINE_LENGTH]) {
