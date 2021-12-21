@@ -351,9 +351,10 @@ int calcWorkLoad(element newElement){
     deductModulesFromHoursFree(calendar, size);
     result = deductAssignmentsFromHoursFree(calendar, size);
     if (result == 0){
+        free(calendar);
         return 0;
     }
     result = calcPrimaryAssWorkLoad(calendar, size, newElement);
-    return result;
     free(calendar);
+    return result;
 }
