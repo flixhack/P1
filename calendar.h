@@ -196,7 +196,7 @@ date scanForEarliestAssignmentDate(char databaseSelect[]){
 
     readSection(-1, lineCount, tempDB, databaseSelect);
     int k;
-    for (k = 0; k < lineCount + 1; k++) {
+    for (k = 0; k < lineCount; k++) {
         calendarSplit(tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
     }
     int j;

@@ -137,6 +137,26 @@ void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[
     int parseSwitch = 1, k;
     parseSwitch = 1;
     printf("parseSwitch init: %i\n", parseSwitch);
+    int endCheck;
+    char *endend;
+    // char *tempEntryDuration, *tempEntryTime, *tempEntrySubject, *tempEntryType, *tempEndDate;
+    // tempEntryDuration = (char *) calloc(40, sizeof(char));
+    // tempEntryTime = (char *) calloc(40, sizeof(char));
+    // tempEntrySubject = (char *) calloc(40, sizeof(char));
+    // tempEntryType = (char *) calloc(40, sizeof(char));
+    // tempEndDate = (char *) calloc(40, sizeof(char));
+
+    char tempEntryTime[100], tempEntryDuration[100], tempEntrySubject[100], tempEntryType[100], tempEndDate[100];
+
+    for (int j = 0; j < 100; j++) {
+      tempEntryTime[j] = '\0';
+      tempEntryDuration[j] = '\0';
+      tempEntrySubject[j] = '\0';
+      tempEntryType[j] = '\0';
+      tempEndDate[j] = '\0';
+    }
+
+
 
     // memset(entryDuration, '\0', MAX_LINE_LENGTH);
     for (int i = 0; i < MAX_LINE_LENGTH; i++) {
@@ -188,27 +208,76 @@ void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[
 
     token = strtok(tempDB[lineLoc], s);
 
+
+
+
+
     for (int j = 0; j < 5 && strtok != NULL; j++) {
-        if (j == 0) {
-        entryTime = token;
+      printf("FUCK %i\n", j );
+        if (j == 0 && token != NULL) {
+        strcpy(tempEntryTime, token);
+        strcpy(entryTime[lineLoc], tempEntryTime);
+        printf("FUCKING FUCK 0 %s\n", entryTime[lineLoc]);
         }
-        else if (j == 1) {
-        entryDuration = token;
+        else if (j == 1 && token != NULL) {
+          endend = token;
+          endCheck = strcmp("END", endend);
+          if (endCheck != 0) {
+            strcpy(tempEntryDuration, token);
+            strcpy(entryDuration[lineLoc], tempEntryDuration);
+          }
+          else {
+            strcpy(tempEntryDuration, token);
+          }
+          printf("FUCKING FUCK 1 %s\n", entryDuration[lineLoc]);
         }
-        else if (j == 2) {
-        entryType = token;
+        else if (j == 2 && token != NULL) {
+        strcpy(tempEntryTime, token);
+        strcpy(entryTime[lineLoc], tempEntryTime);
+        printf("FUCKING FUCK 2 %s\n", entryTime[lineLoc]);
         }
-        else if (j == 3) {
-        entrySubject = token;
+        else if (j == 3 && token != NULL) {
+        strcpy(tempEntrySubject, token);
+        strcpy(entrySubject[lineLoc], tempEntrySubject);
+        printf("FUCKING FUCK 3 %s\n", entrySubject[lineLoc]);
         }
-        else if (j == 4) {
-        endDate = token;
+        else if (j == 4 && token != NULL) {
+        strcpy(tempEndDate, token);
+        strcpy(endDate[lineLoc], tempEndDate);
+        printf("FUCKING FUCK 4 %s\n", endDate[lineLoc]);
+        }
+        else if (j == 0 && token == NULL) {
+        strcpy(tempEntryTime, "1111");
+        printf("FUCKING FUCK med NULL 0 %s\n", tempEntryTime);
+        }
+        else if (j == 1 && token == NULL) {
+        strcpy(tempEntryDuration, "1111");
+        printf("FUCKING FUCK med NULL 1 %s\n", tempEntryDuration);
+        }
+        else if (j == 2 && token == NULL) {
+        strcpy(tempEntryType, "1111");
+        printf("FUCKING FUCK med NULL 2 %s\n", tempEntryType);
+        }
+        else if (j == 3 && token == NULL) {
+        strcpy(tempEntrySubject, "1111");
+        printf("FUCKING FUCK med NULL 3 %s\n", tempEntrySubject);
+        }
+        else if (j == 4 && token == NULL) {
+        strcpy(tempEndDate, "1111");
+        printf("FUCKING FUCK med NULL 4 %s\n", tempEndDate);
         }
         token = strtok(NULL, s);
     }
 
+  //
+  // free(tempEntryDuration);
+  // free(tempEntryTime);
+  // free(tempEntrySubject);
+  // free(tempEntryType);
+  // free(tempEndDate);
+  //
 
-
+ printf("Nu skrider vi\n");
 }
 
 void calendarDateSplit (char tempDB[][100], int lineLoc, char entryDay[][MAX_LINE_LENGTH], char entryMonth[][MAX_LINE_LENGTH], char entryYear[][MAX_LINE_LENGTH]) {
