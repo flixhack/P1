@@ -227,8 +227,10 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
         int test = strcmp(entryType[k], "ass");
         if (test == 0){
             compareDateStart = stringToDate(endDate[k], '-');
+            printf("endDate[%i]: %s\n", k, endDate[k]);
             durationDouble = (atoi(entryDuration[k])) / 60.0;
             daysBetween = daysBetweenDates(compareDateStart, calendar[i]) - 2;
+            printf("compareDateStart: %i/%i/%i. calendar[i]: %i/%i/%i\n", compareDateStart.day, compareDateStart.month, compareDateStart.year, calendar[i].day, calendar[i].month, calendar[i].year);
             averageTime = (durationDouble / daysBetween);
             fitsEasy = 1;
             printf("calendar[%i].hoursFree = %lf, averageTime: %lf", j, calendar[j].hoursFree, averageTime);
@@ -289,6 +291,7 @@ int deductAssignmentsFromHoursFree(date calendar[], int size){
             for (k = 0; k < (locTwo - locOne); k++){
                 calendarSplit (tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
             }
+            printf("Entering calAssignmentWorkLoad with i: %i\n", i);
             returnValue = calcAssignmentWorkLoad(i, calendar, size, entryType, entryDuration, endDate);
         }
     }
