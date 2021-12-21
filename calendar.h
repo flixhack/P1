@@ -223,7 +223,7 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
     date compareDateStart;
     double averageTime;
     double durationDouble;
-    for (k = 0; k < (locTwo - locOne); k++){
+    for (k = 0; k < (locTwo - locOne -1); k++){
         int test = strcmp(entryType[k], "ass");
         if (test == 0){
             compareDateStart = stringToDate(endDate[k], '-');
@@ -233,7 +233,7 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
             printf("compareDateStart: %i/%i/%i. calendar[i]: %i/%i/%i\n", compareDateStart.day, compareDateStart.month, compareDateStart.year, calendar[i].day, calendar[i].month, calendar[i].year);
             averageTime = (durationDouble / daysBetween);
             fitsEasy = 1;
-            printf("calendar[%i].hoursFree = %lf, averageTime: %lf", j, calendar[j].hoursFree, averageTime);
+            //printf("calendar[%i].hoursFree = %lf, averageTime: %lf", j, calendar[j].hoursFree, averageTime);
             for (j = (i - daysBetween); j < i && fitsEasy != 0; j++){
                 if (calendar[j].hoursFree < averageTime){
                     fitsEasy = 0;
@@ -290,14 +290,17 @@ int deductAssignmentsFromHoursFree(date calendar[], int size){
         if (locOne != 0 && locTwo != 0){
             readSection(locOne, locTwo, tempDB, "calendar.txt");
             //------
-            for (k = 0; k < (locTwo - locOne); k++){
+            for (k = 0; k < (locTwo - locOne -1); k++){
                 printf("%s\n", tempDB[k]);
             }
             //------
-            for (k = 0; k < (locTwo - locOne); k++){
+            for (k = 0; k < (locTwo - locOne -1); k++){
+                printf("tempDB[%i] foer: %s\n", k, tempDB[k]);
                 calendarSplit (tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
+                printf("tempDB[%i] efter: %s\n", k, tempDB[k]);
+                printf("entryTime[k]: %s, entryDuration[k]: %s, entryType[k]: %s, entrySubject[k]: %s, endDate[k]: %s\n", entryTime[k], entryDuration[k], entryType[k], entrySubject[k], endDate[k]);
             }
-            printf("Entering calAssignmentWorkLoad with i: %i\n", i);
+            printf("Entering calcAssignmentWorkLoad with i: %i\n", i);
             returnValue = calcAssignmentWorkLoad(i, calendar, size, entryType, entryDuration, endDate);
         }
     }

@@ -133,6 +133,7 @@ void calendarSplit (char tempDB[][100], int lineLoc, char entryTime[][MAX_LINE_L
     int parseSwitch = 1, k;
 
     memset(entryDuration[lineLoc], '\0', MAX_LINE_LENGTH);
+    memset(endDate[lineLoc], '\0', MAX_LINE_LENGTH);
 
     for (k = 0; k < MAX_LINE_LENGTH; k++) {
         if (tempDB[lineLoc][k] == '_') {
