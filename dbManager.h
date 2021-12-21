@@ -156,8 +156,8 @@ void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[
     // memset(entrySubject, '\0', MAX_LINE_LENGTH);
     printf("lineLoc: %i\n", lineLoc);
 
-    for (k = 0; k < MAX_LINE_LENGTH; k++) {
-        printf("calendar k: %i\n", k);
+    for (k = 0; k < 100; k++) {
+        //printf("calendar k: %i\n", k);
         if (tempDB[lineLoc][k] == '_' && parseSwitch) {
             parseSwitch++;
             printf("parseSwitch: %i\n", parseSwitch);
@@ -180,7 +180,7 @@ void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[
         }
         else if (tempDB[lineLoc][k] != '_' && parseSwitch == 5) {
             endDate[lineLoc][k - countChars(tempDB[lineLoc], 4, '_')] = tempDB[lineLoc][k];
-            printf("entryendDate\n");
+            printf("entryendDate, k: %i\n", k);
         }
     }
 
