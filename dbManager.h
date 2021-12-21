@@ -121,9 +121,9 @@ void readSection(int locOne, int locTwo, char tempDB[][MAX_LINE_LENGTH], char da
             strcpy(tempDB[i], string);
             i++;
             bytes++;
-            if (string[strlen(string) - 1] != '\n') {
-                printf("\n");
-            }
+            // if (string[strlen(string) - 1] != '\n') {
+            //     printf("\n");
+            // }
         }
         lineCount++;
     }
