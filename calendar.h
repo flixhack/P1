@@ -233,8 +233,9 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
             fitsEasy = 1;
             //printf("calendar[%i].hoursFree = %lf, averageTime: %lf", j, calendar[j].hoursFree, averageTime);
             for (j = (i - daysBetween); j < i && fitsEasy != 0; j++){
-                printf("j: %i, size: %i, daysBetween: %i", j, size, daysBetween);
-                printf("calendar[%i].hoursFree = %lf, averageTime: %lf", j, calendar[j].hoursFree, averageTime);
+                printf("\nendDate[%i]: %s", k, endDate[k]);
+                printf("\nj: %i, size: %i, daysBetween: %i", j, size, daysBetween);
+                printf("\ncalendar[%i].hoursFree = %lf, averageTime: %lf", j, calendar[j].hoursFree, averageTime);
                 if (calendar[j].hoursFree < averageTime){
                     fitsEasy = 0;
                 }
