@@ -75,7 +75,7 @@ int findLineLoc (char testInput[], int locOne, char databaseSelect[]) {
     }
 
     while (fscanf(readFile, "%s", string) == 1) {
-        if (strcmp(testInput, string) != 0) {
+        if (strcmp(testInput, string) == 0) {
             lineLoc = bytes - locOne;
         }
         bytes++;
@@ -140,7 +140,7 @@ void calendarSplit (char tempDB[][100], int lineLoc, char entryTime[][MAX_LINE_L
         }
         else if (tempDB[lineLoc][k] != '_' && parseSwitch == 1) {
             entryTime[lineLoc][k] = tempDB[lineLoc][k];
-        }        
+        }
         else if (tempDB[lineLoc][k] != '_' && parseSwitch == 2) {
             entryDuration[lineLoc][k - countChars(tempDB[lineLoc], 1, '_')] = tempDB[lineLoc][k];
         }
@@ -153,8 +153,8 @@ void calendarSplit (char tempDB[][100], int lineLoc, char entryTime[][MAX_LINE_L
         else if (tempDB[lineLoc][k] != '_' && parseSwitch == 5) {
             endDate[lineLoc][k - countChars(tempDB[lineLoc], 4, '_')] = tempDB[lineLoc][k];
         }
-    }    
-    
+    }
+
 }
 
 void calendarDateSplit (char tempDB[][100], int lineLoc, char entryDay[][MAX_LINE_LENGTH], char entryMonth[][MAX_LINE_LENGTH], char entryYear[][MAX_LINE_LENGTH]) {
@@ -166,7 +166,7 @@ void calendarDateSplit (char tempDB[][100], int lineLoc, char entryDay[][MAX_LIN
         }
         else if (tempDB[lineLoc][k] != '/' && parseSwitch == 1) {
             entryDay[lineLoc][k] = tempDB[lineLoc][k];
-        }        
+        }
         else if (tempDB[lineLoc][k] != '/' && parseSwitch == 2) {
             entryMonth[lineLoc][k - countChars(tempDB[lineLoc], 1, '/')] = tempDB[lineLoc][k];
         }
@@ -189,7 +189,7 @@ int countChars(char string[], int underscores, char charToCount) {
     return chars;
 }
 
-int countLines(char *filename){                         
+int countLines(char *filename){
     FILE *readFile = fopen(filename,"r");
     int lines = 0;
     int chars = 0;
