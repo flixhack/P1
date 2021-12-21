@@ -10,7 +10,7 @@ int findLineLoc(char *, int, char *);
 void calendarSplit(char [][100], int, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][4], char [][MAX_LINE_LENGTH], char[][10]);
 int countChars(char *, int, char), countLines(char *);
 void lineSplit(char [][100], int *, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH]);
-
+int countCharNum(char[], char, int);
 
 int locOne = 0, locTwo = -1;
 
@@ -128,6 +128,18 @@ void readSection(int locOne, int locTwo, char tempDB[][MAX_LINE_LENGTH], char da
         lineCount++;
     }
     fclose(readFile);
+}
+
+int countCharNum(char string[], char searchTerm, int lengthOfString){
+  int numOfChar = 0;
+  for (int i = 0; i < lengthOfString; i++) {
+    if (string[i] == searchTerm) {
+      printf("String in countCharNum: %s \n", string );
+      numOfChar++;
+      printf("Num of char: %i \n", numOfChar);
+    }
+  }
+  return numOfChar;
 }
 
 /*This function is specifically for use with the calendar database, and splits the output from its functions into time, duration, type and subject*/

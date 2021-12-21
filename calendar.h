@@ -197,12 +197,17 @@ date scanForEarliestAssignmentDate(char databaseSelect[]){
     readSection(-1, lineCount, tempDB, databaseSelect);
     int k;
     for (k = 0; k < lineCount; k++) {
+        printf("TempDB: %s \n", tempDB[k] );
         calendarSplit(tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
+        printf("End date: %s \n", endDate[k] );
     }
     int j;
     int earliestDate = 100000000;
+    int lengthOfEndDate = 0;
     for (j = 0; j < lineCount; j++){
-        if (containsChar(tempDB[j], '-') == 1) {
+        printf("End date: %s \n", endDate[j]);
+        lengthOfEndDate = sizeof(endDate[j]) / sizeof(char);
+        if (countCharNum(endDate[j], '-', lengthOfEndDate) == 2) {
             date tempDate = stringToDate(endDate[j], '-');
             if (tempDate.year * 10000 + tempDate.month * 100 + tempDate.day < earliestDate) {
                 earliestDate = tempDate.year * 10000 + tempDate.month * 100 + tempDate.day;
