@@ -187,7 +187,7 @@ void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[
     const char s[2] = "_";
 
     token = strtok(tempDB[lineLoc], s);
-    
+
     for (int j = 0; j < 5 && strtok != NULL; j++) {
         if (j == 0) {
         entryTime = token;
@@ -203,8 +203,8 @@ void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[
         }
         else if (j == 4) {
         endDate = token;
-        token = strtok(NULL, s);
         }
+        token = strtok(NULL, s);
     }
 
 
