@@ -130,29 +130,39 @@ void readSection(int locOne, int locTwo, char tempDB[][MAX_LINE_LENGTH], char da
 
 /*This function is specifically for use with the calendar database, and splits the output from its functions into time, duration, type and subject*/
 void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[][MAX_LINE_LENGTH], char entryDuration[][MAX_LINE_LENGTH], char entryType[][4], char entrySubject[][MAX_LINE_LENGTH], char endDate[][10]) {
+    printf("calendarSplit start\n");
     int parseSwitch = 1, k;
+    parseSwitch = 1;
 
     memset(entryDuration[lineLoc], '\0', MAX_LINE_LENGTH);
     memset(endDate[lineLoc], '\0', MAX_LINE_LENGTH);
+    printf("lineLoc: %i", lineLoc);
 
     for (k = 0; k < MAX_LINE_LENGTH; k++) {
+        printf("calendar k: %i\n", k);
         if (tempDB[lineLoc][k] == '_') {
             parseSwitch++;
+            printf("parseSwitch: %i\n", parseSwitch);
         }
         else if (tempDB[lineLoc][k] != '_' && parseSwitch == 1) {
             entryTime[lineLoc][k] = tempDB[lineLoc][k];
+            printf("calendarTime\n");
         }
         else if (tempDB[lineLoc][k] != '_' && parseSwitch == 2) {
             entryDuration[lineLoc][k - countChars(tempDB[lineLoc], 1, '_')] = tempDB[lineLoc][k];
+            printf("calendarDuration\n");
         }
         else if (tempDB[lineLoc][k] != '_' && parseSwitch == 3) {
             entryType[lineLoc][k - countChars(tempDB[lineLoc], 2, '_')] = tempDB[lineLoc][k];
+            printf("calendarType\n");
         }
         else if (tempDB[lineLoc][k] != '_' && parseSwitch == 4) {
             entrySubject[lineLoc][k - countChars(tempDB[lineLoc], 3, '_')] = tempDB[lineLoc][k];
+            printf("calendarSubject\n");
         }
         else if (tempDB[lineLoc][k] != '_' && parseSwitch == 5) {
             endDate[lineLoc][k - countChars(tempDB[lineLoc], 4, '_')] = tempDB[lineLoc][k];
+            printf("entryendDate\n");
         }
     }
 
