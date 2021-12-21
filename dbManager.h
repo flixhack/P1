@@ -134,9 +134,6 @@ void readSection(int locOne, int locTwo, char tempDB[][MAX_LINE_LENGTH], char da
 void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[][MAX_LINE_LENGTH], char entryDuration[][MAX_LINE_LENGTH], char entryType[][4], char entrySubject[][MAX_LINE_LENGTH], char endDate[][10]) {
     printf("calendarSplit start\n");
     printf("tempDB[lineLoc(%i)]: %s\n", lineLoc, tempDB[lineLoc]);
-    int parseSwitch = 1, k;
-    parseSwitch = 1;
-    printf("parseSwitch init: %i\n", parseSwitch);
     int endCheck;
     char *endend;
     // char *tempEntryDuration, *tempEntryTime, *tempEntrySubject, *tempEntryType, *tempEndDate;
