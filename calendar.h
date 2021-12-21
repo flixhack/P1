@@ -312,6 +312,7 @@ int calcPrimaryAssWorkLoad(date calendar[], int size, element assignment){
     int i = 0;
     int run = 1;
     int daysBetween;
+    printf("size: %i\n", size);
     daysBetween = daysBetweenDates(assignment.startDate, assignment.endDate);
     while (run == 1 && i < size){
         if (calendar[i].year == assignment.startDate.year && calendar[i].month == assignment.startDate.month && calendar[i].day == assignment.startDate.day){
@@ -323,6 +324,9 @@ int calcPrimaryAssWorkLoad(date calendar[], int size, element assignment){
     double totalHours;
     totalHours = (assignment.duration + 0.0) / (60.0);
     for (i = startingPoint; i < startingPoint + daysBetween - 2 && totalHours > 0; i++){
+        printf("totalHours: %lf,    ", totalHours);
+        printf("calendar[%i].hoursFree:   ", i);
+        printf("%lf\n", calendar[i].hoursFree);
         totalHours -= calendar[i].hoursFree;
     }
     if (totalHours >= 0){
@@ -335,8 +339,8 @@ int calcPrimaryAssWorkLoad(date calendar[], int size, element assignment){
 
 int calcWorkLoad(element newElement){
     int result = 0;
-    int daysBetween = 0,
-        size = 0;
+    int daysBetween = 0;
+    int size = 0;
     date earliestDate;
     date *calendar;
     earliestDate = scanForEarliestAssignmentDate("calendar.txt");
@@ -354,6 +358,7 @@ int calcWorkLoad(element newElement){
         free(calendar);
         return 0;
     }
+    printf("size in calcWorkLoad: %i\n", size);
     result = calcPrimaryAssWorkLoad(calendar, size, newElement);
     free(calendar);
     return result;
