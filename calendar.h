@@ -215,7 +215,7 @@ date scanForEarliestAssignmentDate(char databaseSelect[]){
     return earliestAssDate;
 }
 
-int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryType[][4], char entryDuration[][MAX_LINE_LENGTH], char endDate[][10]){
+int calcAssignmentWorkLoad(const int i, date calendar[], char entryType[][4], char entryDuration[][MAX_LINE_LENGTH], char endDate[][10]){
     int k;
     int j;
     int daysBetween;
@@ -301,7 +301,7 @@ int deductAssignmentsFromHoursFree(date calendar[], int size){
                 printf("entryTime[k]: %s, entryDuration[k]: %s, entryType[k]: %s, entrySubject[k]: %s, endDate[k]: %s\n", entryTime[k], entryDuration[k], entryType[k], entrySubject[k], endDate[k]);
             }
             printf("Entering calcAssignmentWorkLoad with i: %i\n", i);
-            returnValue = calcAssignmentWorkLoad(i, calendar, size, entryType, entryDuration, endDate);
+            returnValue = calcAssignmentWorkLoad(i, calendar, entryType, entryDuration, endDate);
         }
     }
     return returnValue;
