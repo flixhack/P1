@@ -212,7 +212,7 @@ void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[
 
 
 
-    for (int j = 0; j < 5 && strtok != NULL; j++) {
+    for (int j = 0; j < 5 && token != NULL; j++) {
       printf("FUCK %i\n", j );
         if (j == 0 && token != NULL) {
         strcpy(tempEntryTime, token);
