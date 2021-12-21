@@ -203,6 +203,7 @@ void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[
         }
         else if (j == 4) {
         endDate = token;
+        token = strtok(NULL, s);
         }
     }
 
