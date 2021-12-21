@@ -10,11 +10,11 @@ BUFFER
 1/2/2021
 11:30_90_mod_math
 13:00_90_mod_danish
-20:00_120_ass_mathOne_25-1-2021
+20:00_120_ass_math_25-1-2021
 1/2/2021_END
 3/2/2021
 12:30_90_mod_english
-14:00_45_mod_sugondeese
+14:00_45_mod_pe
 19:51_600_ass_anatomy_24-1-2021
 3/2/2021_END
 4/2/2021
