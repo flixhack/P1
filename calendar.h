@@ -356,15 +356,15 @@ int calcWorkLoad(element newElement){
     b = sizeof(calendar[0]);
     printf("\nSizeof calendar: %i",a );
     printf("\nSizeof calendar[0]: %i",b );
-    populateCalendar(calendar, counter, size);
-    deductModulesFromHoursFree(calendar, size);
-    result = deductAssignmentsFromHoursFree(calendar, size);
+    populateCalendar(calendar, counter, daysBetween);
+    deductModulesFromHoursFree(calendar, daysBetween);
+    result = deductAssignmentsFromHoursFree(calendar, daysBetween);
     if (result == 0){
         free(calendar);
         return 0;
     }
     printf("size in calcWorkLoad: %i\n", size);
-    result = calcPrimaryAssWorkLoad(calendar, size, newElement);
+    result = calcPrimaryAssWorkLoad(calendar, daysBetween, newElement);
     free(calendar);
     return result;
 }
