@@ -231,8 +231,10 @@ int calcAssignmentWorkLoad(const int i, date calendar[], int size, char entryTyp
             daysBetween = daysBetweenDates(compareDateStart, calendar[i]) - 2;
             averageTime = (durationDouble / daysBetween);
             fitsEasy = 1;
-            printf("calendar[%i].hoursFree = %lf, averageTime: %lf", j, calendar[j].hoursFree, averageTime);
+            //printf("calendar[%i].hoursFree = %lf, averageTime: %lf", j, calendar[j].hoursFree, averageTime);
             for (j = (i - daysBetween); j < i && fitsEasy != 0; j++){
+                printf("j: %i, size: %i, daysBetween: %i", j, size, daysBetween);
+                printf("calendar[%i].hoursFree = %lf, averageTime: %lf", j, calendar[j].hoursFree, averageTime);
                 if (calendar[j].hoursFree < averageTime){
                     fitsEasy = 0;
                 }
