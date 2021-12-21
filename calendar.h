@@ -233,8 +233,10 @@ int calcAssignmentWorkLoad(const int i, date calendar[], char entryType[][4], ch
             printf("compareDateStart: %i/%i/%i. calendar[i]: %i/%i/%i\n", compareDateStart.day, compareDateStart.month, compareDateStart.year, calendar[i].day, calendar[i].month, calendar[i].year);
             averageTime = (durationDouble / daysBetween);
             fitsEasy = 1;
-            //printf("calendar[%i].hoursFree = %lf, averageTime: %lf", j, calendar[j].hoursFree, averageTime);
+            printf("daysBetween\n: %i", daysBetween);
+            // printf("calendar[%i].hoursFree = %lf, averageTime: %lf", j, calendar[j].hoursFree, averageTime);
             for (j = (i - daysBetween); j < i && fitsEasy != 0; j++){
+              printf("\nj er: %i", j);
                 if (calendar[j].hoursFree < averageTime){
                     fitsEasy = 0;
                 }
@@ -354,8 +356,8 @@ int calcWorkLoad(element newElement){
     // size = (sizeof(calendar)) / (sizeof(calendar[0]);
     a = sizeof(calendar);
     b = sizeof(calendar[0]);
-    printf("\nSizeof calendar: %i",a );
-    printf("\nSizeof calendar[0]: %i",b );
+    // printf("\nSizeof calendar: %i",a );
+    // printf("\nSizeof calendar[0]: %i",b );
     populateCalendar(calendar, counter, daysBetween);
     deductModulesFromHoursFree(calendar, daysBetween);
     result = deductAssignmentsFromHoursFree(calendar, daysBetween);
@@ -363,7 +365,7 @@ int calcWorkLoad(element newElement){
         free(calendar);
         return 0;
     }
-    printf("size in calcWorkLoad: %i\n", size);
+    // printf("size in calcWorkLoad: %i\n", size);
     result = calcPrimaryAssWorkLoad(calendar, daysBetween, newElement);
     free(calendar);
     return result;
