@@ -10,7 +10,7 @@ int findLineLoc(char *, int, char *);
 void calendarSplit(char [][100], int, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][4], char [][MAX_LINE_LENGTH], char[][10]);
 int countChars(char *, int, char), countLines(char *);
 void lineSplit(char [][100], int *, char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH], char [][MAX_LINE_LENGTH]);
-
+int countCharNum(char[], char, int);
 
 int locOne = 0, locTwo = -1;
 
@@ -121,54 +121,111 @@ void readSection(int locOne, int locTwo, char tempDB[][MAX_LINE_LENGTH], char da
             strcpy(tempDB[i], string);
             i++;
             bytes++;
-            if (string[strlen(string) - 1] != '\n') {
-                printf("\n");
-            }
+
         }
         lineCount++;
     }
     fclose(readFile);
 }
 
+int countCharNum(char string[], char searchTerm, int lengthOfString){
+  int numOfChar = 0;
+  for (int i = 0; i < lengthOfString; i++) {
+    if (string[i] == searchTerm) {
+      numOfChar++;
+
+    }
+  }
+  return numOfChar;
+}
+
 /*This function is specifically for use with the calendar database, and splits the output from its functions into time, duration, type and subject*/
 void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[][MAX_LINE_LENGTH], char entryDuration[][MAX_LINE_LENGTH], char entryType[][4], char entrySubject[][MAX_LINE_LENGTH], char endDate[][10]) {
-    printf("calendarSplit start\n");
-    printf("tempDB[lineLoc]: %s\n", tempDB[lineLoc]);
-    int parseSwitch = 1, k;
-    parseSwitch = 1;
-    printf("parseSwitch init: %i\n", parseSwitch);
+    int endCheck;
+    char *endend;
 
-    memset(entryDuration[lineLoc], '\0', MAX_LINE_LENGTH);
-    memset(endDate[lineLoc], '\0', MAX_LINE_LENGTH);
-    printf("lineLoc: %i\n", lineLoc);
+    char tempEntryTime[100], tempEntryDuration[100], tempEntrySubject[100], tempEntryType[100], tempEndDate[100];
 
-    for (k = 0; k < MAX_LINE_LENGTH && parseSwitch != 6; k++) {
-        printf("calendar k: %i\n", k);
-        if (tempDB[lineLoc][k] == '_' && parseSwitch) {
-            parseSwitch++;
-            printf("parseSwitch: %i\n", parseSwitch);
+    for (int j = 0; j < 100; j++) {
+      tempEntryTime[j] = '\0';
+      tempEntryDuration[j] = '\0';
+      tempEntrySubject[j] = '\0';
+      tempEntryType[j] = '\0';
+      tempEndDate[j] = '\0';
+    }
+
+
+
+
+    for (int i = 0; i < MAX_LINE_LENGTH; i++) {
+        entryDuration[lineLoc][i] = '\0';
+        entryTime[lineLoc][i] = '\0';
+        entrySubject[lineLoc][i] = '\0';
+        if (i <= 3) {
+            entryType[lineLoc][i] = '\0';
         }
-        else if (tempDB[lineLoc][k] != '_' && parseSwitch == 1) {
-            entryTime[lineLoc][k] = tempDB[lineLoc][k];
-            printf("calendarTime\n");
-        }
-        else if (tempDB[lineLoc][k] != '_' && parseSwitch == 2) {
-            entryDuration[lineLoc][k - countChars(tempDB[lineLoc], 1, '_')] = tempDB[lineLoc][k];
-            printf("calendarDuration\n");
-        }
-        else if (tempDB[lineLoc][k] != '_' && parseSwitch == 3) {
-            entryType[lineLoc][k - countChars(tempDB[lineLoc], 2, '_')] = tempDB[lineLoc][k];
-            printf("calendarType\n");
-        }
-        else if (tempDB[lineLoc][k] != '_' && parseSwitch == 4) {
-            entrySubject[lineLoc][k - countChars(tempDB[lineLoc], 3, '_')] = tempDB[lineLoc][k];
-            printf("calendarSubject\n");
-        }
-        else if (tempDB[lineLoc][k] != '_' && parseSwitch == 5) {
-            endDate[lineLoc][k - countChars(tempDB[lineLoc], 4, '_')] = tempDB[lineLoc][k];
-            printf("entryendDate\n");
+        if (i <= 9) {
+            endDate[lineLoc][i] = '\0';
         }
     }
+
+
+
+    char *token;
+    const char s[2] = "_";
+
+    token = strtok(tempDB[lineLoc], s);
+
+
+
+
+
+    for (int j = 0; j < 5 && token != NULL; j++) {
+        if (j == 0 && token != NULL) {
+        strcpy(tempEntryTime, token);
+        strcpy(entryTime[lineLoc], tempEntryTime);
+        }
+        else if (j == 1 && token != NULL) {
+          endend = token;
+          endCheck = strcmp("END", endend);
+          if (endCheck != 0) {
+            strcpy(tempEntryDuration, token);
+            strcpy(entryDuration[lineLoc], tempEntryDuration);
+          }
+          else {
+            strcpy(tempEntryDuration, token);
+          }
+        }
+        else if (j == 2 && token != NULL) {
+        strcpy(tempEntryTime, token);
+        strcpy(entryTime[lineLoc], tempEntryTime);
+        }
+        else if (j == 3 && token != NULL) {
+        strcpy(tempEntrySubject, token);
+        strcpy(entrySubject[lineLoc], tempEntrySubject);
+        }
+        else if (j == 4 && token != NULL) {
+        strcpy(tempEndDate, token);
+        strcpy(endDate[lineLoc], tempEndDate);
+        }
+        else if (j == 0 && token == NULL) {
+        strcpy(tempEntryTime, "1111");
+        }
+        else if (j == 1 && token == NULL) {
+        strcpy(tempEntryDuration, "1111");
+        }
+        else if (j == 2 && token == NULL) {
+        strcpy(tempEntryType, "1111");
+        }
+        else if (j == 3 && token == NULL) {
+        strcpy(tempEntrySubject, "1111");
+        }
+        else if (j == 4 && token == NULL) {
+        strcpy(tempEndDate, "1111");
+        }
+        token = strtok(NULL, s);
+    }
+
 
 }
 
