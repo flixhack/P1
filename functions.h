@@ -194,15 +194,19 @@ void assignmentEditor(){
           printf("Can't make an assignment in the past.");
           break;
         }
-        if(handIn.month < (tm.tm_mon + 1) && handIn.year == (tm.tm_year + 1900)){
+        else if(handIn.month < (tm.tm_mon + 1) && handIn.year == (tm.tm_year + 1900)){
           printf("Can't make an assignment in the past.");
           break;
         }
-        if (handIn.day < (tm.tm_mday) && handIn.month == (tm.tm_mon + 1) && handIn.year == (tm.tm_year + 1900)){
+        else if (handIn.day < (tm.tm_mday) && handIn.month == (tm.tm_mon + 1) && handIn.year == (tm.tm_year + 1900)){
           printf("Can't make an assignment in the past.");
           break;
         }
-        else findSection(tempDate, database, &locOne, &locTwo);
+        else {
+        printf("tempDate: %s\n", tempDate);
+        findSection(tempDate, database, &locOne, &locTwo);
+        printf("locOne: %i\n", locOne);
+        }
 
         if(locTwo == 0){
           printf("Date not found, creating new date in database.\n");
@@ -215,18 +219,26 @@ void assignmentEditor(){
 
         printf("Insert the starting time (Hours:Minutes), duration (in minutes) and subject: ");
 
-        scanf("%s %d %s", newAssignment.time, &newAssignment.duration, newAssignment.subject);
+        scanf("%s %i %s", newAssignment.time, &newAssignment.duration, newAssignment.subject);
 
         printf("Is this assignment correct? (y/n)\n\n");
-        printf("Subject: %s Date: %d/%d/%d   Duration: %d   Time: %s\n", newAssignment.subject, handIn.day, handIn.month, handIn.year, newAssignment.duration, newAssignment.time);
+        printf("Subject: %s Date: %i/%i/%i   Duration: %i   Time: %s\n", newAssignment.subject, handIn.day, handIn.month, handIn.year, newAssignment.duration, newAssignment.time);
         scanf(" %c", &editCondition);
 
+        printf("editCondition: %c\n", editCondition);
         if(editCondition == 'y'){
+          printf("before!\n");
           sprintf(newLine, "%s_%i_ass_%s_%i-%i-%i", newAssignment.time, newAssignment.duration, newAssignment.subject, tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
+          printf("after!\n");
           int fits;
+          printf("begin calc!\n");
           fits = calcWorkLoad(newAssignment);
+          printf("finish calc\n");
+          printf("fits: %i", fits);
           if(fits > 0){
-            callDatabase(mode, database, locOne + 1, newLine);
+            printf("locOne: %i", locOne);
+            printf("locTwo: %i", locTwo);
+            databaseEdit(&mode, &locOne + 1, newLine, database);
           }
           else printf("No more hours available to create assignment.\n");
           break;

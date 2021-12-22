@@ -19,11 +19,12 @@ and 'E' to replace the text written on a given line.
 lineNum is which line in the file to edit, newLine is the new text for use in C and R mode
 databaseSelect is which text file the function accesses*/
 void databaseEdit(char *mode, int *lineNum, char newLine[], char databaseSelect[]) {
-
+    printf("Hey!\n");
     char buffer[MAX_LINE_LENGTH];
     int count = 0;
     FILE *readFile = fopen(databaseSelect, "r");
     FILE *writeTemp = fopen("replace.tmp", "w");
+    printf("File opened!\n");
 
     if (readFile == NULL) {
         printf("Database file not found. Contact an administrator.");
@@ -34,14 +35,21 @@ void databaseEdit(char *mode, int *lineNum, char newLine[], char databaseSelect[
     while ((fgets(buffer, MAX_LINE_LENGTH, readFile)) != NULL) {
         count++;
 
+        // for (int i = 0; i < MAX_LINE_LENGTH; i++) {
+        //     buffer[i] = '\0';
+        // }
+
         if (count == *lineNum) {
             if (*mode == 'D' || *mode == 'd') {
                 fputs("", writeTemp);
             }
             else if (*mode == 'C' || *mode == 'c') {
+                printf("In create!\n");
                 strcat(buffer, newLine);
                 strcat(buffer, "\n");
+                printf("Buffer: %s!\n", buffer);
                 fputs(buffer, writeTemp);
+                printf("fputs done!\n");
             }
             else if (*mode == 'E' || *mode == 'e') {
                 strcat(newLine, "\n");
@@ -57,8 +65,10 @@ void databaseEdit(char *mode, int *lineNum, char newLine[], char databaseSelect[
     fclose(writeTemp);
 
     //Replaces the old db file with the one that now has the desired corrections
+    printf("Hello?!\n");
     remove("calendar.txt");
     rename("replace.tmp", "calendar.txt");
+    printf("Hello again!\n");
 }
 
 /*This function can find a certain line of text from a string given from testInput, and saves the location to lineLoc
@@ -146,29 +156,60 @@ void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[
 
     char tempEntryTime[100], tempEntryDuration[100], tempEntrySubject[100], tempEntryType[100], tempEndDate[100];
 
-    for (int j = 0; j < 100; j++) {
-      tempEntryTime[j] = '\0';
-      tempEntryDuration[j] = '\0';
-      tempEntrySubject[j] = '\0';
-      tempEntryType[j] = '\0';
-      tempEndDate[j] = '\0';
-    }
+    // for (int j = 0; j < 100; j++) {
+    //   printf("cs 1\n");
+    //   tempEntryTime[j] = '\0';
+    //   tempEntryDuration[j] = '\0';
+    //   tempEntrySubject[j] = '\0';
+    //   tempEntryType[j] = '\0';
+    //   tempEndDate[j] = '\0';
+    // }
+    printf("cs 2\n");
 
 
+    printf("cs 3\n");
+    int i = 0;
 
+    // while (i < MAX_LINE_LENGTH) {
+    //     entryDuration[lineLoc][i] = '\0';
+    //     entryTime[lineLoc][i] = '\0';
+    //     entrySubject[lineLoc][i] = '\0';
+    //     printf("cs electric boogaloo, %i\n", i);
+    //     if (i < 4) {
+    //         entryType[lineLoc][i] = '\0';
+    //         printf("cs I am out of jokes, %i\n", i);
+    //     }
+    //     if (i < 10) {
+    //         endDate[lineLoc][i] = '\0';
+    //         printf("cs I wanna cry, %i\n", i);
+    //     }
+    //     i++;
+    // }
 
-    for (int i = 0; i < MAX_LINE_LENGTH; i++) {
+    for (i = 0; i < 100; i++) {
         entryDuration[lineLoc][i] = '\0';
         entryTime[lineLoc][i] = '\0';
         entrySubject[lineLoc][i] = '\0';
-        if (i <= 3) {
-            entryType[lineLoc][i] = '\0';
-        }
-        if (i <= 9) {
-            endDate[lineLoc][i] = '\0';
-        }
+        printf("cs electric boogaloo, %i\n", i);
+        // if (i <= 3) {
+        //     entryType[lineLoc][i] = '\0';
+        //     printf("cs I am out of jokes\n");
+        // }
+        // if (i <= 9) {
+        //     endDate[lineLoc][i] = '\0';
+        //     printf("cs I wanna cry\n");
+        // }
     }
 
+    for (i = 0; i < 4; i++) {
+        entryType[lineLoc][i] = '\0';
+        printf("cs I am out of jokes, %i\n", i);
+    }
+    for (int penis = 0; penis < 10; penis++) {
+        endDate[lineLoc][i] = '\0';
+        printf("cs I wanna cry, %i\n", penis);
+    }
+    printf("cs 4\n");
 
 
     char *token;
@@ -179,13 +220,20 @@ void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[
 
 
 
+    printf("cs 5\n");
+    printf("tempDB[%i]: %s\n", lineLoc, tempDB[lineLoc]);
+
+    // while (token != NULL) {
+    //     printf("token: %s\n", token);
+    //     token = strtok(NULL, s);
+    // }
 
     for (int j = 0; j < 5 && token != NULL; j++) {
-        if (j == 0 && token != NULL) {
+        if (j == 0) {
         strcpy(tempEntryTime, token);
         strcpy(entryTime[lineLoc], tempEntryTime);
         }
-        else if (j == 1 && token != NULL) {
+        else if (j == 1) {
           endend = token;
           endCheck = strcmp("END", endend);
           if (endCheck != 0) {
@@ -196,37 +244,36 @@ void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[
             strcpy(tempEntryDuration, token);
           }
         }
-        else if (j == 2 && token != NULL) {
-        strcpy(tempEntryTime, token);
-        strcpy(entryTime[lineLoc], tempEntryTime);
+        else if (j == 2) {
+        strcpy(tempEntryType, token);
+        strcpy(entryType[lineLoc], tempEntryType);
         }
-        else if (j == 3 && token != NULL) {
+        else if (j == 3) {
         strcpy(tempEntrySubject, token);
         strcpy(entrySubject[lineLoc], tempEntrySubject);
         }
-        else if (j == 4 && token != NULL) {
+        else if (j == 4) {
         strcpy(tempEndDate, token);
         strcpy(endDate[lineLoc], tempEndDate);
         }
-        else if (j == 0 && token == NULL) {
-        strcpy(tempEntryTime, "1111");
-        }
-        else if (j == 1 && token == NULL) {
-        strcpy(tempEntryDuration, "1111");
-        }
-        else if (j == 2 && token == NULL) {
-        strcpy(tempEntryType, "1111");
-        }
-        else if (j == 3 && token == NULL) {
-        strcpy(tempEntrySubject, "1111");
-        }
-        else if (j == 4 && token == NULL) {
-        strcpy(tempEndDate, "1111");
-        }
+        // else if (j == 0 && token == NULL) {
+        // strcpy(tempEntryTime, "\0");
+        // }
+        // else if (j == 1 && token == NULL) {
+        // strcpy(tempEntryDuration, "\0");
+        // }
+        // else if (j == 2 && token == NULL) {
+        // strcpy(tempEntryType, "\0");
+        // }
+        // else if (j == 3 && token == NULL) {
+        // strcpy(tempEntrySubject, "\0");
+        // }
+        // else if (j == 4 && token == NULL) {
+        // strcpy(tempEndDate, "\0");
+        // }
         token = strtok(NULL, s);
     }
-
-
+    printf("calendar split finished\n");
 }
 
 void calendarDateSplit (char tempDB[][100], int lineLoc, char entryDay[][MAX_LINE_LENGTH], char entryMonth[][MAX_LINE_LENGTH], char entryYear[][MAX_LINE_LENGTH]) {
