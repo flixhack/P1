@@ -203,9 +203,7 @@ void assignmentEditor(){
           break;
         }
         else {
-        printf("tempDate: %s\n", tempDate);
         findSection(tempDate, database, &locOne, &locTwo);
-        printf("locOne: %i\n", locOne);
         }
 
         if(locTwo == 0){
@@ -225,19 +223,11 @@ void assignmentEditor(){
         printf("Subject: %s Date: %i/%i/%i   Duration: %i   Time: %s\n", newAssignment.subject, handIn.day, handIn.month, handIn.year, newAssignment.duration, newAssignment.time);
         scanf(" %c", &editCondition);
 
-        printf("editCondition: %c\n", editCondition);
         if(editCondition == 'y'){
-          printf("before!\n");
           sprintf(newLine, "%s_%i_ass_%s_%i-%i-%i", newAssignment.time, newAssignment.duration, newAssignment.subject, tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
-          printf("after!\n");
           int fits;
-          printf("begin calc!\n");
           fits = calcWorkLoad(newAssignment);
-          printf("finish calc\n");
-          printf("fits: %i", fits);
           if(fits > 0){
-            printf("locOne: %i", locOne);
-            printf("locTwo: %i", locTwo);
             databaseEdit(&mode, &locOne + 1, newLine, database);
           }
           else printf("No more hours available to create assignment.\n");

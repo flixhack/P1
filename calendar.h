@@ -283,23 +283,14 @@ int deductAssignmentsFromHoursFree(date calendar[], int size){
     int k = 0;
     int returnValue = 1;
     for (i = 0; i < size && returnValue != 0; i++){
-        printf("dead 1\n");
         dateToString(calendar, i, string);
-        printf("dead 2\n");
         findSection(string, "calendar.txt", &locOne, &locTwo);
         if (locOne != 0 && locTwo != 0){
-            printf("dead 3\n");
             readSection(locOne, locTwo, tempDB, "calendar.txt");
             for (k = 0; k < (locTwo - locOne -1); k++){
-                printf("dead 4\n");
                 calendarSplit (tempDB, k, entryTime, entryDuration, entryType, entrySubject, endDate);
-                printf("peepee\n");
-                printf("dead entryTime: %s, entryDuration: %s, entryType: %s, entrySubject: %s, endDate: %s\n", entryTime[k], entryDuration[k], entryType[k], entrySubject[k], endDate[k]);
-                printf("after dead 4\n");
             }
-            printf("dead 5\n");
             returnValue = calcAssignmentWorkLoad(i, calendar, entryType, entryDuration, endDate);
-            printf("after dead 5\n");
         }
     }
     return returnValue;
@@ -310,17 +301,14 @@ int calcPrimaryAssWorkLoad(date calendar[], int size, element assignment){
     int i = 0;
     int run = 1;
     int daysBetween;
-    printf("calc 1\n");
     daysBetween = daysBetweenDates(assignment.startDate, assignment.endDate);
     while (run == 1 && i < size){
         if (calendar[i].year == assignment.startDate.year && calendar[i].month == assignment.startDate.month && calendar[i].day == assignment.startDate.day){
             startingPoint = i;
             run = 0;
         }
-        printf("calc i: %i\n", i);
         i++;
     }
-    printf("calc 2\n");
     double totalHours;
     totalHours = (assignment.duration + 0.0) / (60.0);
     for (i = startingPoint; i < startingPoint + daysBetween - 2 && totalHours > 0; i++){
@@ -339,31 +327,21 @@ int calcWorkLoad(element newElement){
     int daysBetween = 0;
     date earliestDate;
     date *calendar;
-    printf("first!\n");
     earliestDate = scanForEarliestAssignmentDate("calendar.txt");
     date latestDate;
-    printf("second!\n");
     latestDate = findLatestDate("calendar.txt");
     date counter = earliestDate;
-    printf("third!\n");
     daysBetween = daysBetweenDates(earliestDate, latestDate);
     calendar = (date *) calloc(daysBetween, sizeof(date));
-    printf("fourth!\n");
     populateCalendar(calendar, counter, daysBetween);
-    printf("fifth!\n");
     deductModulesFromHoursFree(calendar, daysBetween);
-    printf("sixth!\n");
     result = deductAssignmentsFromHoursFree(calendar, daysBetween);
-    printf("after sixth!\n");
-    printf("early result: %i", result);
     if (result == 0){
         free(calendar);
         return 0;
     }
     else {
-        printf("seventh!\n");
         result = calcPrimaryAssWorkLoad(calendar, daysBetween, newElement);
-        printf("result: %i", result);
         free(calendar);
         return result;
     }
