@@ -160,9 +160,20 @@ void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[
     for (i = 0; i < 4; i++) {
         entryType[lineLoc][i] = '\0';
     }
-    for (int penis = 0; penis < 10; penis++) {
-        endDate[lineLoc][i] = '\0';
-    }
+    // for (int penis = 0; penis < 10; penis++) {
+    //     endDate[lineLoc][i] = '\0';
+    // }
+
+    endDate[lineLoc][0] = '\0';
+    endDate[lineLoc][1] = '\0';
+    endDate[lineLoc][2] = '\0';
+    endDate[lineLoc][3] = '\0';
+    endDate[lineLoc][4] = '\0';
+    endDate[lineLoc][5] = '\0';
+    endDate[lineLoc][6] = '\0';
+    endDate[lineLoc][7] = '\0';
+    endDate[lineLoc][8] = '\0';
+    endDate[lineLoc][9] = '\0';
 
     char *token;
     const char s[2] = "_";
