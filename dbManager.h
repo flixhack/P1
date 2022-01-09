@@ -155,21 +155,48 @@ void calendarSplit (char tempDB[][MAX_LINE_LENGTH], int lineLoc, char entryTime[
     }
 
 
+    int i = 0, test = 0;
 
-
-    for (int i = 0; i < MAX_LINE_LENGTH; i++) {
+    for (i = 0; i < MAX_LINE_LENGTH; i++) {
+        printf("----\n");
+        printf("pre i = %i\n", i);
         entryDuration[lineLoc][i] = '\0';
         entryTime[lineLoc][i] = '\0';
         entrySubject[lineLoc][i] = '\0';
-        if (i <= 3) {
-            entryType[lineLoc][i] = '\0';
-        }
-        if (i <= 9) {
-            endDate[lineLoc][i] = '\0';
-        }
+        // if (i <= 3) {
+        //     entryType[lineLoc][i] = '\0';
+        //     printf("before here = %i\n", i);
+        // }
+        // printf("here? = %i\n", i);
+        // if (i <= 9) {
+        //     test = i;
+        //     printf("pain = %i\n", i);
+        //     endDate[lineLoc][test] = '\0';
+        //     printf("confusion = %i\n", i);
+        // }
+        // printf("i = %i\n", i);
     }
 
+    for (i = 0; i <= 3; i++) {
+        entryType[lineLoc][i] = '\0';
+        printf("test: %i\n", i);
+    }
 
+    endDate[lineLoc][0] = '\0';
+    endDate[lineLoc][1] = '\0';
+    endDate[lineLoc][2] = '\0';
+    endDate[lineLoc][3] = '\0';
+    endDate[lineLoc][4] = '\0';
+    endDate[lineLoc][5] = '\0';
+    endDate[lineLoc][6] = '\0';
+    endDate[lineLoc][7] = '\0';
+    endDate[lineLoc][8] = '\0';
+    endDate[lineLoc][9] = '\0';
+
+    // for (i = 0; i <= 9; i++) {
+    //     endDate[lineLoc][i] = '\0';
+    //     printf("test two: %i\n", i);
+    // }
 
     char *token;
     const char s[2] = "_";
